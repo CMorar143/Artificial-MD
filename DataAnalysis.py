@@ -17,9 +17,11 @@ def process_dir():
     desc = pd.read_csv(path + './Feature_Dictionary/NAHNES_2014_Dictionary.csv')
     # print(desc.head())
 
-    d = dict(desc)
 
-    print(desc)
+    d = dict(zip(list(desc['Variable Name']), list(desc['Variable Description'])))
+    # print(d['SEQN'])
+
+    
 
     # # For Categorical features
     # mode = ''
