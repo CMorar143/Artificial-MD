@@ -19,9 +19,16 @@ def process_dir():
 
 
     d = dict(zip(list(desc['Variable Name']), list(desc['Variable Description'])))
-    # print(d['SEQN'])
+    # print(d['WHQ030M'])
 
-    
+    d2 = dict(df.apply(pd.Series.nunique))
+
+    # df.fillna("?", inplace=True)
+
+    for i in df:
+        count = df[i].isna().sum()
+        print("\n")
+        print(count)
 
     # # For Categorical features
     # mode = ''
