@@ -8,27 +8,47 @@ def process_dir():
     flist = os.listdir(path)
     featureNames = []
 
-    df = pd.read_csv(path + 'demographic.csv')
-    # print(df.head())
+    demographic = pd.read_csv(path + 'demographic.csv')
+    diet = pd.read_csv(path + 'diet.csv')
+    examination = pd.read_csv(path + 'examination.csv')
+    labs = pd.read_csv(path + 'labs.csv')
+    medications = pd.read_csv(path + 'medications.csv', encoding = "ISO-8859-1")
+    questionnaire = pd.read_csv(path + 'questionnaire.csv')
+    # print(medications.head())
 
     featureNames = pd.read_csv(path + './Feature_Dictionary/FeatureNames.txt')
     # print(featureNames.head())
-
+    # fname = list(featureNames)
+    # print("fname length:", len(fname))
     desc = pd.read_csv(path + './Feature_Dictionary/NAHNES_2014_Dictionary.csv')
     # print(desc.head())
-
-
+    
     d = dict(zip(list(desc['Variable Name']), list(desc['Variable Description'])))
-    # print(d['WHQ030M'])
+    # print(list(d.keys())[list(d.values()).index('Respondent sequence number')])
 
-    d2 = dict(df.apply(pd.Series.nunique))
+    list_of_keys = list(d.keys())
 
-    # df.fillna("?", inplace=True)
+    # print(len(list_of_keys))
+    print()
+    
+    # For checking cardinality
+    d2 = dict(demographic.apply(pd.Series.nunique))
 
-    for i in df:
-        count = df[i].isna().sum()
-        print("\n")
-        print(count)
+    # demographic.fillna("?", inplace=True)
+
+    c = 0
+    # print(demographic)
+    # print("\n", list_of_keys)
+    for i in demographic:
+        # count = demographic[i].isna().sum()
+        # print("\n")
+        # print(demographic[i].describe())
+        # print(list_of_keys[c], d[list_of_keys[c]])
+
+        c = c + 1
+    print()
+    print(c)
+
 
     # # For Categorical features
     # mode = ''
@@ -53,12 +73,12 @@ def process_dir():
     # count_missing = 0
     # card = 0
 
-    # d = dict(df.apply(pd.Series.nunique))
-    # count = df['id,'].count()
+    # d = dict(demographic.apply(pd.Series.nunique))
+    # count = demographic['id,'].count()
 
     # for i in Cat_Features:
     #     # Count
-    #     array = df[i + ',']
+    #     array = demographic[i + ',']
 
     #     d2 = dict(array.value_counts())
     #     # count_missing = d[' ?']
@@ -124,7 +144,7 @@ def process_dir():
 
     # for i in Cont_Features:
     #     # Count
-    #     array = df[i + ',']
+    #     array = demographic[i + ',']
 
     #     d2 = dict(array.value_counts())
     #     # count_missing = d[' ?']
@@ -188,8 +208,8 @@ def process_dir():
         # print("\n\n\n\nNEXT\n\n\n\n")
 
 
-    # Cont = df.to_csv('C16460726CONT.csv', index_label = 'FEATURENAME')
-    # Cat = df.to_csv('C16460726CAT.csv', index_label = 'FEATURENAME')
+    # Cont = demographic.to_csv('C16460726CONT.csv', index_label = 'FEATURENAME')
+    # Cat = demographic.to_csv('C16460726CAT.csv', index_label = 'FEATURENAME')
 
 
 
