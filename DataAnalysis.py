@@ -14,7 +14,48 @@ def process_dir():
     labs = pd.read_csv(path + 'labs.csv')
     medications = pd.read_csv(path + 'medications.csv', encoding = "ISO-8859-1")
     questionnaire = pd.read_csv(path + 'questionnaire.csv')
+    # print(demographic.head())
+    # print(diet.head())
+    # print(examination.head())
+    # print(labs.head())
     # print(medications.head())
+    # print(questionnaire.head())
+
+    # dict_combined = {
+    #     'Demographic': demographic,
+    #     'Diet': diet,
+    #     'Examination': examination,
+    #     'Labs': labs,
+    #     'Medications': medications,
+    #     'Questionnaire': questionnaire
+    # }
+
+    df_list = [
+        demographic,
+        diet,
+        examination,
+        labs,
+        medications,
+        questionnaire
+    ]
+
+    # df_combined = pd.concat(dict_combined, sort=False)
+    df_combined = pd.DataFrame.copy(demographic)
+
+    for f in df_list[1:]:
+        df_combined = pd.merge(df_combined, f, on='SEQN', sort=False)
+
+    df_combined.set_index('SEQN', inplace=True)
+    
+    # seqn_array = df_combined['SEQN']
+    # print(df_combined.loc['73557'])
+    print(df_combined.head())
+    
+    # c = 0
+    # for i in seqn_array:
+    #     if (i == 73557):
+    #         c = c + 1
+    # print(c)
 
     featureNames = pd.read_csv(path + './Feature_Dictionary/FeatureNames.txt')
     # print(featureNames.head())
@@ -27,6 +68,8 @@ def process_dir():
     # print(list(d.keys())[list(d.values()).index('Respondent sequence number')])
 
     list_of_keys = list(d.keys())
+
+    # print(medications['RXDRSC1'].value_counts())
 
     # print(len(list_of_keys))
     print()
@@ -46,8 +89,8 @@ def process_dir():
         # print(list_of_keys[c], d[list_of_keys[c]])
 
         c = c + 1
-    print()
-    print(c)
+    # print()
+    # print(c)
 
 
     # # For Categorical features
