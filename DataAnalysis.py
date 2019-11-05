@@ -5,6 +5,7 @@ import pandas as pd
 
 def process_dir():
     path = "../Data/Health_Survey/"
+    pathHeart = "../Data/heart-disease-uci/"
     flist = os.listdir(path)
     featureNames = []
 
@@ -15,6 +16,7 @@ def process_dir():
     # medications = pd.read_csv(path + 'medications.csv', encoding = "ISO-8859-1")
     questionnaire = pd.read_csv(path + 'questionnaire.csv')
     glucose = pd.read_csv(path + 'GLU_H.csv')
+    heart = pd.read_csv(pathHeart + 'heart.csv')
     # print(demographic.head())
     # print(diet.head())
     # print(examination.head())
