@@ -12,8 +12,9 @@ def process_dir():
     diet = pd.read_csv(path + 'diet.csv')
     examination = pd.read_csv(path + 'examination.csv')
     labs = pd.read_csv(path + 'labs.csv')
-    medications = pd.read_csv(path + 'medications.csv', encoding = "ISO-8859-1")
+    # medications = pd.read_csv(path + 'medications.csv', encoding = "ISO-8859-1")
     questionnaire = pd.read_csv(path + 'questionnaire.csv')
+    glucose = pd.read_csv(path + 'GLU_H.csv')
     # print(demographic.head())
     # print(diet.head())
     # print(examination.head())
@@ -33,23 +34,52 @@ def process_dir():
     # df_combined = pd.concat(dict_combined, sort=False)
 
     df_list = [
-        demographic,
+        # demographic,
         diet,
         examination,
         labs,
-        medications,
+        glucose,
         questionnaire
     ]
 
-    df_combined = pd.DataFrame.copy(demographic)
+    input_params = [
+        'DIQ010',
+        'DIQ160',
+        'CDQ010',
+        'CDQ001',
+        'BPQ080',
+        'BPQ020',
+        'BMXHT',
+        'BMXWT',
+        'BMXBMI',
+        'BPXCHR',
+        'BPXPULS',
+        'BPXPTY',
+        'BPXSY1',
+        'BPXDI1',
+        'BPXSY2',
+        'BPXDI2',
+        'LBXSTP',
+        'LBDHDD',
+        'LBDLDL',
+        'LBXTC',
+        'LBXGLU',
+        'LBXTR',
+        'LBXSUA'
+    ]
+
+    df_combined = pd.DataFrame.copy(diet)
 
     for f in df_list[1:]:
         df_combined = pd.merge(df_combined, f, on='SEQN', sort=False)
 
     df_combined.set_index('SEQN', inplace=True)
 
+    df_input_params = df_combined[input_params]
+
+    print(df_input_params.head())
     # seqn_array = df_combined['SEQN']
-    print(df_combined.loc['73557'])
+    # print(df_combined[['SDDSRVYR']])
     # print(df_combined.head())
 
     # featureNames = pd.read_csv(path + './Feature_Dictionary/FeatureNames.txt')
