@@ -8,7 +8,7 @@ def process_dir():
     flist = os.listdir(path)
     featureNames = []
 
-    demographic = pd.read_csv(path + 'demographic.csv')
+    # demographic = pd.read_csv(path + 'demographic.csv')
     diet = pd.read_csv(path + 'diet.csv')
     examination = pd.read_csv(path + 'examination.csv')
     labs = pd.read_csv(path + 'labs.csv')
@@ -34,7 +34,6 @@ def process_dir():
     # df_combined = pd.concat(dict_combined, sort=False)
 
     df_list = [
-        # demographic,
         diet,
         examination,
         labs,
@@ -77,7 +76,7 @@ def process_dir():
 
     df_input_params = df_combined[input_params]
 
-    print(df_input_params.head())
+    # print(df_input_params.head())
     # seqn_array = df_combined['SEQN']
     # print(df_combined[['SDDSRVYR']])
     # print(df_combined.head())
@@ -116,25 +115,85 @@ def process_dir():
     # mode2_freq = 0
     # mode2_perc = 0
 
-    # # For Continous features
-    # min_value = 0
-    # first_qrt = 0
-    # mean = 0
-    # median = 0
-    # third_qrt = 0
-    # max_value = 0
-    # stand_dev = 0
+    # For Continous features
+    min_value = 0
+    first_qrt = 0
+    mean = 0
+    median = 0
+    third_qrt = 0
+    max_value = 0
+    stand_dev = 0
 
-    # # For Both
-    # count = 0
-    # perc_missing = 0
-    # count_missing = 0
-    # card = 0
+    # For Both
+    count = 0
+    perc_missing = 0
+    count_missing = 0
+    card = 0
 
-    # d = dict(demographic.apply(pd.Series.nunique))
-    # count = demographic['id,'].count()
+    d = dict(df_input_params.apply(pd.Series.nunique))
+    count = len(df_input_params)
 
-    # for i in Cat_Features:
+
+    for i in input_params:
+        # Count
+        array = df_input_params[i]
+
+        d2 = dict(array.value_counts())
+        # count_missing = d[' ?']
+            
+        # % Missing
+        array2 = set(array)
+        count_missing = array.isna().sum()
+
+        if count_missing == 0:
+            perc_missing = 0
+        else:
+            perc_missing = (count_missing / count) * 100
+        
+        # Cardinality
+        card = d[i]
+
+        # Minimum
+        min_value = array.min()
+
+        # First Quartile
+        first_qrt = array.quantile(0.25)
+
+        # Mean
+        mean = array.mean()
+
+        # Median
+        median = array.median()
+
+        # Third Quartile
+        third_qrt = array.quantile(0.75)
+
+        # Maximum
+        max_value = array.max()
+
+        # Standard Deviation
+        stand_dev = array.std()
+
+        print(array.value_counts())
+        print("\n")
+        print("count", count)
+        print("count_missing", count_missing)
+        print("perc_missing", perc_missing)
+        print("card", card)
+        print("min_value", min_value)
+        print("first_qrt", first_qrt)
+        print("mean", mean)
+        print("median", median)
+        print("third_qrt", third_qrt)
+        print("max_value", max_value)
+        print("stand_dev", stand_dev)
+        print("\n\n\n\nNEXT\n\n\n\n")
+
+
+    # Cont = demographic.to_csv('C16460726CONT.csv', index_label = 'FEATURENAME')
+    # Cat = demographic.to_csv('C16460726CAT.csv', index_label = 'FEATURENAME')
+
+     # for i in Cat_Features:
     #     # Count
     #     array = demographic[i + ',']
 
@@ -198,77 +257,6 @@ def process_dir():
     #     print("\n")
     #     print("mode2_perc:",mode2_perc)
     #     print("\n\n\n\nNEXT\n\n\n\n")
-
-
-    # for i in Cont_Features:
-    #     # Count
-    #     array = demographic[i + ',']
-
-    #     d2 = dict(array.value_counts())
-    #     # count_missing = d[' ?']
-            
-    #     # % Missing
-    #     array2 = set(array)
-    #     if (' ?') in array2:
-    #         count_missing = array.value_counts()[' ?']
-    #         perc_missing = (count_missing / count) * 100
-    #     else:
-    #         count_missing = 0
-    #         perc_missing = 0
-
-    #     # Cardinality
-    #     card = d[i + ',']
-
-    #     # Minimum
-    #     min_value = array.min()
-
-    #     # First Quartile
-    #     first_qrt = array.quantile(0.25)
-
-    #     # Mean
-    #     mean = array.mean()
-
-    #     # Median
-    #     median = array.median()
-
-    #     # Third Quartile
-    #     third_qrt = array.quantile(0.75)
-
-    #     # Maximum
-    #     max_value = array.max()
-
-    #     # Standard Deviation
-    #     stand_dev = array.std()
-
-        # print(array.value_counts())
-        # print("\n")
-        # print(count)
-        # print("\n")
-        # print(count_missing)
-        # print("\n")
-        # print(perc_missing)
-        # print("\n")
-        # print(card)
-        # print("\n")
-        # print(min_value)
-        # print("\n")
-        # print(first_qrt)
-        # print("\n")
-        # print(mean)
-        # print("\n")
-        # print(median)
-        # print("\n")
-        # print(third_qrt)
-        # print("\n")
-        # print(max_value)
-        # print("\n")
-        # print(stand_dev)
-        # print("\n\n\n\nNEXT\n\n\n\n")
-
-
-    # Cont = demographic.to_csv('C16460726CONT.csv', index_label = 'FEATURENAME')
-    # Cat = demographic.to_csv('C16460726CAT.csv', index_label = 'FEATURENAME')
-
 
 
 def main():
