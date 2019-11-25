@@ -11,6 +11,12 @@ def train_model():
 	pathHeart = "../Data/heart-disease-uci/"
 	heart = pd.read_csv(pathHeart + 'heart.csv')
 
-	print(heart.describe())
+	# print(heart.describe())
+
+	plt.matshow(heart.corr())
+	plt.xticks(np.arange(heart.shape[1]), heart.columns)
+	plt.yticks(np.arange(heart.shape[1]), heart.columns)
+	plt.colorbar()
+	plt.show()
 
 train_model()
