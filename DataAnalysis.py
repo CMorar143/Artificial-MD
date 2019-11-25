@@ -77,8 +77,11 @@ def process_dir():
     df_combined.set_index('SEQN', inplace=True)
 
     df_input_params = df_combined[input_params]
+    df_input_params.dropna(thresh=10, inplace=True)
 
-    # print(df_input_params.head())
+    print(df_input_params.head())
+    print(df_input_params.tail())
+
     # seqn_array = df_combined['SEQN']
     # print(df_combined[['SDDSRVYR']])
     # print(df_combined.head())
@@ -176,20 +179,22 @@ def process_dir():
         # Standard Deviation
         stand_dev = array.std()
 
-        print(array.value_counts())
-        print("\n")
+        # print(array.value_counts())
+        # print("\n")
+        print(i, "\n")
         print("count", count)
-        print("count_missing", count_missing)
+        # print("count_missing", count_missing)
         print("perc_missing", perc_missing)
-        print("card", card)
-        print("min_value", min_value)
-        print("first_qrt", first_qrt)
-        print("mean", mean)
-        print("median", median)
-        print("third_qrt", third_qrt)
-        print("max_value", max_value)
-        print("stand_dev", stand_dev)
-        print("\n\n\n\nNEXT\n\n\n\n")
+        # print("card", card)
+        # print("min_value", min_value)
+        # print("first_qrt", first_qrt)
+        # print("mean", mean)
+        # print("median", median)
+        # print("third_qrt", third_qrt)
+        # print("max_value", max_value)
+        # print("stand_dev", stand_dev)
+        # print("\n\n\n\nNEXT\n\n\n\n")
+        print("\nNEXT\n")
 
 
     # Cont = demographic.to_csv('C16460726CONT.csv', index_label = 'FEATURENAME')
