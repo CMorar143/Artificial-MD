@@ -11,7 +11,7 @@ def train_model():
 	pathHeart = "../Data/heart-disease-uci/"
 	heart = pd.read_csv(pathHeart + 'heart.csv')
 
-	print(heart.columns)
+	print(heart.head())
 
 	# # Remove columns that are not going to be used
 	# heart_prediction_columns = [
@@ -40,9 +40,7 @@ def train_model():
 	plt.close()
 	
 	# Show the amount of entries who have and don't have heart disease
-	plt.bar(heart['target'].unique(), heart['target'].value_counts(), color = ['red', 'blue'])
-	plt.xticks([0, 1])
-	plt.xlabel('Target Classes')
+	plt.bar(['Does have heart disease', 'Does not have heart disease'], heart['target'].value_counts(), color = ['red', 'blue'])
 	plt.ylabel('Count')
 	plt.show()
 
