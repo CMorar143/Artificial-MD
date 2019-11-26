@@ -31,20 +31,20 @@ def train_model():
 	plt.xticks(np.arange(heart.shape[1]), heart.columns)
 	plt.yticks(np.arange(heart.shape[1]), heart.columns)
 	plt.colorbar()
-	plt.show()
+	# plt.show()
 	plt.close()
 
 
 	# Show a histogram of all the columns
 	heart.hist()
-	plt.show()
+	# plt.show()
 	plt.close()
 	
 
 	# Show the amount of entries who have and don't have heart disease
-	plt.bar(['Does have heart disease', 'Does not have heart disease'], heart['target'].value_counts(), color = ['red', 'blue'])
-	plt.ylabel('Count')
-	plt.show()
+	# plt.bar(['Does have heart disease', 'Does not have heart disease'], heart['target'].value_counts(), color = ['red', 'blue'])
+	# plt.ylabel('Count')
+	# plt.show()
 
 
 	# 
@@ -74,6 +74,14 @@ def train_model():
 	plt.ylabel('Scores')
 	plt.title('K Neighbors Classifier scores for different K values')
 	plt.show()
+
+	knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
+	demo_values = [[63], [145], [233], [150], [2.3], [0], [1], [0], [0], [0], [1], [0], [1], [0], [1], [0], [1], [0], [1], [0], [0], [1], [0], [0], [0], [0], [0], [1], [0], [0]]
+	knn_classifier_test.fit(X_train, y_train)
+	print(len(demo_values))
+	# demo_values.reshape(-1, 1)
+	print(knn_classifier_test.predict(demo_values))
+
 
 
 
