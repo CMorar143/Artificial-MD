@@ -76,11 +76,12 @@ def train_model():
 	# plt.show()
 
 	knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
-	demo_values = [[63], [145], [233], [150], [2.3], [0], [1], [0], [0], [0], [1], [0], [1], [0], [1], [0], [1], [0], [1], [0], [0], [1], [0], [0], [0], [0], [0], [1], [0], [0]]
+	# demo_values = [[63], [145], [233], [150], [2.3], [0], [1], [0], [0], [0], [1], [0], [1], [0], [1], [0], [1], [0], [1], [0], [0], [1], [0], [0], [0], [0], [0], [1], [0], [0]]
+	demo_values = [63, 145, 233, 150, 2.3, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]
 	knn_classifier_test.fit(X_train, y_train)
-	print(len(demo_values))
-	print(X_test.head())
-	print(X_train.columns)
+	# print(len(demo_values))
+	# print(X_test.head())
+	# print(X_train.columns)
 
 	# x_test_2 = X_test.head(1)
 	# print(x_test_2)
@@ -88,20 +89,12 @@ def train_model():
 
 	print("work")
 
-	data = [['tom', 10], ['nick', 15], ['juli', 14]] 
-  
-	# Create the pandas DataFrame 
-	df = pd.DataFrame(data, columns = ['Name', 'Age']) 
-
-	# print dataframe. 
+	df = pd.DataFrame(columns = X_test.columns) 
+	df.loc[0] = demo_values
 	print(df)
 
-
-	df2 = pd.DataFrame(demo_values) 
-	print(df2)
-
-	# p = knn_classifier_test.predict(df2)
-	# print(p)
+	p = knn_classifier_test.predict(df)
+	print(p)
 
 
 
