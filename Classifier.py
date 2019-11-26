@@ -75,19 +75,11 @@ def train_model():
 	plt.title('K Neighbors Classifier scores for different K values')
 	# plt.show()
 
+
+	# Test the classifier
 	knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
-	# demo_values = [[63], [145], [233], [150], [2.3], [0], [1], [0], [0], [0], [1], [0], [1], [0], [1], [0], [1], [0], [1], [0], [0], [1], [0], [0], [0], [0], [0], [1], [0], [0]]
 	demo_values = [63, 145, 233, 150, 2.3, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]
 	knn_classifier_test.fit(X_train, y_train)
-	# print(len(demo_values))
-	# print(X_test.head())
-	# print(X_train.columns)
-
-	# x_test_2 = X_test.head(1)
-	# print(x_test_2)
-	# x_test_2 = x_test_2.reshape(-1, 1)
-
-	print("work")
 
 	df = pd.DataFrame(columns = X_test.columns) 
 	df.loc[0] = demo_values
