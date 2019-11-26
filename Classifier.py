@@ -49,9 +49,9 @@ def train_model():
 
 	# 
 	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'ca', 'thal'])
-	standardScaler = StandardScaler()
-	columns_to_scale = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
-	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
+	# standardScaler = StandardScaler()
+	# columns_to_scale = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
+	# heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
 
 	y = heart['target']
@@ -73,14 +73,35 @@ def train_model():
 	plt.xlabel('Number of Neighbors (K)')
 	plt.ylabel('Scores')
 	plt.title('K Neighbors Classifier scores for different K values')
-	plt.show()
+	# plt.show()
 
 	knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
 	demo_values = [[63], [145], [233], [150], [2.3], [0], [1], [0], [0], [0], [1], [0], [1], [0], [1], [0], [1], [0], [1], [0], [0], [1], [0], [0], [0], [0], [0], [1], [0], [0]]
 	knn_classifier_test.fit(X_train, y_train)
 	print(len(demo_values))
-	# demo_values.reshape(-1, 1)
-	print(knn_classifier_test.predict(demo_values))
+	print(X_test.head())
+	print(X_train.columns)
+
+	# x_test_2 = X_test.head(1)
+	# print(x_test_2)
+	# x_test_2 = x_test_2.reshape(-1, 1)
+
+	print("work")
+
+	data = [['tom', 10], ['nick', 15], ['juli', 14]] 
+  
+	# Create the pandas DataFrame 
+	df = pd.DataFrame(data, columns = ['Name', 'Age']) 
+
+	# print dataframe. 
+	print(df)
+
+
+	df2 = pd.DataFrame(demo_values) 
+	print(df2)
+
+	# p = knn_classifier_test.predict(df2)
+	# print(p)
 
 
 
