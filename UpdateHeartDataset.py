@@ -2,7 +2,7 @@ import os
 import csv
 import pandas as pd
 
-def process():
+def process_csv():
 	pathHeart = "../Data/heart-disease-uci/"
 
 	# Read in dataset
@@ -13,12 +13,33 @@ def process():
 	hungarian = pd.read_csv(pathHeart + 'hungarian.txt', header=None).replace(' ', ',', regex=True)
 	switzerland = pd.read_csv(pathHeart + 'switzerland.txt', header=None).replace(' ', ',', regex=True)
 
-	# Replace all spaces with a comma
-	# print(cleveland.replace(' ', ',', regex=True))
-
+	cleveland = cleveland.replace(r'\s', ' ', regex=True)
 	print(cleveland)
 
+	# Iterate through the individual rows
 	# for _, row in cleveland.iterrows():
-	# 	print(row[0])
+	# 	print(row[0].replace('\n', ','))
 
-process()
+	cleveland.close()
+	hungarian.close()
+	switzerland.close()
+
+
+def text_file():
+	pathHeart = "../Data/heart-disease-uci/"
+	cleveland = open(pathHeart + 'cleveland.txt', mode='r')
+
+	# Read all the lines in the text file
+	all_lines = cleveland.read()
+	# print(all_lines.replace(' ', ','))
+	all_lines = all_lines.replace('\n', ',').replace(' ', ',')
+
+	new_cleveland = open(pathHeart + 'new_cleveland.txt', 'w')
+	for line in all_lines:
+		new_cleveland.write(line)
+
+	new_cleveland.close()
+	cleveland.close()
+
+text_file()
+# process_csv()
