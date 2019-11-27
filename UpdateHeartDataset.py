@@ -3,11 +3,16 @@ import csv
 import pandas as pd
 
 def process():
-
-	# Read in original dataset
 	pathHeart = "../Data/heart-disease-uci/"
+
+	# Read in dataset
 	heart = pd.read_csv(pathHeart + 'heart.csv')
+
+	# Read in all the original datasets
 	cleveland = pd.read_csv(pathHeart + 'cleveland.txt', header=None)
-	print(cleveland)
+	hungarian = pd.read_csv(pathHeart + 'hungarian.txt', header=None)
+	switzerland = pd.read_csv(pathHeart + 'switzerland.txt', header=None)
+
+	print(switzerland)
 
 process()
