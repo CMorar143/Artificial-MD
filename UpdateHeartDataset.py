@@ -32,11 +32,19 @@ def text_file():
 	# Read all the lines in the text file
 	all_lines = cleveland.readlines()
 
-	print(all_lines[0][1])
+	for index in range(0, len(all_lines)):
+		all_lines[index] = all_lines[index].split(' ')
+		if all_lines[index][len(all_lines[index])-1] != 'name\n':
+				print(all_lines[index][len(all_lines[index])-1])
+				all_lines[index][len(all_lines[index])-1] = all_lines[index][len(all_lines[index])-1].replace('\n', '')
+
 	
 	# Create a new file
 	new_cleveland = open(pathHeart + 'new_cleveland.txt', 'w')
 
+	for line in all_lines:
+		for word in line:
+			new_cleveland.write(word + ', ')
 	
 	new_cleveland.close()
 	cleveland.close()
