@@ -13,6 +13,8 @@ def process():
 	hungarian = pd.read_csv(pathHeart + 'hungarian.txt', header=None)
 	switzerland = pd.read_csv(pathHeart + 'switzerland.txt', header=None)
 
-	print(switzerland)
+	
+	# for _, row in cleveland.iterrows():
+	# 	print(row[0])
 
 process()
