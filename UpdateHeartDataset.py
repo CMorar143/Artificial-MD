@@ -71,10 +71,20 @@ def text_file():
 	all_lines = cleveland.readlines()
 
 	for index in range(0, len(all_lines)):
-		all_lines[index] = all_lines[index].split(' ')
-		if all_lines[index][len(all_lines[index])-1] != 'name\n':
-				print(all_lines[index][len(all_lines[index])-1])
-				all_lines[index][len(all_lines[index])-1] = all_lines[index][len(all_lines[index])-1].replace('\n', '')
+		if 'name\n' in all_lines[index]:
+			print('true')
+
+	# all_lines = all_lines.split('name\n')
+	# print(all_lines)
+
+	# for index in range(0, len(all_lines)):
+	# 	all_lines[index] = all_lines[index].split(' ')
+		# if all_lines[index][len(all_lines[index])-1] != 'name\n':
+		# 		print(all_lines[index][len(all_lines[index])-1])
+		# 		all_lines[index][len(all_lines[index])-1] = all_lines[index][len(all_lines[index])-1].replace('\n', '')
+
+	# for index in range(0, len(heart_columns)):
+		# print(heart_columns.values())
 
 	
 	# Create a new file
@@ -86,6 +96,7 @@ def text_file():
 	
 	new_cleveland.close()
 	cleveland.close()
+
 
 def is_num(string):
 	try:
