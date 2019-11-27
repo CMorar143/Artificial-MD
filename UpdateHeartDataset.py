@@ -31,14 +31,12 @@ def text_file():
 
 	# Read all the lines in the text file
 	all_lines = cleveland.read()
-	all_lines = all_lines.replace('\n', ', ').replace(' ', ', ')
+	all_lines = all_lines.replace(' ', ', ').replace('\n', ', ').replace('e,', 'e\n')
 
 	new_cleveland = open(pathHeart + 'new_cleveland.txt', 'w')
 
 	print(all_lines[len(all_lines)-1])
 	for line in all_lines:
-		if line is "e":
-			print("found line")
 		new_cleveland.write(line)
 
 	new_cleveland.close()
