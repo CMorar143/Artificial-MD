@@ -69,10 +69,19 @@ def text_file():
 
 	# Read all the lines in the text file
 	all_lines = cleveland.readlines()
+	new_list = []
+	new_list2 = []
 
 	for index in range(0, len(all_lines)):
+		new_list.append(all_lines[index])
+
 		if 'name\n' in all_lines[index]:
-			print('true')
+			new_list2.append(new_list)
+			new_list.clear()
+
+
+	print(new_list2[0][0])
+
 
 	# all_lines = all_lines.split('name\n')
 	# print(all_lines)
