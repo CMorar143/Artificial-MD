@@ -30,17 +30,23 @@ def text_file():
 	cleveland = open(pathHeart + 'cleveland.txt', mode='r')
 
 	# Read all the lines in the text file
-	all_lines = cleveland.read()
-	all_lines = all_lines.replace(' ', ', ').replace('\n', ', ').replace('e,', 'e\n')
+	all_lines = cleveland.readlines()
 
+	print(all_lines[0][1])
+	
+	# Create a new file
 	new_cleveland = open(pathHeart + 'new_cleveland.txt', 'w')
 
-	print(all_lines[len(all_lines)-1])
-	for line in all_lines:
-		new_cleveland.write(line)
-
+	
 	new_cleveland.close()
 	cleveland.close()
+
+def is_num(string):
+	try:
+		float(string)
+		return True
+	except ValueError:
+		return False
 
 text_file()
 # process_csv()
