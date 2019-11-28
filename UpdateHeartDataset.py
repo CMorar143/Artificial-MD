@@ -106,7 +106,10 @@ def text_file():
 	print(final_list[0])
 	for entry in final_list:
 		for value in entry:
-			new_cleveland.write(value+ ', ')
+			if 'name' in value:
+				new_cleveland.write(value + '\n')
+			else:
+				new_cleveland.write(value + ', ')
 	
 	new_cleveland.close()
 	cleveland.close()
