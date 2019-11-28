@@ -72,7 +72,7 @@ def flatten(lst):
         else:
             yield elem
 
-def text_file():
+def clean_text_file():
 	cleveland = open(path_heart + 'cleveland.txt', mode='r')
 
 	# Read all the lines in the text file
@@ -103,7 +103,7 @@ def text_file():
 
 	# Create a new file
 	new_cleveland = open(path_heart + 'new_cleveland.txt', 'w')
-	print(final_list[0])
+	
 	for entry in final_list:
 		for value in entry:
 			if 'name' in value:
@@ -114,6 +114,19 @@ def text_file():
 	new_cleveland.close()
 	cleveland.close()
 
+	return final_list
+
+
+def create_dataset():
+	all_params = clean_text_file()
+	input_params = []
+
+	for key in heart_columns:
+		print(f"key: {key}, value: {heart_columns[key]}")
+		# print(heart_columns[key])
+	
+
+
 
 def is_num(string):
 	try:
@@ -122,5 +135,5 @@ def is_num(string):
 	except ValueError:
 		return False
 
-text_file()
+create_dataset()
 # process_csv()
