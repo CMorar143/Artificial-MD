@@ -77,46 +77,28 @@ def text_file():
 	# Read all the lines in the text file
 	all_lines = cleveland.readlines()
 	new_list = []
-	new_list2 = []
+	final_list = []
 
 	for index in range(0, len(all_lines)):
 		new_list.append(all_lines[index].split(' '))
 
-		if 'name\n' in all_lines[index] or 'name' in all_lines[index]:
-			new_list2.append(new_list)
+		if 'name' in all_lines[index]:
+			final_list.append(new_list)
 			new_list = []
 
-	# new_list2 = list(flatten(new_list2))
+	final_list = list(flatten(final_list))
 
-	for i in range(0, len(new_list2)):
-		new_list2[i] = list(flatten(new_list2[i]))
+	# Remove all line breaks from the dataset
+	for i in range(0, len(final_list)):
+		if '\n' in final_list[i]:
+			final_list[i] = final_list[i][:-1]
 
-	print(new_list2[len(new_list2)-2])
 
+	# for i in range(0, len(final_list)):
+	# 	final_list[i] = list(flatten(final_list[i]))
 
-	# new_list = []
-	# final_list = []
-	# for i in range(0, len(new_list2)):
-	# 	new_list.append(new_list2[i])
+	print(final_list[0])
 
-	# 	if 'name\n' is new_list2[i] or 'name' is new_list2[i]:
-	# 		final_list.append(new_list)
-	# 		new_list = []
-
-	# print(final_list)
-	# all_lines = all_lines.split('name\n')
-	# print(all_lines)
-
-	# for index in range(0, len(all_lines)):
-	# 	all_lines[index] = all_lines[index].split(' ')
-		# if all_lines[index][len(all_lines[index])-1] != 'name\n':
-		# 		print(all_lines[index][len(all_lines[index])-1])
-		# 		all_lines[index][len(all_lines[index])-1] = all_lines[index][len(all_lines[index])-1].replace('\n', '')
-
-	# for index in range(0, len(heart_columns)):
-		# print(heart_columns.values())
-
-	
 	# Create a new file
 	new_cleveland = open(path_heart + 'new_cleveland.txt', 'w')
 
