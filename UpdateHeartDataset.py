@@ -86,12 +86,24 @@ def text_file():
 			new_list2.append(new_list)
 			new_list = []
 
-	# new_list.clear()
-	print(new_list2[0])
+	# new_list2 = list(flatten(new_list2))
 
-	new_list2 = list(flatten(new_list2))
-	print(new_list2[0])
+	for i in range(0, len(new_list2)):
+		new_list2[i] = list(flatten(new_list2[i]))
 
+	print(new_list2[len(new_list2)-2])
+
+
+	# new_list = []
+	# final_list = []
+	# for i in range(0, len(new_list2)):
+	# 	new_list.append(new_list2[i])
+
+	# 	if 'name\n' is new_list2[i] or 'name' is new_list2[i]:
+	# 		final_list.append(new_list)
+	# 		new_list = []
+
+	# print(final_list)
 	# all_lines = all_lines.split('name\n')
 	# print(all_lines)
 
