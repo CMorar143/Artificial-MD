@@ -73,15 +73,19 @@ def text_file():
 	new_list2 = []
 
 	for index in range(0, len(all_lines)):
-		new_list.append(all_lines[index])
+		new_list.append(all_lines[index].split(' '))
 
-		if 'name\n' in all_lines[index]:
+		if 'name\n' in all_lines[index] or 'name' in all_lines[index]:
 			new_list2.append(new_list)
-			new_list.clear()
+			new_list = []
 
+	# new_list.clear()
+	print(new_list2[3])
+	print(new_list)
 
-	print(new_list2[0][0])
-
+	# for i in range(0, len(new_list2)-1):
+	# 	for j in range(0, len(new_list2[i])-1):
+	# 		print()
 
 	# all_lines = all_lines.split('name\n')
 	# print(all_lines)
