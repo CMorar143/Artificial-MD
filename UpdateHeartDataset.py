@@ -41,28 +41,6 @@ heart_columns = {
 	58: 'target'
 }
 
-def process_csv():
-	# pathHeart = "../Data/heart-disease-uci/"
-
-	# Read in dataset
-	heart = pd.read_csv(path_heart + 'heart.csv')
-
-	# Read in all the original datasets
-	cleveland = pd.read_csv(path_heart + 'cleveland.txt', header=None).replace(' ', ',', regex=True)
-	hungarian = pd.read_csv(path_heart + 'hungarian.txt', header=None).replace(' ', ',', regex=True)
-	switzerland = pd.read_csv(path_heart + 'switzerland.txt', header=None).replace(' ', ',', regex=True)
-
-	cleveland = cleveland.replace(r'\s', ' ', regex=True)
-	print(cleveland)
-
-	# Iterate through the individual rows
-	# for _, row in cleveland.iterrows():
-	# 	print(row[0].replace('\n', ','))
-
-	cleveland.close()
-	hungarian.close()
-	switzerland.close()
-
 # Take in a list of lists and convert it to one single list
 def flatten(lst):
     for elem in lst:
@@ -72,6 +50,20 @@ def flatten(lst):
         else:
             yield elem
 
+# Write the data to a new file
+def write_new_file(final_list):
+	# Create a new file
+	new_cleveland = open(path_heart + 'new_cleveland.txt', 'w')
+	
+	for entry in final_list:
+		for value in entry:
+			if 'name' in value:
+				new_cleveland.write(value + '\n')
+			else:
+				new_cleveland.write(value + ', ')
+	new_cleveland.close()
+
+# Clean up the input dataset so it can be used
 def clean_text_file():
 	cleveland = open(path_heart + 'cleveland.txt', mode='r')
 
@@ -101,41 +93,23 @@ def clean_text_file():
 			final_list.append(new_list)
 			new_list = []
 
-	# Create a new file
-	new_cleveland = open(path_heart + 'new_cleveland.txt', 'w')
-	
-	for entry in final_list:
-		for value in entry:
-			if 'name' in value:
-				new_cleveland.write(value + '\n')
-			else:
-				new_cleveland.write(value + ', ')
-	
-	new_cleveland.close()
+	write_new_file(final_list)
 	cleveland.close()
 
 	return final_list
 
 
+# Extract the parameters that will be used
 def create_dataset():
-	all_params = clean_text_file()
-	input_params = []
-	final_input_params = []
+	full_list = clean_text_file()
+	all_input_params = []
+	extracted_params = []
 
-	for key in heart_columns:
-		print(f"key: {key}, value: {heart_columns[key]}")
-		# print(heart_columns[key])
-	
-	print(all_params[0])
-
-	for entry in all_params:
+	for entry in full_list:
 		for key in heart_columns:
-			input_params.append(all_params[all_params.index(entry)][key-1])
-		final_input_params.append(input_params)
-		input_params = []
-
-	print(final_input_params[0])
-
+			all_input_params.append(full_list[full_list.index(entry)][key-1])
+		extracted_params.append(all_input_params)
+		all_input_params = []
 
 
 def is_num(string):
@@ -147,3 +121,22 @@ def is_num(string):
 
 create_dataset()
 # process_csv()
+
+# Not being used
+def process_csv():
+	# pathHeart = "../Data/heart-disease-uci/"
+
+	# Read in dataset
+	heart = pd.read_csv(path_heart + 'heart.csv')
+
+	# Read in all the original datasets
+	cleveland = pd.read_csv(path_heart + 'cleveland.txt', header=None).replace(' ', ',', regex=True)
+	hungarian = pd.read_csv(path_heart + 'hungarian.txt', header=None).replace(' ', ',', regex=True)
+	switzerland = pd.read_csv(path_heart + 'switzerland.txt', header=None).replace(' ', ',', regex=True)
+
+	cleveland = cleveland.replace(r'\s', ' ', regex=True)
+	print(cleveland)
+
+	cleveland.close()
+	hungarian.close()
+	switzerland.close()
