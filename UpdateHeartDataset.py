@@ -78,6 +78,7 @@ def text_file():
 	all_lines = cleveland.readlines()
 	new_list = []
 	final_list = []
+	f_list = []
 
 	for index in range(0, len(all_lines)):
 		new_list.append(all_lines[index].split(' '))
@@ -92,12 +93,18 @@ def text_file():
 	for i in range(0, len(final_list)):
 		if '\n' in final_list[i]:
 			final_list[i] = final_list[i][:-1]
+		new_list.append(final_list[i])
+
+		if 'name' in final_list[i]:
+			f_list.append(new_list)
+			new_list = []
+
 
 
 	# for i in range(0, len(final_list)):
 	# 	final_list[i] = list(flatten(final_list[i]))
 
-	print(final_list[0])
+	print(f_list[0])
 
 	# Create a new file
 	new_cleveland = open(path_heart + 'new_cleveland.txt', 'w')
