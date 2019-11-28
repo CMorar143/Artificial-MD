@@ -120,11 +120,21 @@ def clean_text_file():
 def create_dataset():
 	all_params = clean_text_file()
 	input_params = []
+	final_input_params = []
 
 	for key in heart_columns:
 		print(f"key: {key}, value: {heart_columns[key]}")
 		# print(heart_columns[key])
 	
+	print(all_params[0])
+
+	for entry in all_params:
+		for key in heart_columns:
+			input_params.append(all_params[all_params.index(entry)][key-1])
+		final_input_params.append(input_params)
+		input_params = []
+
+	print(final_input_params[0])
 
 
 
