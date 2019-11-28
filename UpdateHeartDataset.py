@@ -63,6 +63,7 @@ def process_csv():
 	hungarian.close()
 	switzerland.close()
 
+# Take in a list of lists and convert it to one single list
 def flatten(lst):
     for elem in lst:
         if type(elem) in (tuple, list):
@@ -76,42 +77,36 @@ def text_file():
 
 	# Read all the lines in the text file
 	all_lines = cleveland.readlines()
+
 	new_list = []
+	all_values = []
 	final_list = []
-	f_list = []
 
 	for index in range(0, len(all_lines)):
 		new_list.append(all_lines[index].split(' '))
 
 		if 'name' in all_lines[index]:
+			all_values.append(new_list)
+			new_list = []
+
+	all_values = list(flatten(all_values))
+
+	# Remove line breaks and create final list
+	for i in range(0, len(all_values)):
+		if '\n' in all_values[i]:
+			all_values[i] = all_values[i][:-1]
+		
+		new_list.append(all_values[i])
+		if 'name' in all_values[i]:
 			final_list.append(new_list)
 			new_list = []
 
-	final_list = list(flatten(final_list))
-
-	# Remove all line breaks from the dataset
-	for i in range(0, len(final_list)):
-		if '\n' in final_list[i]:
-			final_list[i] = final_list[i][:-1]
-		new_list.append(final_list[i])
-
-		if 'name' in final_list[i]:
-			f_list.append(new_list)
-			new_list = []
-
-
-
-	# for i in range(0, len(final_list)):
-	# 	final_list[i] = list(flatten(final_list[i]))
-
-	print(f_list[0])
-
 	# Create a new file
 	new_cleveland = open(path_heart + 'new_cleveland.txt', 'w')
-
-	for line in all_lines:
-		for word in line:
-			new_cleveland.write(word + ', ')
+	print(final_list[0])
+	for entry in final_list:
+		for value in entry:
+			new_cleveland.write(value+ ', ')
 	
 	new_cleveland.close()
 	cleveland.close()
