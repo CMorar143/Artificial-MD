@@ -63,6 +63,13 @@ def process_csv():
 	hungarian.close()
 	switzerland.close()
 
+def flatten(lst):
+    for elem in lst:
+        if type(elem) in (tuple, list):
+            for i in flatten(elem):
+                yield i
+        else:
+            yield elem
 
 def text_file():
 	cleveland = open(path_heart + 'cleveland.txt', mode='r')
@@ -80,12 +87,10 @@ def text_file():
 			new_list = []
 
 	# new_list.clear()
-	print(new_list2[3])
-	print(new_list)
+	print(new_list2[0])
 
-	# for i in range(0, len(new_list2)-1):
-	# 	for j in range(0, len(new_list2[i])-1):
-	# 		print()
+	new_list2 = list(flatten(new_list2))
+	print(new_list2[0])
 
 	# all_lines = all_lines.split('name\n')
 	# print(all_lines)
