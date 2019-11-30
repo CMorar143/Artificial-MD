@@ -122,7 +122,17 @@ def create_dataset():
 		if extracted_params[param][13] > 1:
 			extracted_params[param][13] = 1.0
 
-	print(extracted_params[1])
+	return extracted_params
+
+
+def train_model():
+	extracted_params = create_dataset()
+	
+	heart_df = pd.DataFrame(extracted_params, columns = list(heart_columns.values()))
+
+	print(heart_df.head())
+
+
 
 
 def is_num(string):
@@ -132,7 +142,7 @@ def is_num(string):
 	except ValueError:
 		return False
 
-create_dataset()
+train_model()
 # process_csv()
 
 # Not being used
