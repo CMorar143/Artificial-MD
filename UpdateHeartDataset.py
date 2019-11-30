@@ -105,11 +105,24 @@ def create_dataset():
 	all_input_params = []
 	extracted_params = []
 
+	# for i in range(0, len(full_list)):
+	# 	if int(full_list[i][57]) > 1:
+	# 		full_list[i][57] = 1
+
 	for entry in full_list:
 		for key in heart_columns:
 			all_input_params.append(full_list[full_list.index(entry)][key-1])
 		extracted_params.append(all_input_params)
 		all_input_params = []
+
+	# print("\n")
+	# extracted_params = [i for list2 in extracted_params for float(item) in list2]
+	for param in range(0, len(extracted_params)):
+		extracted_params[param] = [float(i) for i in extracted_params[param]]
+		if extracted_params[param][13] > 1:
+			extracted_params[param][13] = 1.0
+
+	print(extracted_params[1])
 
 
 def is_num(string):
