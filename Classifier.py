@@ -47,7 +47,6 @@ def train_model():
 	plt.ylabel('Count')
 	plt.show()
 
-
 	# Use dummy columns for the categorical features
 	# Also use the 
 	# heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'ca', 'thal'])
