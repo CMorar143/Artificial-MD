@@ -69,6 +69,11 @@ def write_new_file(final_list):
 				new_cleveland.write(value + ', ')
 	new_cleveland.close()
 
+
+def write_csv_file(df):
+	df.to_csv(path_heart + 'new_cleveland.csv', encoding='utf-8', index=False)
+
+
 # Clean up the input dataset so it can be used
 def clean_text_file():
 	cleveland = open(path_heart + 'cleveland.txt', mode='r')
@@ -128,6 +133,9 @@ def create_dataset():
 		if extracted_params[param][len(heart_columns)-1] > 0:
 			extracted_params[param][len(heart_columns)-1] = 1.0
 
+	heart = pd.DataFrame(extracted_params, columns = list(heart_columns.values()))
+	write_csv_file(heart)
+
 	return extracted_params
 
 
@@ -135,7 +143,7 @@ def train_model():
 	extracted_params = create_dataset()
 	
 	heart = pd.DataFrame(extracted_params, columns = list(heart_columns.values()))
-
+	# write_csv_file(heart)
 	# print(heart.head())
 
 	# Show correlation between features
@@ -209,7 +217,8 @@ def is_num(string):
 	except ValueError:
 		return False
 
-train_model()
+# train_model()
+create_dataset()
 # process_csv()
 
 # Not being used
