@@ -120,11 +120,6 @@ def create_dataset():
 			all_input_params.append(full_list[full_list.index(entry)][key-1])
 		extracted_params.append(all_input_params)
 		all_input_params = []
-
-	zeroes = 0
-	ones = 0
-	twos = 0
-	threes = 0
 	
 	# print("\n")
 	# extracted_params = [i for list2 in extracted_params for float(item) in list2]
@@ -133,20 +128,6 @@ def create_dataset():
 		if extracted_params[param][len(heart_columns)-1] > 0:
 			extracted_params[param][len(heart_columns)-1] = 1.0
 
-			if extracted_params[param][len(heart_columns)-1] == 1:
-				ones = ones + 1
-			if extracted_params[param][len(heart_columns)-1] == 2:
-				twos = twos + 1
-			if extracted_params[param][len(heart_columns)-1] == 3:
-				threes = threes + 1
-		else:
-			zeroes = zeroes + 1
-
-	print(f"the number of zeroes is: {zeroes}")
-	print(f"the number of ones is: {ones}")
-	print(f"the number of twos is: {twos}")
-	print(f"the number of threes is: {threes}")
-	print("\n")
 	return extracted_params
 
 
@@ -156,15 +137,6 @@ def train_model():
 	heart = pd.DataFrame(extracted_params, columns = list(heart_columns.values()))
 
 	# print(heart.head())
-	zeroes = heart[heart.target == 0].shape[0]
-	ones = heart[heart.target == 1].shape[0]
-	twos = heart[heart.target == 2].shape[0]
-	threes = heart[heart.target == 3].shape[0]
-
-	print(f"the number of zeroes is: {zeroes}")
-	print(f"the number of ones is: {ones}")
-	print(f"the number of twos is: {twos}")
-	print(f"the number of threes is: {threes}")
 
 	# Show correlation between features
 	plt.matshow(heart.corr())
@@ -185,14 +157,10 @@ def train_model():
 	plt.show()
 
 	# Use dummy columns for the categorical features
-	# Also use the 
-	# heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'ca', 'thal'])
 	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
-	standardScaler = StandardScaler()
-	# columns_to_scale = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
 	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
+	standardScaler = StandardScaler()
 	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
-
 
 	y = heart['target']
 	X = heart.drop(['target'], axis = 1)
