@@ -57,9 +57,9 @@ def flatten(lst):
             yield elem
 
 # Write the data to a new txt file
-def write_new_file(final_list):
+def write_new_file(final_list, dataset):
 	# Create a new file
-	new_cleveland = open(path_heart + 'new_cleveland.txt', 'w')
+	new_cleveland = open(path_heart + 'new_' + dataset + '.txt', 'w')
 	
 	for entry in final_list:
 		for value in entry:
@@ -71,16 +71,26 @@ def write_new_file(final_list):
 
 
 # Write the data to a new csv file
-def write_csv_file(df):
-	df.to_csv(path_heart + 'new_cleveland.csv', encoding='utf-8', index=False)
+def write_csv_file(df, dataset):
+	df.to_csv(path_heart + 'new_' + dataset + '.csv', encoding='utf-8', index=False)
 
 
 # Clean up the input dataset so it can be used
 def clean_text_file():
 	cleveland = open(path_heart + 'cleveland.txt', mode='r')
+	hungarian = open(path_heart + 'hungarian.txt', mode='r')
+	switzerland = open(path_heart + 'switzerland.txt', mode='r')
 
 	# Read all the lines in the text file
-	all_lines = cleveland.readlines()
+	
+	# all_lines = cleveland.readlines()
+	# dataset = 'cleveland'
+	
+	# all_lines = hungarian.readlines()
+	# dataset = 'hungarian'
+
+	all_lines = switzerland.readlines()
+	dataset = 'switzerland'
 
 	new_list = []
 	all_values = []
@@ -105,15 +115,15 @@ def clean_text_file():
 			final_list.append(new_list)
 			new_list = []
 
-	write_new_file(final_list)
+	write_new_file(final_list, dataset)
 	cleveland.close()
 
-	return final_list
+	return final_list, dataset
 
 
 # Extract the parameters that will be used
 def create_dataset():
-	full_list = clean_text_file()
+	full_list, dataset = clean_text_file()
 	all_input_params = []
 	extracted_params = []
 
@@ -135,7 +145,7 @@ def create_dataset():
 			extracted_params[param][len(heart_columns)-1] = 1.0
 
 	heart = pd.DataFrame(extracted_params, columns = list(heart_columns.values()))
-	write_csv_file(heart)
+	write_csv_file(heart, dataset)
 
 	return extracted_params
 
