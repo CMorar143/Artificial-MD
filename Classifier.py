@@ -11,8 +11,18 @@ def train_model():
 	# Load heart disease dataset into pandas dataframe
 	pathHeart = "../Data/heart-disease-uci/"
 	heart = pd.read_csv(pathHeart + 'new_cleveland.csv')
+	# hungarian = pd.read_csv(pathHeart + 'new_hungarian.csv')
+	# heart = pd.read_csv(pathHeart + 'new_hungarian.csv')
+	# switzerland = pd.read_csv(pathHeart + 'new_switzerland.csv')
+	# heart = pd.read_csv(pathHeart + 'new_switzerland.csv')
 
-	print(heart.head())
+	# to_combine = [
+	# 	hungarian,
+	# 	switzerland
+	# ]
+
+	# for df in to_combine:
+	# 	heart =	pd.merge(heart, df, on='age', sort=True)
 	
 	# Show correlation between features
 	plt.matshow(heart.corr())
@@ -28,7 +38,7 @@ def train_model():
 	plt.close()	
 
 	# Show the amount of entries who have and don't have heart disease
-	plt.bar(['Does not have heart disease', 'Does have heart disease'], heart['target'].value_counts(), color = ['blue', 'red'])
+	plt.bar(['Does not have heart disease', 'Does have heart disease'], heart['target'].value_counts().sort_index(), color = ['blue', 'red'])
 	plt.ylabel('Count')
 	plt.show()
 
