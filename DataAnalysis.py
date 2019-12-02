@@ -80,7 +80,7 @@ def process_dir():
     df_input_params.dropna(thresh=10, inplace=True)
 
     print(df_input_params.head())
-    print(df_input_params.tail()) 
+    print(df_input_params.tail())
 
     # seqn_array = df_combined['SEQN']
     # print(df_combined[['SDDSRVYR']])
