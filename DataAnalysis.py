@@ -181,10 +181,10 @@ def process_dir():
 
         # print(array.value_counts())
         # print("\n")
-        print(i, "\n")
-        print("count", count)
+        # print(i, "\n")
+        # print("count", count)
         # print("count_missing", count_missing)
-        print("perc_missing", perc_missing)
+        # print("perc_missing", perc_missing)
         # print("card", card)
         # print("min_value", min_value)
         # print("first_qrt", first_qrt)
@@ -194,7 +194,7 @@ def process_dir():
         # print("max_value", max_value)
         # print("stand_dev", stand_dev)
         # print("\n\n\n\nNEXT\n\n\n\n")
-        print("\nNEXT\n")
+        # print("\nNEXT\n")
 
 
     # Cont = demographic.to_csv('C16460726CONT.csv', index_label = 'FEATURENAME')
