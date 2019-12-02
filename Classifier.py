@@ -10,19 +10,37 @@ from sklearn.tree import DecisionTreeClassifier
 def train_model():
 	# Load heart disease dataset into pandas dataframe
 	pathHeart = "../Data/heart-disease-uci/"
+	
 	heart = pd.read_csv(pathHeart + 'new_cleveland.csv')
+	
 	# hungarian = pd.read_csv(pathHeart + 'new_hungarian.csv')
-	# heart = pd.read_csv(pathHeart + 'new_hungarian.csv')
-	# switzerland = pd.read_csv(pathHeart + 'new_switzerland.csv')
-	# heart = pd.read_csv(pathHeart + 'new_switzerland.csv')
 
+	# switzerland = pd.read_csv(pathHeart + 'new_switzerland.csv')
+	
 	# to_combine = [
 	# 	hungarian,
 	# 	switzerland
 	# ]
 
+	# heart_columns = [
+	# 	'age',
+	# 	'sex',
+	# 	'cp',
+	# 	'trestbps',
+	# 	'chol',
+	# 	'cigs',
+	# 	'years',
+	# 	'fbs',
+	# 	'dm',
+	# 	'famhist',
+	# 	'thalrest',
+	# 	'trestbpd',
+	# 	'exang',
+	# 	'target'
+	# ]
+
 	# for df in to_combine:
-	# 	heart =	pd.merge(heart, df, on='age', sort=True)
+		# heart =	pd.merge(heart, hungarian, on=['age', 'sex','cp', 'trestbps', 'chol', 'fbs', 'dm', 'famhist', 'thalrest', 'trestbpd', 'exang', 'target'], sort=True)
 	
 	# Show correlation between features
 	plt.matshow(heart.corr())
@@ -54,15 +72,15 @@ def train_model():
 
 	# KNN
 	knn_scores = []
-	for k in range(1,21):
+	for k in range(1,30):
 		knn_classifier = KNeighborsClassifier(n_neighbors = k)
 		knn_classifier.fit(X_train, y_train)
 		knn_scores.append(knn_classifier.score(X_test, y_test))
 
-	plt.plot([k for k in range(1, 21)], knn_scores, color = 'red')
-	for i in range(1,21):
+	plt.plot([k for k in range(1, 30)], knn_scores, color = 'red')
+	for i in range(1,30):
 		plt.text(i, knn_scores[i-1], (i, knn_scores[i-1]))
-	plt.xticks([i for i in range(1, 21)])
+	plt.xticks([i for i in range(1, 30)])
 	plt.xlabel('Number of Neighbors (K)')
 	plt.ylabel('Scores')
 	plt.title('K Neighbors Classifier scores for different K values')
