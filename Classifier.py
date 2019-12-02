@@ -85,7 +85,7 @@ def train_model():
 	plt.ylabel('Scores')
 	plt.title('K Neighbors Classifier scores for different K values')
 	plt.show()
- 
+
 	# Decision Tree
 	dt_scores = []
 	for i in range(1, len(X.columns) + 1):
