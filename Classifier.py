@@ -81,12 +81,12 @@ def train_model():
 	for i in range(1,30):
 		plt.text(i, knn_scores[i-1], (i, knn_scores[i-1]))
 	plt.xticks([i for i in range(1, 30)])
-	plt.xlabel('Number of Neighbors (K)')
+	plt.xlabel('Number of Neighbors (K)') 
 	plt.ylabel('Scores')
 	plt.title('K Neighbors Classifier scores for different K values')
 	plt.show()
 
-	# Decision Tree
+	# Decision Tree 
 	dt_scores = []
 	for i in range(1, len(X.columns) + 1):
 		dt_classifier = DecisionTreeClassifier(max_features = i, random_state = 0)
