@@ -11,7 +11,7 @@ class Patient(models.Model):
 	marital_status = models.PositiveIntegerField()
 
 	def __str__(self):
-		return self.name
+		return self.patient_name
 
 class Doctor(models.Model):
 	name = models.CharField(max_length=30)
