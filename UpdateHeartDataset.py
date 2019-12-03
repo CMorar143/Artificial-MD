@@ -82,7 +82,6 @@ def clean_text_file():
 	switzerland = open(path_heart + 'switzerland.txt', mode='r')
 
 	# Read all the lines in the text file
-	
 	all_lines = cleveland.readlines()
 	dataset = 'cleveland'
 	
@@ -148,8 +147,6 @@ create_dataset()
 
 # Not being used
 def process_csv():
-	# pathHeart = "../Data/heart-disease-uci/"
-
 	# Read in dataset
 	heart = pd.read_csv(path_heart + 'heart.csv')
 
