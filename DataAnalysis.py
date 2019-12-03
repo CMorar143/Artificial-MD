@@ -98,7 +98,6 @@ def process_dir():
     ]
 
     input_params = [
-        'DIQ160',
         'CDQ010',
         'CDQ001',
         'BPQ080',
