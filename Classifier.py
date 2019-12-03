@@ -13,35 +13,6 @@ def train_model():
 	
 	heart = pd.read_csv(pathHeart + 'new_cleveland.csv')
 	
-	# hungarian = pd.read_csv(pathHeart + 'new_hungarian.csv')
-
-	# switzerland = pd.read_csv(pathHeart + 'new_switzerland.csv')
-	
-	# to_combine = [
-	# 	hungarian,
-	# 	switzerland
-	# ]
-
-	# heart_columns = [
-	# 	'age',
-	# 	'sex',
-	# 	'cp',
-	# 	'trestbps',
-	# 	'chol',
-	# 	'cigs',
-	# 	'years',
-	# 	'fbs',
-	# 	'dm',
-	# 	'famhist',
-	# 	'thalrest',
-	# 	'trestbpd',
-	# 	'exang',
-	# 	'target'
-	# ]
-
-	# for df in to_combine:
-		# heart =	pd.merge(heart, hungarian, on=['age', 'sex','cp', 'trestbps', 'chol', 'fbs', 'dm', 'famhist', 'thalrest', 'trestbpd', 'exang', 'target'], sort=True)
-	
 	# Show correlation between features
 	plt.matshow(heart.corr())
 	plt.xticks(np.arange(heart.shape[1]), heart.columns)
@@ -63,7 +34,6 @@ def train_model():
 	# Use dummy columns for the categorical features
 	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
 	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
-	# columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest']
 	standardScaler = StandardScaler()
 	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 

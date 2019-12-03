@@ -77,24 +77,28 @@ def write_csv_file(df, dataset):
 
 # Clean up the input dataset so it can be used
 def clean_text_file():
-	cleveland = open(path_heart + 'cleveland.txt', mode='r')
-	hungarian = open(path_heart + 'hungarian.txt', mode='r')
-	switzerland = open(path_heart + 'switzerland.txt', mode='r')
-
-	# Read all the lines in the text file
-	all_lines = cleveland.readlines()
-	dataset = 'cleveland'
-	
+	# hungarian = open(path_heart + 'hungarian.txt', mode='r')
+	# switzerland = open(path_heart + 'switzerland.txt', mode='r')
 	# all_lines = hungarian.readlines()
 	# dataset = 'hungarian'
-
 	# all_lines = switzerland.readlines()
 	# dataset = 'switzerland'
 
-	new_list = []
-	all_values = []
-	final_list = []
+	# Read all the lines in the text file
+	cleveland = open(path_heart + 'cleveland.txt', mode='r')
+	all_lines = cleveland.readlines()
+	dataset = 'cleveland'
 
+	# For holding each instance of data
+	new_list = []
+
+	# This will contain a list of lists, each sublist
+	# being one instance of data
+	all_values = []
+
+	# Loop through each value adding each value to a list
+	# until the name column is reached. 
+	# Once the name is reached then this list is added to the main list
 	for index in range(0, len(all_lines)):
 		new_list.append(all_lines[index].split(' '))
 
@@ -102,7 +106,10 @@ def clean_text_file():
 			all_values.append(new_list)
 			new_list = []
 
+	# This converts the list of lists to one single list
 	all_values = list(flatten(all_values))
+
+	final_list = []
 
 	# Remove line breaks and create final list
 	for i in range(0, len(all_values)):
@@ -122,6 +129,24 @@ def clean_text_file():
 
 # Extract the parameters that will be used
 def create_dataset():
+	# Features
+	heart_columns = {
+		3: 'age',
+		4: 'sex',
+		9: 'cp',
+		10: 'trestbps',
+		37: 'trestbpd',
+		12: 'chol',
+		14: 'cigs',
+		15: 'years',
+		16: 'fbs',
+		17: 'dm',
+		18: 'famhist',
+		33: 'thalrest',
+		38: 'exang',
+		58: 'target'
+	}
+
 	full_list, dataset = clean_text_file()
 	all_input_params = []
 	extracted_params = []
