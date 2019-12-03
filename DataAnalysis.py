@@ -13,27 +13,9 @@ def process_dir():
     diet = pd.read_csv(path + 'diet.csv')
     examination = pd.read_csv(path + 'examination.csv')
     labs = pd.read_csv(path + 'labs.csv')
-    # medications = pd.read_csv(path + 'medications.csv', encoding = "ISO-8859-1")
     questionnaire = pd.read_csv(path + 'questionnaire.csv')
     glucose = pd.read_csv(path + 'GLU_H.csv')
     heart = pd.read_csv(pathHeart + 'heart.csv')
-    # print(demographic.head())
-    # print(diet.head())
-    # print(examination.head())
-    # print(labs.head())
-    # print(medications.head())
-    # print(questionnaire.head())
-
-    # dict_combined = {
-    #     'Demographic': demographic,
-    #     'Diet': diet,
-    #     'Examination': examination,
-    #     'Labs': labs,
-    #     'Medications': medications,
-    #     'Questionnaire': questionnaire
-    # }
-
-    # df_combined = pd.concat(dict_combined, sort=False)
 
     df_list = [
         diet,
@@ -43,8 +25,79 @@ def process_dir():
         questionnaire
     ]
 
+    Cont_Columns = [
+        'Count',
+        '% Miss.',
+        'Card.',
+        'Min.',
+        '1st Qrt.',
+        'Mean',
+        'Median',
+        '3rd Qrt.',
+        'Max',
+        'Std. Dev.'
+    ]
+
+    Cont_Features = [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+    ]
+
+    Cat_Columns = [
+        'Count',
+        '% Miss.',
+        'Card.',
+        'Mode',
+        'Mode Freq.',
+        'Mode %',
+        '2nd Mode',
+        '2nd Mode Freq.',
+        '2nd Mode %'
+    ]
+
+    Cat_Features = [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+    ]
+
+    Features = [
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+    ]
+
     input_params = [
-        'DIQ010',
         'DIQ160',
         'CDQ010',
         'CDQ001',
@@ -66,7 +119,8 @@ def process_dir():
         'LBXTC',
         'LBXGLU',
         'LBXTR',
-        'LBXSUA'
+        'LBXSUA',
+        'DIQ010'
     ]
 
     df_combined = pd.DataFrame.copy(diet)
@@ -77,7 +131,8 @@ def process_dir():
     df_combined.set_index('SEQN', inplace=True)
 
     df_input_params = df_combined[input_params]
-    df_input_params.dropna(thresh=10, inplace=True)
+    df_combined.to_csv("test.csv")
+    # df_input_params.dropna(thresh=1, inplace=True)
 
     print(df_input_params.head())
     print(df_input_params.tail())
@@ -181,10 +236,10 @@ def process_dir():
 
         # print(array.value_counts())
         # print("\n")
-        # print(i, "\n")
-        # print("count", count)
+        print(i, "\n")
+        print("count", count)
         # print("count_missing", count_missing)
-        # print("perc_missing", perc_missing)
+        print("perc_missing", perc_missing)
         # print("card", card)
         # print("min_value", min_value)
         # print("first_qrt", first_qrt)
