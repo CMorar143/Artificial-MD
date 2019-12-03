@@ -127,27 +127,20 @@ def create_dataset():
 	all_input_params = []
 	extracted_params = []
 
-	# for i in range(0, len(full_list)):
-	# 	if int(full_list[i][57]) > 1:
-	# 		full_list[i][57] = 1
-
 	for entry in full_list:
 		for key in heart_columns:
 			all_input_params.append(full_list[full_list.index(entry)][key-1])
 		extracted_params.append(all_input_params)
 		all_input_params = []
 	
-	count =  0
-	# print("\n")
-	# extracted_params = [i for list2 in extracted_params for float(item) in list2]
 	for param in range(0, len(extracted_params)):
 		extracted_params[param] = [float(i) for i in extracted_params[param]]
 		if extracted_params[param][len(heart_columns)-1] > 0:
 			extracted_params[param][len(heart_columns)-1] = 1.0
-			count = count + 1
+
 	heart = pd.DataFrame(extracted_params, columns = list(heart_columns.values()))
 	write_csv_file(heart, dataset)
-	print(count)
+
 	return extracted_params
 
 
