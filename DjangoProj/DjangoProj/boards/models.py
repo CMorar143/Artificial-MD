@@ -10,6 +10,9 @@ class Patient(models.Model):
 	occupation = models.CharField(max_length=30)
 	marital_status = models.PositiveIntegerField()
 
+	def __str__(self):
+		return self.name
+
 class Doctor(models.Model):
 	name = models.CharField(max_length=30)
 	username = models.CharField(max_length=20, unique=True)
