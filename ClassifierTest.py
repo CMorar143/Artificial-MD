@@ -15,17 +15,17 @@ def train_model():
 	print(heart.head())
 
 	# Remove columns that are not going to be used
-	heart_prediction_columns = [
-		'age',
-		'sex',
-		'cp',
-		'trestbps',
-		'chol',
-		'fbs',
-		'target'
-	]
+	# heart_prediction_columns = [
+	# 	'age',
+	# 	'sex',
+	# 	'cp',
+	# 	'trestbps',
+	# 	'chol',
+	# 	'fbs',
+	# 	'target'
+	# ]
 
-	heart = heart[heart_prediction_columns]
+	# heart = heart[heart_prediction_columns]
 	
 	# Show correlation between features
 	plt.matshow(heart.corr())
@@ -49,11 +49,11 @@ def train_model():
 
 	# Use dummy columns for the categorical features
 	# Also use the 
-	# heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'ca', 'thal'])
-	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs'])
+	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'ca', 'thal'])
+	# heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs'])
 	standardScaler = StandardScaler()
-	# columns_to_scale = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
-	columns_to_scale = ['age', 'trestbps', 'chol']
+	columns_to_scale = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
+	# columns_to_scale = ['age', 'trestbps', 'chol']
 	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
 

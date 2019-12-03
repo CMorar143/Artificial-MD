@@ -35,6 +35,7 @@ heart_columns = {
 	4: 'sex',
 	9: 'cp',
 	10: 'trestbps',
+	37: 'trestbpd',
 	12: 'chol',
 	14: 'cigs',
 	15: 'years',
@@ -42,7 +43,6 @@ heart_columns = {
 	17: 'dm',
 	18: 'famhist',
 	33: 'thalrest',
-	37: 'trestbpd',
 	38: 'exang',
 	58: 'target'
 }
@@ -83,11 +83,11 @@ def clean_text_file():
 
 	# Read all the lines in the text file
 	
-	# all_lines = cleveland.readlines()
-	# dataset = 'cleveland'
+	all_lines = cleveland.readlines()
+	dataset = 'cleveland'
 	
-	all_lines = hungarian.readlines()
-	dataset = 'hungarian'
+	# all_lines = hungarian.readlines()
+	# dataset = 'hungarian'
 
 	# all_lines = switzerland.readlines()
 	# dataset = 'switzerland'

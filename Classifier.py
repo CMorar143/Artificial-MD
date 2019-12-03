@@ -63,6 +63,7 @@ def train_model():
 	# Use dummy columns for the categorical features
 	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
 	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
+	# columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest']
 	standardScaler = StandardScaler()
 	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
