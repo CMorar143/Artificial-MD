@@ -1,6 +1,8 @@
 import os
 import csv
 import pandas as pd
+from matplotlib import pyplot as plt
+import numpy as np
 
 
 def process_dir():
@@ -102,16 +104,16 @@ def process_dir():
         'CDQ001',
         'BPQ080',
         'BPQ020',
-        'BMXHT',
-        'BMXWT',
+        # 'BMXHT',
+        # 'BMXWT',
         'BMXBMI',
-        'BPXCHR',
+        # 'BPXCHR',
         'BPXPULS',
         'BPXPTY',
         'BPXSY1',
         'BPXDI1',
-        'BPXSY2',
-        'BPXDI2',
+        # 'BPXSY2',
+        # 'BPXDI2',
         'LBXSTP',
         'LBDHDD',
         'LBDLDL',
@@ -135,6 +137,14 @@ def process_dir():
 
     print(df_input_params.head())
     print(df_input_params.tail())
+
+    # Show correlation between features
+    plt.matshow(df_input_params.corr())
+    plt.xticks(np.arange(df_input_params.shape[1]), df_input_params.columns)
+    plt.yticks(np.arange(df_input_params.shape[1]), df_input_params.columns)
+    plt.colorbar()
+    plt.show()
+    plt.close()
 
     # seqn_array = df_combined['SEQN']
     # print(df_combined[['SDDSRVYR']])
