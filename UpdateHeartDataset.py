@@ -29,24 +29,6 @@ path_heart = "../Data/heart-disease-uci/"
 # 37 trestbpd: resting blood pressure
 # 38 exang: exercise induced angina (1 = yes; 0 = no)
 
-# Input parameters
-heart_columns = {
-	3: 'age',
-	4: 'sex',
-	9: 'cp',
-	10: 'trestbps',
-	37: 'trestbpd',
-	12: 'chol',
-	14: 'cigs',
-	15: 'years',
-	16: 'fbs',
-	17: 'dm',
-	18: 'famhist',
-	33: 'thalrest',
-	38: 'exang',
-	58: 'target'
-}
-
 # Take in a list of lists and convert it to one single list
 def flatten(lst):
     for elem in lst:
@@ -161,10 +143,10 @@ def create_dataset():
 	
 	# The target feature can have values ranging from 0-4
 	# Use 'binning' so that the target value will either be 1 or 0
-	for param in extracted_params:
-		param = [float(i) for i in param]
-		if param[len(heart_columns)-1] > 0:
-			param[len(heart_columns)-1] = 1.0
+	for param in range(0, len(extracted_params)):
+		extracted_params[param] = [float(i) for i in extracted_params[param]]
+		if extracted_params[param][len(heart_columns)-1] > 0:
+			extracted_params[param][len(heart_columns)-1] = 1.0
 
 	# Create the dataframe and the csv file
 	heart = pd.DataFrame(extracted_params, columns = list(heart_columns.values()))

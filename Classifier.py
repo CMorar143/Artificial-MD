@@ -50,7 +50,7 @@ def train_model():
 
 	plt.plot([k for k in range(1, 30)], knn_scores, color = 'red')
 	for i in range(1,30):
-		plt.text(i, knn_scores[i-1], (i, knn_scores[i-1]))
+		plt.text(i, knn_scores[i-1], (i, round(knn_scores[i-1], 2)))
 	plt.xticks([i for i in range(1, 30)])
 	plt.xlabel('Number of Neighbors (K)')
 	plt.ylabel('Scores')
@@ -66,7 +66,7 @@ def train_model():
 
 	plt.plot([i for i in range(1, len(X.columns) + 1)], dt_scores, color = 'green')
 	for i in range(1, len(X.columns) + 1):
-		plt.text(i, dt_scores[i-1], (i, dt_scores[i-1]))
+		plt.text(i, dt_scores[i-1], (i, round(dt_scores[i-1], 2)))
 	plt.xticks([i for i in range(1, len(X.columns) + 1)])
 	plt.xlabel('Max features')
 	plt.ylabel('Scores')
