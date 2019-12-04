@@ -37,16 +37,16 @@ def train_model():
 	standardScaler = StandardScaler()
 	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
-	y = heart['target']
+	H = heart['target']
 	X = heart.drop(['target'], axis = 1)
-	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.33, random_state = 0)
+	X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.33, random_state = 0)
 
 	# KNN
 	knn_scores = []
 	for k in range(1,30):
 		knn_classifier = KNeighborsClassifier(n_neighbors = k)
-		knn_classifier.fit(X_train, y_train)
-		knn_scores.append(knn_classifier.score(X_test, y_test))
+		knn_classifier.fit(X_train, H_train)
+		knn_scores.append(knn_classifier.score(X_test, H_test))
 
 	plt.plot([k for k in range(1, 30)], knn_scores, color = 'red')
 	for i in range(1,30):
@@ -61,8 +61,8 @@ def train_model():
 	dt_scores = []
 	for i in range(1, len(X.columns) + 1):
 		dt_classifier = DecisionTreeClassifier(max_features = i, random_state = 0)
-		dt_classifier.fit(X_train, y_train)
-		dt_scores.append(dt_classifier.score(X_test, y_test))
+		dt_classifier.fit(X_train, H_train)
+		dt_scores.append(dt_classifier.score(X_test, H_test))
 
 	plt.plot([i for i in range(1, len(X.columns) + 1)], dt_scores, color = 'green')
 	for i in range(1, len(X.columns) + 1):
@@ -76,7 +76,7 @@ def train_model():
 	# Test the KNN classifier
 	# knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
 	# demo_values = [63, 145, 233, 150, 2.3, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]
-	# knn_classifier_test.fit(X_train, y_train)
+	# knn_classifier_test.fit(X_train, H_train)
 
 	# df = pd.DataFrame(columns = X_test.columns) 
 	# df.loc[0] = demo_values
