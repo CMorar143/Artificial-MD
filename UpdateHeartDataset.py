@@ -151,17 +151,22 @@ def create_dataset():
 	all_input_params = []
 	extracted_params = []
 
+	# Loop through each instance in the full dataset and
+	# extract the columns specified in the heart_columns dict
 	for entry in full_list:
 		for key in heart_columns:
 			all_input_params.append(full_list[full_list.index(entry)][key-1])
 		extracted_params.append(all_input_params)
 		all_input_params = []
 	
-	for param in range(0, len(extracted_params)):
-		extracted_params[param] = [float(i) for i in extracted_params[param]]
-		if extracted_params[param][len(heart_columns)-1] > 0:
-			extracted_params[param][len(heart_columns)-1] = 1.0
+	# The target feature can have values ranging from 0-4
+	# Use 'binning' so that the target value will either be 1 or 0
+	for param in extracted_params:
+		param = [float(i) for i in param]
+		if param[len(heart_columns)-1] > 0:
+			param[len(heart_columns)-1] = 1.0
 
+	# Create the dataframe and the csv file
 	heart = pd.DataFrame(extracted_params, columns = list(heart_columns.values()))
 	write_csv_file(heart, dataset)
 
