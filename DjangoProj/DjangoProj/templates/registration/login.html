@@ -1,12 +1,9 @@
-{% load static %}<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Patients</title>
-	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-</head>
-<body>
-	<h1>Login</h1>
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+	<h2>Login</h2>
 	<form method="post">
 		<!-- For security, to prevent CSRF attacks -->
 		{% csrf_token %}
@@ -16,5 +13,4 @@
 		
 		<button type="submit">Login</button>
 	</form>
-</body>
-</html>
+{% endblock %}
