@@ -5,7 +5,8 @@
 {% block content %}
 <h2>Examination</h2>
 
-<form>
+<form method="post">
+	{% csrf_token %}
   Height:<br>
   <input type="number" name="Height">
   <br><br>
@@ -97,6 +98,6 @@
   Doctor:<br>
   <input type="text" name="Doctor">
 	<br><br>
-  <button type="submit">Process Exam</button>
+  <button type="submit">Process Exam</button>&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
 </form>
 {% endblock %}
