@@ -56,8 +56,11 @@ class results(TemplateView):
 
 		# TODO
 		# Build classifier
+		
 
 		# Predict heart disease
+
+
 		# Pass prediction 
 
 
