@@ -29,4 +29,5 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     # path('exam/', TemplateView.as_view(template_name='exam.html'), name='exam'),
     path('exam/', exam.as_view(), name='exam'),
+    path('results/', views.results.as_view(), name='results')
 ]

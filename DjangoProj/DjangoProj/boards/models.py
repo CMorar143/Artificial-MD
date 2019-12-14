@@ -24,6 +24,7 @@ class Doctor(models.Model):
 
 class Examination(models.Model):
 	height = models.FloatField()
+	date = models.DateTimeField(auto_now_add=True)
 	# weight = models.FloatField()
 	# heart_rate = models.PositiveIntegerField()
 	# heart_rhythm = models.PositiveIntegerField()
