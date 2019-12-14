@@ -4,7 +4,14 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from boards.forms import ExamForm
 from boards.models import Examination
+
+# For Machine learning model
 import pandas as pd
+from matplotlib import pyplot as plt
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
 
 # # Create your views here.
 # def login(request):
@@ -40,6 +47,19 @@ class exam(TemplateView):
 class results(TemplateView):
 	template_name = 'results.html'
 
-	def get(self, request):
+	def get_exams(self):
 		exams = Examination.objects.all()
+		return exams
+
+	def get(self, request):
+		exams = self.get_exams()
+
+		# TODO
+		# Build classifier
+
+		# Predict heart disease
+		# Pass prediction 
+
+
+
 		return render(request, self.template_name, {'exams': exams})

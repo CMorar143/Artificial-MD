@@ -4,7 +4,9 @@
 
 {% block content %}
 {% for exam in exams %}
-	  Height is {{ exam.height }}<br>
+		Exam performed by {{ exam.user.get_full_name }}<br>
+		Time is {{ exam.date }}<br>
+		Height is {{ exam.height }}<br><br>
 {% endfor %}
   <a href="{% url 'exam' %}">Perform Another Exam</a>
 {% endblock %}
