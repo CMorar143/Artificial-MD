@@ -15,4 +15,5 @@ class ExamAdmin(admin.ModelAdmin):
 
 	radio_fields = {'chest_pain': admin.VERTICAL}
 	radio_fields = {'hist_diabetes': admin.HORIZONTAL}
-	radio_fields = {'hist_': admin.HORIZONTAL}
+	radio_fields = {'hist_heart_disease': admin.HORIZONTAL}
+	radio_fields = {'exerc_angina': admin.HORIZONTAL}

@@ -36,8 +36,8 @@ class ExamForm(forms.ModelForm):
 	class Meta:
 		model = Examination
 		fields = (
-			'age', 'sex', 'chest_pain', 
-			'blood_systolic', 'blood_diastolic', 'chol_overall',
-			'smoke_per_day', 'smoker_years', 'fasting_glucose',
-			'hist_diabetes', 'hist_heart_disease', 'exerc_angina'
+			'age', 'sex', 'chest_pain', 'blood_systolic', 
+			'blood_diastolic', 'chol_overall', 'smoke_per_day', 
+			'smoker_years', 'fasting_glucose', 'hist_diabetes',
+			'hist_heart_disease', 'heart_rate', 'exerc_angina'
 		)

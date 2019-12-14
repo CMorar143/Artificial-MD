@@ -40,4 +40,10 @@ class Examination(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
 
 	def __str__(self):
-		return str(self.height)
+		fields = (
+			self.age, self.sex, self.chest_pain, self.blood_systolic,
+			self.blood_diastolic, self.chol_overall, self.smoke_per_day, 
+			self.smoker_years, self.fasting_glucose, self.hist_diabetes,
+			self.hist_heart_disease, self.heart_rate, self.exerc_angina
+		)
+		return str(fields)

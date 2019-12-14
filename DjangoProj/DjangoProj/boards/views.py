@@ -35,7 +35,7 @@ class exam(TemplateView):
 			exam = form.save(commit=False)
 			exam.user = request.user
 			exam.save()
-			exam_input = form.cleaned_data['height']
+			exam_input = form.cleaned_data
 			return redirect('results')
 			
 			# To remove the value from the input box after submitting
