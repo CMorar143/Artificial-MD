@@ -6,3 +6,7 @@ admin.site.register(Doctor)
 admin.site.register(Examination)
 
 # Register your models here.
+class ExamAdmin(admin.ModelAdmin):
+	fields = ('MALE', 'gender', 'FEMALE')
+
+	radio_fields = {'gender': admin.VERTICAL}

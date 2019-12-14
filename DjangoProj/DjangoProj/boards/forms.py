@@ -1,9 +1,18 @@
 from django import forms
 from boards.models import Examination
 
+GENDER_CHOICES = (
+	('M', 'Male'),
+	('F', 'Female')
+)
+
+CHEST_PAIN_CHOICES = (
+	
+)
+
 class ExamForm(forms.ModelForm):
 	age = forms.IntegerField()
-	sex = forms.CharField()
+	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.RadioSelect())
 	chest_pain = forms.CharField()
 	blood_systolic = forms.FloatField()
 	blood_diastolic = forms.FloatField()
@@ -18,4 +27,9 @@ class ExamForm(forms.ModelForm):
 	
 	class Meta:
 		model = Examination
-		fields = ('age',)
+		fields = (
+			'age', 'sex', 'chest_pain', 
+			'blood_systolic', 'blood_diastolic', 'chol_overall',
+			'smoke_per_day', 'smoker_years', 'fasting_glucose',
+			'hist_diabetes', 'hist_heart_disease', 'exerc_angina'
+		)

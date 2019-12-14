@@ -6,7 +6,7 @@
 {% for exam in exams %}
 		Exam performed by {{ exam.user.get_full_name }}<br>
 		Time is {{ exam.date }}<br>
-		Height is {{ exam.height }}<br><br>
+		Fields are {{ exam.fields }}<br><br>
 {% endfor %}
   <a href="{% url 'exam' %}">Perform Another Exam</a>
 {% endblock %}
