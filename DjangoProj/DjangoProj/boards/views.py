@@ -41,4 +41,5 @@ class results(TemplateView):
 	template_name = 'results.html'
 
 	def get(self, request):
-		return render(request, self.template_name)
+		exams = Examination.objects.all()
+		return render(request, self.template_name, {'exams': exams})
