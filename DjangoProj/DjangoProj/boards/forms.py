@@ -1,5 +1,5 @@
 from django import forms
-from boards import models
+from boards.models import Examination
 
 class ExamForm(forms.ModelForm):
 	height = forms.FloatField()
@@ -27,5 +27,5 @@ class ExamForm(forms.ModelForm):
 	# doctor = forms.ForeignKey(Doctor, on_delete = forms.CASCADE)
 
 	class Meta:
-		model = models.Examination
+		model = Examination
 		fields = ('height',)

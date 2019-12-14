@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 # from django.http import HttpResponse
 # from .models import Patient
 from django.views.generic import TemplateView
@@ -20,7 +20,13 @@ class exam(TemplateView):
 	def post(self, request):
 		form = ExamForm(request.POST)
 		if form.is_valid():
+			# Save data to  model
+			# exam = form.save(commit=False)
+			form.save()
+			# exam.user = request.user
+			# exam.save()
 			exam_input = form.cleaned_data['height']
+			return redirect('exam')
 			
 			# To remove the value from the input box after submitting
 			# form = ExamForm()
