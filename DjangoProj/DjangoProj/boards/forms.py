@@ -2,12 +2,20 @@ from django import forms
 from boards.models import Examination
 
 GENDER_CHOICES = (
-	('M', 'Male'),
-	('F', 'Female')
+	(1, 'Male'),
+	(2, 'Female')
 )
 
 CHEST_PAIN_CHOICES = (
-	()
+	(1, 'Typical Angina'),
+	(2, 'Atypical Angina'),
+	(3, 'Non-anginal pain'),
+	(4, 'Asymptomatic')
+)
+
+TRUE_OR_FALSE = (
+	(True, 'Yes'),
+	(False, 'No')
 )
 
 class ExamForm(forms.ModelForm):
@@ -20,10 +28,10 @@ class ExamForm(forms.ModelForm):
 	smoke_per_day = forms.IntegerField()
 	smoker_years = forms.IntegerField()
 	fasting_glucose = forms.FloatField()
-	hist_diabetes = forms.BooleanField()
-	hist_heart_disease = forms.BooleanField()
+	hist_diabetes = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.RadioSelect())
+	hist_heart_disease = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.RadioSelect())
 	heart_rate = forms.IntegerField()
-	exerc_angina = forms.BooleanField()
+	exerc_angina = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.RadioSelect())
 	
 	class Meta:
 		model = Examination
