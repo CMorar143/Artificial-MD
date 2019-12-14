@@ -1,6 +1,7 @@
 from django import forms
+from boards import models
 
-class ExamForm(forms.Form):
+class ExamForm(forms.ModelForm):
 	height = forms.FloatField()
 	# weight = forms.FloatField()
 	# heart_rate = forms.IntegerField()
@@ -24,3 +25,7 @@ class ExamForm(forms.Form):
 	# healthy_diet = forms.BooleanField()
 	# p_examined = forms.ForeignKey(Patient, on_delete = forms.CASCADE)
 	# doctor = forms.ForeignKey(Doctor, on_delete = forms.CASCADE)
+
+	class Meta:
+		model = models.Examination
+		fields = ('height',)

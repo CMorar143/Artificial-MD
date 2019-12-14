@@ -43,5 +43,6 @@ class Examination(models.Model):
 	recreational_drugs = models.BooleanField()
 	exercise = models.BooleanField()
 	healthy_diet = models.BooleanField()
+	user = models.ForeignKey(User, on_delete = models.CASCADE)
 	p_examined = models.ForeignKey(Patient, on_delete = models.CASCADE)
 	doctor = models.ForeignKey(Doctor, on_delete = models.CASCADE)
