@@ -24,8 +24,8 @@ class Doctor(models.Model):
 
 class Examination(models.Model):
 	age = models.PositiveIntegerField(default=0)
-	sex = models.CharField(max_length=6)
-	chest_pain = models.CharField(max_length=50)
+	sex = models.PositiveIntegerField()
+	chest_pain = models.PositiveIntegerField()
 	blood_systolic = models.FloatField()
 	blood_diastolic = models.FloatField()
 	chol_overall = models.FloatField()

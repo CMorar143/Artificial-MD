@@ -7,13 +7,13 @@ GENDER_CHOICES = (
 )
 
 CHEST_PAIN_CHOICES = (
-	
+	()
 )
 
 class ExamForm(forms.ModelForm):
 	age = forms.IntegerField()
 	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.RadioSelect())
-	chest_pain = forms.CharField()
+	chest_pain = forms.ChoiceField(choices=CHEST_PAIN_CHOICES, widget=forms.RadioSelect())
 	blood_systolic = forms.FloatField()
 	blood_diastolic = forms.FloatField()
 	chol_overall = forms.FloatField()
