@@ -16,3 +16,14 @@ class exam(TemplateView):
 	def get(self, request):
 		form = ExamForm()
 		return render(request, self.template_name, {'form': form})
+
+	def post(self, request):
+		form = ExamForm(request.POST)
+		if form.is_valid():
+			exam_input = form.cleaned_data['height']
+			
+			# To remove the value from the input box after submitting
+			# form = ExamForm()
+
+		args = {'form': form, 'exam_input': exam_input}
+		return render(request, self.template_name, args)
