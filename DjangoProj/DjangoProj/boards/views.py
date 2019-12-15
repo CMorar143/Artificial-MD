@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 # from django.http import HttpResponse
 # from .models import Patient
+# from django.settings import BASEDIR
 from django.views.generic import TemplateView
 from boards.forms import ExamForm
 from boards.models import Examination
@@ -9,6 +10,7 @@ from boards.models import Examination
 import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
+import os
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
@@ -46,7 +48,7 @@ class exam(TemplateView):
 
 class results(TemplateView):
 	template_name = 'results.html'
-
+	
 	def get_exams(self):
 		exams = Examination.objects.all()
 		return exams
@@ -55,8 +57,19 @@ class results(TemplateView):
 		exams = self.get_exams()
 
 		# TODO
+		# Read csv file
+
+		current_dir =  os.path.abspath(os.path.dirname(__file__))
+		parent_dir = os.path.abspath(current_dir + "/../")
+
+		pathHeart = parent_dir + '/Data/new_cleveland.csv'
+		# module_dir = os.path.dirname(__file__).parent
+		# pathHeart = os.path.join(module_dir, 'new_cleveland.csv')
+
+		heart = pd.read_csv(pathHeart)
+		print(heart.head())
 		# Build classifier
-		
+
 
 		# Predict heart disease
 
@@ -66,3 +79,50 @@ class results(TemplateView):
 
 
 		return render(request, self.template_name, {'exams': exams})
+
+
+
+
+
+
+# def upload_csv(request):
+# 	data = {}
+# 	if "GET" == request.method:
+# 		return render(request, "myapp/upload_csv.html", data)
+#     # if not GET, then proceed
+# 	try:
+# 		csv_file = request.FILES["csv_file"]
+# 		if not csv_file.name.endswith('.csv'):
+# 			messages.error(request,'File is not CSV type')
+# 			return HttpResponseRedirect(reverse("myapp:upload_csv"))
+#         #if file is too large, return
+# 		if csv_file.multiple_chunks():
+# 			messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
+# 			return HttpResponseRedirect(reverse("myapp:upload_csv"))
+
+# 		file_data = csv_file.read().decode("utf-8")		
+
+# 		lines = file_data.split("\n")
+# 		#loop over the lines and save them in db. If error , store as string and then display
+# 		for line in lines:						
+# 			fields = line.split(",")
+# 			data_dict = {}
+# 			data_dict["name"] = fields[0]
+# 			data_dict["start_date_time"] = fields[1]
+# 			data_dict["end_date_time"] = fields[2]
+# 			data_dict["notes"] = fields[3]
+# 			try:
+# 				form = EventsForm(data_dict)
+# 				if form.is_valid():
+# 					form.save()					
+# 				else:
+# 					logging.getLogger("error_logger").error(form.errors.as_json())												
+# 			except Exception as e:
+# 				logging.getLogger("error_logger").error(repr(e))					
+# 				pass
+
+# 	except Exception as e:
+# 		logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
+# 		messages.error(request,"Unable to upload file. "+repr(e))
+
+# 	return HttpResponseRedirect(reverse("myapp:upload_csv"))
