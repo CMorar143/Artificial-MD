@@ -3,10 +3,10 @@
 {% block title %}Results{% endblock %}
 
 {% block content %}
-{% for exam in exams %}
-		Exam performed by {{ exam.user.get_full_name }}<br>
-		Time is {{ exam.date }}<br>
-		Fields are {{ exam }}<br><br>
-{% endfor %}
+<!-- {% for exam in exams %} -->
+Exam performed by {{ exam.user.get_full_name }}<br>
+Time is {{ exam.date }}<br>
+Fields are {{ exam }}<br><br>
+<!-- {% endfor %} -->
   <a href="{% url 'exam' %}">Perform Another Exam</a>
 {% endblock %}

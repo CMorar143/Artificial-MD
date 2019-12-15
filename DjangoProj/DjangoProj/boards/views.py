@@ -26,7 +26,7 @@ class exam(TemplateView):
 
 	def get(self, request):
 		form = ExamForm()
-		exams = Examination.objects.all()
+		# exams = Examination.objects.all()
 		return render(request, self.template_name, {'form': form})
 
 	def post(self, request):
@@ -50,7 +50,7 @@ class results(TemplateView):
 	template_name = 'results.html'
 	
 	def get_exams(self):
-		exams = Examination.objects.all()
+		exams = [Examination.objects.latest('date')]
 		return exams
 
 	def get(self, request):
@@ -63,24 +63,25 @@ class results(TemplateView):
 		pathHeart = parent_dir + '/Data/new_cleveland.csv'
 		heart = pd.read_csv(pathHeart)
 		print(heart.head())
-		
+
 		# Build classifier
 		# Use dummy columns for the categorical features
+		# heart.replace(to_replace = -9, value = np.NaN, inplace = True)
 		heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
+		print(exams)
 		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
+		# columns_to_scale = heart.columns
+		# print(columns_to_scale)
 		standardScaler = StandardScaler()
 		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
 		H = heart['target']
 		X = heart.drop(['target'], axis = 1)
-		X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.33, random_state = 0)
+		X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.01, random_state = 0)
 
 		# KNN
-		knn_scores = []
-		for k in range(1,30):
-			knn_classifier = KNeighborsClassifier(n_neighbors = k)
-			knn_classifier.fit(X_train, H_train)
-			knn_scores.append(knn_classifier.score(X_test, H_test))
+		knn_classifier = KNeighborsClassifier(n_neighbors = 22)
+		knn_classifier.fit(X_train, H_train)
 
 		# Predict heart disease
 
@@ -89,7 +90,7 @@ class results(TemplateView):
 
 
 
-		return render(request, self.template_name, {'exams': exams})
+		return render(request, self.template_name, {'exams':exams})
 
 
 
