@@ -121,11 +121,11 @@ class results(TemplateView):
 
 		# Print the list 
 		print(Row_list) 
-		# p = knn_classifier.predict(Row_list)
-		# print(p)
+		prediction = knn_classifier.predict(Row_list)
+		print(prediction)
 
 
-		return render(request, self.template_name, {'exams':exams})
+		return render(request, self.template_name, {'exams':exams, 'prediction': prediction})
 
 
 
