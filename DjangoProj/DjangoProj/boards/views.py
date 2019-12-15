@@ -58,18 +58,29 @@ class results(TemplateView):
 
 		# TODO
 		# Read csv file
-
 		current_dir =  os.path.abspath(os.path.dirname(__file__))
 		parent_dir = os.path.abspath(current_dir + "/../")
-
 		pathHeart = parent_dir + '/Data/new_cleveland.csv'
-		# module_dir = os.path.dirname(__file__).parent
-		# pathHeart = os.path.join(module_dir, 'new_cleveland.csv')
-
 		heart = pd.read_csv(pathHeart)
 		print(heart.head())
+		
 		# Build classifier
+		# Use dummy columns for the categorical features
+		heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
+		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
+		standardScaler = StandardScaler()
+		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
+		H = heart['target']
+		X = heart.drop(['target'], axis = 1)
+		X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.33, random_state = 0)
+
+		# KNN
+		knn_scores = []
+		for k in range(1,30):
+			knn_classifier = KNeighborsClassifier(n_neighbors = k)
+			knn_classifier.fit(X_train, H_train)
+			knn_scores.append(knn_classifier.score(X_test, H_test))
 
 		# Predict heart disease
 
