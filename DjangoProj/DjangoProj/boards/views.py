@@ -61,7 +61,7 @@ class results(TemplateView):
 			'age', 'sex', 'chest_pain', 'blood_systolic', 
 			'blood_diastolic', 'chol_overall', 'smoke_per_day', 
 			'smoker_years', 'fasting_glucose', 'hist_diabetes',
-			'hist_heart_disease', 'heart_rate', 'exerc_angina', 'target'
+			'hist_heart_disease', 'heart_rate', 'exerc_angina'
 		]
 
 		dummies = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang']
@@ -91,11 +91,21 @@ class results(TemplateView):
 		test_pred = knn_classifier.predict(X_test)
 
 		# Predict heart disease
-		print(exam_values[len(exam_values)-1])
-		for exam in exams:
-			# age, sex, chest_pain, blood_systolic, blood_systolic, chol_overall, smoke_per_day, smoker_years, fasting_glucose, hist_diabetes, hist_heart_disease, heart_rate, exerc_angina = tuple(exam)
-			for f in range(len(Features)-1):
-				print(Features[f])
+		# Extract values
+		exam_param = []
+		exam_df = []
+		for f in range(len(Features)):
+			exam_param.append(Features[f])
+			exam_param.append(exam_values[len(exam_values)-1][Features[f]])
+			exam_df.append(exam_param)
+			exam_param = []
+
+		exam_df = dict(exam_df)
+
+		# for exam in exams:
+		# 	# age, sex, chest_pain, blood_systolic, blood_systolic, chol_overall, smoke_per_day, smoker_years, fasting_glucose, hist_diabetes, hist_heart_disease, heart_rate, exerc_angina = tuple(exam)
+		# 	for f in range(len(Features)):
+		# 		print(Features[f])
 		# exam_df = pd.DataFrame(e)
 		# print(exam_df)
 
