@@ -5,7 +5,6 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from boards.forms import ExamForm
 from boards.models import Examination
-# from django.db.models import Examination
 
 # For Machine learning model
 import pandas as pd
@@ -53,8 +52,7 @@ class results(TemplateView):
 	
 	def get_exams(self):
 		exams = [Examination.objects.latest('date')]
-		# exam_values = Examination.objects.latest('date').objects()
-		exam_values = 0
+		exam_values = Examination.objects.values()
 		return exams, exam_values
 
 	def get(self, request):
