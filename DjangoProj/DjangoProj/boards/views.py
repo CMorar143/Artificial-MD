@@ -67,6 +67,9 @@ class results(TemplateView):
 		dummies = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang']
 		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
 
+		dummies2 = ['sex', 'chest_pain', 'fasting_glucose', 'hist_diabetes', 'hist_heart_disease', 'exerc_angina']
+		columns_to_scale2 = ['age', 'blood_systolic', 'chol_overall', 'smoke_per_day', 'smoker_years', 'heart_rate', 'blood_diastolic']
+
 		# TODO
 		# Read csv file
 		current_dir =  os.path.abspath(os.path.dirname(__file__))
@@ -77,10 +80,10 @@ class results(TemplateView):
 		# Build classifier
 		# Use dummy columns for the categorical features
 		# heart.replace(to_replace = -9, value = np.NaN, inplace = True)
-		heart = pd.get_dummies(heart, columns = dummies)
+		# heart = pd.get_dummies(heart, columns = dummies)
 		standardScaler = StandardScaler()
 		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
-
+		print(heart.head())
 		H = heart['target']
 		X = heart.drop(['target'], axis = 1)
 		X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.01, random_state = 0)
@@ -94,23 +97,32 @@ class results(TemplateView):
 		# Extract values
 		exam_param = []
 		exam_df = []
+		exam_predict = []
 		for f in range(len(Features)):
 			exam_param.append(Features[f])
 			exam_param.append(exam_values[len(exam_values)-1][Features[f]])
+			exam_predict.append(exam_values[len(exam_values)-1][Features[f]])
 			exam_df.append(exam_param)
 			exam_param = []
 
 		exam_df = dict(exam_df)
-
-		# for exam in exams:
-		# 	# age, sex, chest_pain, blood_systolic, blood_systolic, chol_overall, smoke_per_day, smoker_years, fasting_glucose, hist_diabetes, hist_heart_disease, heart_rate, exerc_angina = tuple(exam)
-		# 	for f in range(len(Features)):
-		# 		print(Features[f])
-		# exam_df = pd.DataFrame(e)
-		# print(exam_df)
-
+		print(exam_df)
+		exam_df = pd.DataFrame(exam_df, columns=Features, index=[1])
+		print(exam_df)
+		# exam_df = pd.get_dummies(exam_df, columns = dummies2)
+		# standardScaler = StandardScaler()
+		exam_df[columns_to_scale2] = standardScaler.transform(exam_df[columns_to_scale2])
+		print(exam_df)
 		# Pass prediction 
+		Row_list =[]
+		# Iterate over each row 
+		for i in range((exam_df.shape[0])):
+			Row_list.append(list(exam_df.iloc[i, :])) 
 
+		# Print the list 
+		print(Row_list) 
+		# p = knn_classifier.predict(Row_list)
+		# print(p)
 
 
 		return render(request, self.template_name, {'exams':exams})
