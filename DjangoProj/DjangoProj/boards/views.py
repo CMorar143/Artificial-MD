@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from boards.forms import ExamForm
 from boards.models import Examination
+# from django.db.models import Examination
 
 # For Machine learning model
 import pandas as pd
@@ -14,6 +15,7 @@ import os
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn import metrics
 
 # # Create your views here.
 # def login(request):
@@ -51,10 +53,21 @@ class results(TemplateView):
 	
 	def get_exams(self):
 		exams = [Examination.objects.latest('date')]
-		return exams
+		# exam_values = Examination.objects.latest('date').objects()
+		exam_values = 0
+		return exams, exam_values
 
 	def get(self, request):
-		exams = self.get_exams()
+		exams, exam_values = self.get_exams()
+		Features = [
+			'age', 'sex', 'chest_pain', 'blood_systolic', 
+			'blood_diastolic', 'chol_overall', 'smoke_per_day', 
+			'smoker_years', 'fasting_glucose', 'hist_diabetes',
+			'hist_heart_disease', 'heart_rate', 'exerc_angina', 'target'
+		]
+
+		dummies = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang']
+		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
 
 		# TODO
 		# Read csv file
@@ -63,15 +76,10 @@ class results(TemplateView):
 		pathHeart = parent_dir + '/Data/new_cleveland.csv'
 		heart = pd.read_csv(pathHeart)
 		print(heart.head())
-
 		# Build classifier
 		# Use dummy columns for the categorical features
 		# heart.replace(to_replace = -9, value = np.NaN, inplace = True)
-		heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
-		print(exams)
-		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
-		# columns_to_scale = heart.columns
-		# print(columns_to_scale)
+		heart = pd.get_dummies(heart, columns = dummies)
 		standardScaler = StandardScaler()
 		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
@@ -82,9 +90,16 @@ class results(TemplateView):
 		# KNN
 		knn_classifier = KNeighborsClassifier(n_neighbors = 22)
 		knn_classifier.fit(X_train, H_train)
+		test_pred = knn_classifier.predict(X_test)
 
 		# Predict heart disease
-
+		print(exam_values)
+		for exam in exams:
+			# age, sex, chest_pain, blood_systolic, blood_systolic, chol_overall, smoke_per_day, smoker_years, fasting_glucose, hist_diabetes, hist_heart_disease, heart_rate, exerc_angina = tuple(exam)
+			for f in range(len(Features)-1):
+				print(Features[f])
+		# exam_df = pd.DataFrame(e)
+		# print(exam_df)
 
 		# Pass prediction 
 
