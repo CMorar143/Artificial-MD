@@ -91,7 +91,7 @@ class results(TemplateView):
 		test_pred = knn_classifier.predict(X_test)
 
 		# Predict heart disease
-		print(exam_values)
+		print(exam_values[len(exam_values)-1])
 		for exam in exams:
 			# age, sex, chest_pain, blood_systolic, blood_systolic, chol_overall, smoke_per_day, smoker_years, fasting_glucose, hist_diabetes, hist_heart_disease, heart_rate, exerc_angina = tuple(exam)
 			for f in range(len(Features)-1):
