@@ -19,7 +19,7 @@ TRUE_OR_FALSE = (
 )
 
 class ExamForm(forms.ModelForm):
-	age = forms.IntegerField()
+	age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.RadioSelect())
 	chest_pain = forms.ChoiceField(choices=CHEST_PAIN_CHOICES, widget=forms.RadioSelect())
 	blood_systolic = forms.FloatField()
@@ -36,8 +36,8 @@ class ExamForm(forms.ModelForm):
 	class Meta:
 		model = Examination
 		fields = (
-			'age', 'sex', 'chest_pain', 'blood_systolic', 
-			'blood_diastolic', 'chol_overall', 'smoke_per_day', 
+			'age', 'sex', 'chest_pain', 'blood_systolic',
+			'blood_diastolic', 'chol_overall', 'smoke_per_day',
 			'smoker_years', 'fasting_glucose', 'hist_diabetes',
 			'hist_heart_disease', 'heart_rate', 'exerc_angina'
 		)

@@ -1,103 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Exam{% endblock %}
-
+<head>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+</head>
 {% block content %}
 <h2>Examination</h2>
 
 <form method="post">
 	{% csrf_token %}
-  <!-- Height:<br>
-  <input type="number" name="Height">
-  <br><br>
-
-  Weight:<br>
-  <input type="number" name="Weight">
-  <br><br>
-
-  Heart Rate:<br>
-  <input type="number" name="HeartRate">
-  <br><br>
-
-  Heart Rhythm:<br>
-  <input type="number" name="HeartRhythm">
-  <br><br>
-
-  Oxygen Saturation:<br>
-  <input type="number" name="OxygenSaturation">
-  <br><br>
-
-  Blood Pressure:<br>
-  <input type="number" name="BloodPressure">
-  <br><br>
-
-  Urinalysis Glucose:<br>
-  <input type="number" name="UrinalysisGlucose">
-  <br><br>
-
-  Urinalysis Blood:<br>
-  <input type="number" name="UrinalysisBlood">
-  <br><br>
-
-  Urinalysis Protein:<br>
-  <input type="number" name="UrinalysisProtein">
-  <br><br>
-
-  Blood Count:<br>
-  <input type="number" name="BloodCount">
-  <br><br>
-
-  Fasting Glucose:<br>
-  <input type="number" name="FastingGlucose">
-  <br><br>
-
-  Overall Cholesterol:<br>
-  <input type="number" name="OverallCholesterol">
-  <br><br>
-
-  HDL Cholesterol:<br>
-  <input type="number" name="HDLCholesterol">
-  <br><br>
-
-  LDL Cholesterol:<br>
-  <input type="number" name="LDLCholesterol">
-  <br><br>
-
-  Uric Acid:<br>
-  <input type="number" name="UricAcid">
-  <br><br>
-
-  Triglyceride:<br>
-  <input type="number" name="Triglyceride">
-  <br><br>
-
-  How many cigarettes per day?:<br>
-  <input type="number" name="Cigarettesperday">
-  <br><br>
-
-  How much alcohol per week:<br>
-  <input type="number" name="Alcoholperweek">
-  <br><br>
-
-  Use of recreational drugs?:&nbsp;&nbsp;
-  <input type="checkbox" name="RecreationalDrugs">
-  <br><br>
-
-  Does the patient exercise:&nbsp;&nbsp;
-  <input type="checkbox" name="Exercise">
-  <br><br>
-
-  Does the patient have a healthy diet?:&nbsp;&nbsp;
-  <input type="checkbox" name="HealthyDiet">
-  <br><br>
-
-  Patient:<br>
-  <input type="text" name="Patient">
-  <br><br>
-
-  Doctor:<br>
-  <input type="text" name="Doctor">
-	<br><br> -->
   {{ form.as_p }}
   <button type="submit">Process Exam</button>&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
 </form>

@@ -42,7 +42,7 @@ class exam(TemplateView):
 			return redirect('results')
 			
 			# To remove the value from the input box after submitting
-			form = ExamForm()
+			# form = ExamForm()
 
 		args = {'form': form, 'exam_input': exam_input}
 		return render(request, self.template_name, args)
@@ -89,7 +89,7 @@ class results(TemplateView):
 		X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.01, random_state = 0)
 
 		# KNN
-		knn_classifier = KNeighborsClassifier(n_neighbors = 22)
+		knn_classifier = KNeighborsClassifier(n_neighbors = 3)
 		knn_classifier.fit(X_train, H_train)
 		test_pred = knn_classifier.predict(X_test)
 
