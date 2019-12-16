@@ -20,18 +20,18 @@ TRUE_OR_FALSE = (
 
 class ExamForm(forms.ModelForm):
 	age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.RadioSelect())
-	chest_pain = forms.ChoiceField(choices=CHEST_PAIN_CHOICES, widget=forms.RadioSelect())
-	blood_systolic = forms.FloatField()
-	blood_diastolic = forms.FloatField()
-	chol_overall = forms.FloatField()
-	smoke_per_day = forms.IntegerField()
-	smoker_years = forms.IntegerField()
-	fasting_glucose = forms.FloatField()
-	hist_diabetes = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.RadioSelect())
-	hist_heart_disease = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.RadioSelect())
-	heart_rate = forms.IntegerField()
-	exerc_angina = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.RadioSelect())
+	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+	chest_pain = forms.ChoiceField(choices=CHEST_PAIN_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+	blood_systolic = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+	blood_diastolic = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+	chol_overall = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+	smoke_per_day = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+	smoker_years = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+	fasting_glucose = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+	hist_diabetes = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
+	hist_heart_disease = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
+	heart_rate = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+	exerc_angina = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
 	
 	class Meta:
 		model = Examination

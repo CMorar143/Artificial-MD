@@ -1,17 +1,22 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Exam{% endblock %}
+{% load static %}<!DOCTYPE html>
+<html>
 <head>
+  <meta charset="utf-8">
+  <title>Exam</title>
   <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}">
 </head>
-{% block content %}
-<h2>Examination</h2>
+<body>
+  <main>
+    <h2>Examination</h2>
 
-<form method="post">
-	{% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Process Exam</button>&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
-</form>
-<h2>{{ exam_input }}</h2>
-{% endblock %}
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Process Exam</button>&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
+    </form>
+    <h2>{{ exam_input }}</h2>
+
+  </main>
+</body>
+</html>
