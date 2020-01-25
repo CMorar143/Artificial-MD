@@ -53,45 +53,50 @@ def process_dir():
     ]
 
     Features = [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
+		# 'SEQN',
+		'Short_Breath',
+		'Chest_Pains',
+		'High_Chol_Hist',
+		'High_BP_Hist',
+		'BMI',
+		# 'Heart_Rate',
+		'Reg_Pulse',
+		'Pulse_Type',
+		'Sys_BP',
+		'Dias_BP',
+		'Protein',
+		'HDL_Chol',
+		'LDL_Chol',
+		'Total_Chol',
+		'Fast_Glucose',
+		'Triglyceride',
+		'Uric_Acid',
+		'Diabetes'
     ]
 
     input_params = [
-        'CDQ010',
-        'CDQ001',
-        'BPQ080',
-        'BPQ020',
-        # 'BMXHT',
-        # 'BMXWT',
-        'BMXBMI',
-        # 'BPXCHR',
-        'BPXPULS',
-        'BPXPTY',
-        'BPXSY1',
-        'BPXDI1',
-        # 'BPXSY2',
-        # 'BPXDI2',
-        'LBXSTP',
-        'LBDHDD',
-        'LBDLDL',
-        'LBXTC',
-        'LBXGLU',
-        'LBXTR',
-        'LBXSUA',
-        'DIQ010'
+		'CDQ010',
+		'CDQ001',
+		'BPQ080',
+		'BPQ020',
+		# 'BMXHT',
+		# 'BMXWT',
+		'BMXBMI',
+		# 'BPXCHR',
+		'BPXPULS',
+		'BPXPTY',
+		'BPXSY1',
+		'BPXDI1',
+		# 'BPXSY2',
+		# 'BPXDI2',
+		'LBXSTP',
+		'LBDHDD',
+		'LBDLDL',
+		'LBXTC',
+		'LBXGLU',
+		'LBXTR',
+		'LBXSUA',
+		'DIQ010'
     ]
 
     df_combined = pd.DataFrame.copy(diet)
@@ -103,6 +108,7 @@ def process_dir():
 
     df_input_params = df_combined[input_params]
     df_combined.to_csv("combined_dataset.csv")
+    df_input_params.columns = Features
     df_input_params.to_csv("input_parameters.csv")
 
     print(df_input_params.head())
