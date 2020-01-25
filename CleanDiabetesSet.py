@@ -103,8 +103,7 @@ def process_dir():
 
     df_input_params = df_combined[input_params]
     df_combined.to_csv("combined_dataset.csv")
-    df_input_params.to_csv("input_parameters.csv")
-    # df_input_params.dropna(thresh=1, inplace=True)
+    # df_input_params.to_csv("input_parameters.csv")
 
     print(df_input_params.head())
     print(df_input_params.tail())
