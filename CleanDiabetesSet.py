@@ -72,6 +72,15 @@ def process_dir():
 		'Diabetes'
     ]
 
+    Dich_Features = [
+		'Short_Breath',
+		'Chest_Pains',
+		'High_Chol_Hist',
+		'High_BP_Hist',
+		'Reg_Pulse',
+		'Diabetes'
+	]
+
     input_params = [
 		'CDQ010',
 		'CDQ001',
@@ -107,6 +116,8 @@ def process_dir():
     df_input_params = df_combined[input_params]
     df_combined.to_csv("combined_dataset.csv")
     df_input_params.columns = Features
+    df_input_params[Dich_Features].replace(to_replace=1.0, value=0, inplace=True)
+    # df_input_params[Dich_Features].replace(2.0, 1.0)
     df_input_params.to_csv("input_parameters.csv")
 
     print(df_input_params.head())
