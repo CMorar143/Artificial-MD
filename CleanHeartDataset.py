@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 
-path_heart = "../Data/heart-disease-uci/"
+path_heart = "../../FYP_Data/heart-disease-uci/"
 
 # 3 age: age in years
 # 4 sex: sex (1 = male; 0 = female)
