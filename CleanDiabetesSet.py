@@ -114,14 +114,14 @@ def process_dir():
     df_combined.set_index('SEQN', inplace=True)
 
     df_input_params = df_combined[input_params]
-    # df_combined.to_csv("combined_dataset.csv")
+    df_combined.to_csv("combined_dataset.csv")
     df_input_params.columns = Features
 
     for col in Dich_Features:
     	df_input_params[col].replace(to_replace=1.0, value=0, inplace=True)
     	df_input_params[col].replace(to_replace=2.0, value=1, inplace=True)
     
-    # df_input_params.to_csv("input_parameters.csv")
+    df_input_params.to_csv("input_parameters.csv")
 
     print(df_input_params.head())
     print(df_input_params.tail())
@@ -191,7 +191,7 @@ def process_dir():
     count = len(df_input_params)
 
 
-    for i in input_params:
+    for i in Features:
         # Count
         array = df_input_params[i]
 
