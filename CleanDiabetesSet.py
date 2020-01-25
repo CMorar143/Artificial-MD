@@ -6,8 +6,8 @@ import numpy as np
 
 
 def process_dir():
-    path = "../Data/Health_Survey/"
-    pathHeart = "../Data/heart-disease-uci/"
+    path = "../../FYP_Data/Health_Survey/"
+    pathHeart = "../../FYP_Data/heart-disease-uci/"
     flist = os.listdir(path)
     featureNames = []
 

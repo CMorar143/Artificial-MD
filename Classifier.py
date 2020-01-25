@@ -85,9 +85,9 @@ def train_heart_model():
 	# p = knn_classifier_test.predict(df)
 	# print(p)
 
-# def train_diabetes_model():
+def train_diabetes_model():
 	
 
 
-train_heart_model()
-# train_diabetes_model()
+# train_heart_model()
+train_diabetes_model()
