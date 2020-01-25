@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 
-def train_model():
+def train_heart_model():
 	# Load heart disease dataset into pandas dataframe
 	pathHeart = "../Data/heart-disease-uci/"
 	
@@ -85,7 +85,9 @@ def train_model():
 	# p = knn_classifier_test.predict(df)
 	# print(p)
 
+def train_diabetes_model():
+	print("hello there!")
 
 
-
-train_model()
+# train_heart_model()
+train_diabetes_model()
