@@ -40,21 +40,6 @@ def process_dir():
         'Std. Dev.'
     ]
 
-    Cont_Features = [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-    ]
-
     Cat_Columns = [
         'Count',
         '% Miss.',
@@ -65,21 +50,6 @@ def process_dir():
         '2nd Mode',
         '2nd Mode Freq.',
         '2nd Mode %'
-    ]
-
-    Cat_Features = [
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
     ]
 
     Features = [
