@@ -102,7 +102,7 @@ def process_dir():
     df_combined.set_index('SEQN', inplace=True)
 
     df_input_params = df_combined[input_params]
-    df_combined.to_csv("test.csv")
+    df_combined.to_csv("combined_dataset.csv")
     # df_input_params.dropna(thresh=1, inplace=True)
 
     print(df_input_params.head())
