@@ -53,13 +53,11 @@ def process_dir():
     ]
 
     Features = [
-		# 'SEQN',
 		'Short_Breath',
 		'Chest_Pains',
 		'High_Chol_Hist',
 		'High_BP_Hist',
 		'BMI',
-		# 'Heart_Rate',
 		'Reg_Pulse',
 		'Pulse_Type',
 		'Sys_BP',
