@@ -9,7 +9,7 @@ from sklearn.tree import DecisionTreeClassifier
 
 def train_heart_model():
 	# Load heart disease dataset into pandas dataframe
-	pathHeart = "../Data/heart-disease-uci/"
+	pathHeart = "../../FYP_Data/heart-disease-uci/"
 	
 	heart = pd.read_csv(pathHeart + 'new_cleveland.csv')
 	
@@ -85,9 +85,9 @@ def train_heart_model():
 	# p = knn_classifier_test.predict(df)
 	# print(p)
 
-def train_diabetes_model():
-	print("hello there!")
+# def train_diabetes_model():
+	
 
 
-# train_heart_model()
-train_diabetes_model()
+train_heart_model()
+# train_diabetes_model()
