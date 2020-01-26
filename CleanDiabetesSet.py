@@ -122,10 +122,14 @@ def process_dir():
 		df_input_params[col].replace(to_replace=2.0, value=1, inplace=True)
 		df_input_params[col].replace(to_replace=9.0, value=np.NaN, inplace=True)
 
+	dropna_features = []
 	for col in range(2, len(Features)):
-		df_input_params[Features[col]].dropna(axis=1, inplace=True)
+		dropna_features.append(Features[col])
+
+	print(dropna_features)
+	df_input_params.dropna(subset=dropna_features, inplace=True)
 	
-	df_input_params.to_csv("input_parameters.csv")
+	df_input_params.to_csv(path + "input_parameters.csv")
 
 	print(df_input_params.head())
 	print(df_input_params.tail())
