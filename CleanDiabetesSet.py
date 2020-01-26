@@ -129,7 +129,7 @@ def process_dir():
 	print(dropna_features)
 	df_input_params.dropna(subset=dropna_features, inplace=True)
 	
-	df_input_params.to_csv(path + "input_parameters.csv")
+	df_input_params.to_csv(path + "Diabetes.csv")
 
 	print(df_input_params.head())
 	print(df_input_params.tail())
