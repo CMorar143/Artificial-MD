@@ -123,7 +123,8 @@ def process_dir():
 		df_input_params[col].replace(to_replace=9.0, value=np.NaN, inplace=True)
 
 	dropna_features = []
-	for col in range(2, len(Features)):
+	# for col in range(2, len(Features)):
+	for col in range(2):
 		dropna_features.append(Features[col])
 
 	print(dropna_features)
