@@ -122,6 +122,8 @@ def process_dir():
 		df_input_params[col].replace(to_replace=2.0, value=1, inplace=True)
 		df_input_params[col].replace(to_replace=9.0, value=np.NaN, inplace=True)
 
+	df_input_params['Diabetes'].replace(to_replace=3.0, value=1.0, inplace=True)
+
 	dropna_features = []
 	# for col in range(2, len(Features)):
 	for col in range(2):
@@ -130,6 +132,8 @@ def process_dir():
 	print(dropna_features)
 	df_input_params.dropna(subset=dropna_features, inplace=True)
 	
+	# Impute the remaining missing values
+
 	df_input_params.to_csv(path + "Diabetes.csv")
 
 	print(df_input_params.head())
