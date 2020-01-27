@@ -7,15 +7,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 
-def impute_dataset(df, imputer):
-	X = df.drop(['target'], axis = 1)
-	columns = X.columns
-	X = imputer.fit_transform(X)
-	df = pd.DataFrame(X, columns=columns)
-	df['contact'] = df['contact'].round()
-
-	return X, df
-
 def train_diabetes_model():
 	# Load diabetes dataset into pandas dataframe
 	data_path = "../../FYP_Data/Health_Survey/"

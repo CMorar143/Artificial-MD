@@ -3,7 +3,22 @@ import csv
 import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
+from sklearn.impute import KNNImputer
 
+def impute_dataset(df, imputer):
+	X = df.drop(['Diabetes'], axis = 1)
+	Y = df['Diabetes']
+	columns = X.columns
+	X = imputer.fit_transform(X)
+	# df = imputer.fit_transform(df)
+	df = pd.DataFrame(X, columns=columns)
+	df2 = pd.DataFrame(Y, columns=['Diabetes'])
+	df = df.reset_index(drop=True)
+	df2 = df2.reset_index(drop=True)
+
+	df = df.join(df2)
+
+	return df
 
 def process_dir():
 	path = "../../FYP_Data/Health_Survey/"
@@ -129,15 +144,17 @@ def process_dir():
 	for col in range(2):
 		dropna_features.append(Features[col])
 
-	print(dropna_features)
+	# print(dropna_features)
 	df_input_params.dropna(subset=dropna_features, inplace=True)
 	
 	# Impute the remaining missing values
+	imputer = KNNImputer(n_neighbors=3)
+	df_input_params = impute_dataset(df_input_params, imputer)
 
 	df_input_params.to_csv(path + "Diabetes.csv")
 
-	print(df_input_params.head())
-	print(df_input_params.tail())
+	# print(df_input_params.head())
+	# print(df_input_params.tail())
 
 	# Show correlation between features
 	plt.matshow(df_input_params.corr())
@@ -253,8 +270,8 @@ def process_dir():
 		print("card", card)
 		print("min_value", min_value)
 		# print("first_qrt", first_qrt)
-		print("mean", mean)
-		print("median", median)
+		# print("mean", mean)
+		# print("median", median)
 		# print("third_qrt", third_qrt)
 		print("max_value", max_value)
 		# print("stand_dev", stand_dev)
