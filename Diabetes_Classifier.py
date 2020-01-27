@@ -7,38 +7,38 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 
-def train_heart_model():
-	# Load heart disease dataset into pandas dataframe
-	pathHeart = "../../FYP_Data//"
+def train_diabetes_model():
+	# Load diabetes dataset into pandas dataframe
+	data_path = "../../FYP_Data/Health_Survey/"
 	
-	heart = pd.read_csv(pathHeart + 'new_cleveland.csv')
+	diabetes = pd.read_csv(data_path + 'Diabetes.csv')
 	
 	# Show correlation between features
-	plt.matshow(heart.corr())
-	plt.xticks(np.arange(heart.shape[1]), heart.columns)
-	plt.yticks(np.arange(heart.shape[1]), heart.columns)
+	plt.matshow(diabetes.corr())
+	plt.xticks(np.arange(diabetes.shape[1]), diabetes.columns)
+	plt.yticks(np.arange(diabetes.shape[1]), diabetes.columns)
 	plt.colorbar()
 	plt.show()
 	plt.close()
 
 	# Show a histogram of all the columns
-	heart.hist()
+	diabetes.hist()
 	plt.show()
 	plt.close()	
 
-	# Show the amount of entries who have and don't have heart disease
-	plt.bar(['Does not have heart disease', 'Does have heart disease'], heart['target'].value_counts().sort_index(), color = ['blue', 'red'])
+	# Show the amount of entries who have and don't have diabetes
+	plt.bar(['Does not have diabetes', 'Does have diabetes'], diabetes['target'].value_counts().sort_index(), color = ['blue', 'red'])
 	plt.ylabel('Count')
 	plt.show()
 
 	# Use dummy columns for the categorical features
-	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
+	diabetes = pd.get_dummies(diabetes, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
 	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
 	standardScaler = StandardScaler()
-	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
+	diabetes[columns_to_scale] = standardScaler.fit_transform(diabetes[columns_to_scale])
 
-	H = heart['target']
-	X = heart.drop(['target'], axis = 1)
+	H = diabetes['target']
+	X = diabetes.drop(['target'], axis = 1)
 	X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.33, random_state = 0)
 
 	# KNN
