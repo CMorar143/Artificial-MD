@@ -10,7 +10,6 @@ def impute_dataset(df, imputer):
 	Y = df['Diabetes']
 	columns = X.columns
 	X = imputer.fit_transform(X)
-	# df = imputer.fit_transform(df)
 	df = pd.DataFrame(X, columns=columns)
 	df2 = pd.DataFrame(Y, columns=['Diabetes'])
 	df = df.reset_index(drop=True)
@@ -22,7 +21,6 @@ def impute_dataset(df, imputer):
 
 def process_dir():
 	path = "../../FYP_Data/Health_Survey/"
-	pathHeart = "../../FYP_Data/heart-disease-uci/"
 	flist = os.listdir(path)
 	featureNames = []
 
@@ -32,7 +30,6 @@ def process_dir():
 	labs = pd.read_csv(path + 'labs.csv')
 	questionnaire = pd.read_csv(path + 'questionnaire.csv')
 	glucose = pd.read_csv(path + 'GLU_H.csv')
-	heart = pd.read_csv(pathHeart + 'heart.csv')
 
 	df_list = [
 		diet,
@@ -151,6 +148,19 @@ def process_dir():
 	imputer = KNNImputer(n_neighbors=3)
 	df_input_params = impute_dataset(df_input_params, imputer)
 
+	# round the imputed values for dichotomous features
+	print(df_input_params['High_BP_Hist'].value_counts())
+	df_input_params['High_BP_Hist'] = df_input_params['High_BP_Hist'].round()
+	print(df_input_params['High_BP_Hist'].value_counts())
+
+	print(df_input_params['High_Chol_Hist'].value_counts())
+	df_input_params['High_Chol_Hist'] = df_input_params['High_Chol_Hist'].round()
+	print(df_input_params['High_Chol_Hist'].value_counts())
+
+	print(df_input_params['Reg_Pulse'].value_counts())
+	df_input_params['Reg_Pulse'] = df_input_params['Reg_Pulse'].round()
+	print(df_input_params['Reg_Pulse'].value_counts())
+	
 	df_input_params.to_csv(path + "Diabetes.csv")
 
 	# print(df_input_params.head())
