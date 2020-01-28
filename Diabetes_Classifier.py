@@ -27,7 +27,7 @@ def train_diabetes_model():
 	plt.close()	
 
 	# Show the amount of entries who have and don't have diabetes
-	plt.bar(['Does not have diabetes', 'Does have diabetes'], diabetes['target'].value_counts().sort_index(), color = ['blue', 'red'])
+	plt.bar(['Does not have diabetes', 'Does have diabetes'], diabetes['Diabetes'].value_counts().sort_index(), color = ['blue', 'red'])
 	plt.ylabel('Count')
 	plt.show()
 
@@ -37,8 +37,8 @@ def train_diabetes_model():
 	standardScaler = StandardScaler()
 	diabetes[columns_to_scale] = standardScaler.fit_transform(diabetes[columns_to_scale])
 
-	D = diabetes['target']
-	X = diabetes.drop(['target'], axis = 1)
+	D = diabetes['Diabetes']
+	X = diabetes.drop(['Diabetes'], axis = 1)
 	X_train, X_test, D_train, D_test = train_test_split(X, D, test_size = 0.33, random_state = 0)
 
 	# KNN

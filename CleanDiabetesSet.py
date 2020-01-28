@@ -14,7 +14,7 @@ def impute_dataset(df, imputer):
 	df2 = pd.DataFrame(Y, columns=['Diabetes'])
 	df = df.reset_index(drop=True)
 	df2 = df2.reset_index(drop=True)
-
+	
 	df = df.join(df2)
 
 	return df
@@ -126,7 +126,7 @@ def process_dir():
 	df_combined.set_index('SEQN', inplace=True)
 
 	df_input_params = df_combined[input_params]
-	df_combined.to_csv("combined_dataset.csv")
+
 	df_input_params.columns = Features
 
 	for col in Dich_Features:
@@ -161,18 +161,16 @@ def process_dir():
 	df_input_params['Reg_Pulse'] = df_input_params['Reg_Pulse'].round()
 	print(df_input_params['Reg_Pulse'].value_counts())
 	
-	df_input_params.to_csv(path + "Diabetes.csv")
 
-	# print(df_input_params.head())
-	# print(df_input_params.tail())
+	df_input_params.to_csv(path + "Diabetes.csv", index=False)
 
 	# Show correlation between features
-	plt.matshow(df_input_params.corr())
-	plt.xticks(np.arange(df_input_params.shape[1]), df_input_params.columns)
-	plt.yticks(np.arange(df_input_params.shape[1]), df_input_params.columns)
-	plt.colorbar()
-	plt.show()
-	plt.close()
+	# plt.matshow(df_input_params.corr())
+	# plt.xticks(np.arange(df_input_params.shape[1]), df_input_params.columns)
+	# plt.yticks(np.arange(df_input_params.shape[1]), df_input_params.columns)
+	# plt.colorbar()
+	# plt.show()
+	# plt.close()
 
 	# seqn_array = df_combined['SEQN']
 	# print(df_combined[['SDDSRVYR']])
