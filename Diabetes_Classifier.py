@@ -88,28 +88,6 @@ def train_diabetes_model():
 train_diabetes_model()
 
 
-# Features = [
-# 		'Short_Breath',
-# 		'Chest_Pains',
-# 		'High_Chol_Hist',
-# 		'High_BP_Hist',
-# 		'BMI',
-# 		'Reg_Pulse',
-# 		'Pulse_Type',
-# 		'Sys_BP',
-# 		'Dias_BP',
-# 		'Protein',
-# 		'HDL_Chol',
-# 		'LDL_Chol',
-# 		'Total_Chol',
-# 		'Fast_Glucose',
-# 		'Triglyceride',
-# 		'Uric_Acid',
-# 		'Diabetes'
-# 	]
-
-
-
 
 
 
