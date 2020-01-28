@@ -7,7 +7,16 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 
-def train_heart_model():
+
+def build_NB_classifier(X_train, Y_train):
+	# Naive Bayes
+	model = GaussianNB()
+	model.fit(X_train, Y_train)	
+
+	return model
+
+
+def train_heart_models():
 	# Load heart disease dataset into pandas dataframe
 	pathHeart = "../../FYP_Data/heart-disease-uci/"
 	
@@ -73,6 +82,12 @@ def train_heart_model():
 	plt.title('Decision Tree Classifier scores for different number of maximum features')
 	plt.show()
 
+
+	# Naive Bayes
+	model = build_NB_classifier(X_train, H_train)
+	test_pred = model.predict(X_test)
+	print(f'Accuracy of NB: {metrics.accuracy_score(H_test, test_pred)}')
+	
 	# Test the KNN classifier
 	# knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
 	# demo_values = [63, 145, 233, 150, 2.3, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]
@@ -85,9 +100,5 @@ def train_heart_model():
 	# p = knn_classifier_test.predict(df)
 	# print(p)
 
-def train_diabetes_model():
-	
 
-
-# train_heart_model()
-train_diabetes_model()
+train_heart_models()
