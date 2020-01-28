@@ -1,11 +1,21 @@
 # Start by importing libraries
 import pandas as pd
 from matplotlib import pyplot as plt
+from sklearn import preprocessing, metrics
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+
+
+def build_NB_classifier(X_train, Y_train):
+	# Naive Bayes
+	model = GaussianNB()
+	model.fit(X_train, Y_train)	
+
+	return model
 
 def train_diabetes_model():
 	# Load diabetes dataset into pandas dataframe
@@ -72,6 +82,11 @@ def train_diabetes_model():
 	plt.ylabel('Scores')
 	plt.title('Decision Tree Classifier scores for different number of maximum features')
 	plt.show()
+
+	# Naive Bayes
+	model = build_NB_classifier(X_train, D_train)
+	test_pred = model.predict(X_test)
+	print(f'Accuracy of NB: {metrics.accuracy_score(D_test, test_pred)}')
 
 	# Test the KNN classifier
 	# knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
