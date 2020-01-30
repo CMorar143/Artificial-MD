@@ -17,11 +17,22 @@ def build_NB_classifier(X_train, Y_train):
 
 	return model
 
-def train_diabetes_model():
+
+def load_dataframe():
 	# Load diabetes dataset into pandas dataframe
 	data_path = "../../FYP_Data/Health_Survey/"
-	
 	diabetes = pd.read_csv(data_path + 'Diabetes.csv')
+
+	return diabetes
+
+
+def build_NN():
+	diabetes = load_dataframe()
+
+	
+
+def train_diabetes_models():
+	diabetes = load_dataframe()
 	
 	# Show correlation between features
 	plt.matshow(diabetes.corr())
@@ -100,7 +111,8 @@ def train_diabetes_model():
 	# p = knn_classifier_test.predict(df)
 	# print(p)
 
-train_diabetes_model()
+# train_diabetes_models()
+build_NN()
 
 
 
