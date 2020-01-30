@@ -64,7 +64,7 @@ def KNN(X_train, H_train, X_test, H_test):
 	plt.show()
 
 
-def decision_tree(X_train, H_train, X_test, H_test):
+def decision_tree(X_train, H_train, X_test, H_test, X):
 	dt_scores = []
 	for i in range(1, len(X.columns) + 1):
 		dt_classifier = DecisionTreeClassifier(max_features = i, random_state = 0)
@@ -106,7 +106,7 @@ def train_heart_models():
 	KNN(X_train, H_train, X_test, H_test)
 
 	# Decision Tree
-	decision_tree(X_train, H_train, X_test, H_test)
+	decision_tree(X_train, H_train, X_test, H_test, X)
 
 	# Naive Bayes
 	naive_bayes(X_train, H_train, X_test, H_test)

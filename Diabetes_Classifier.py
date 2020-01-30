@@ -64,7 +64,7 @@ def KNN(X_train, D_train, X_test, D_test):
 	plt.show()
 
 
-def decision_tree(X_train, D_train, X_test, D_test):
+def decision_tree(X_train, D_train, X_test, D_test, X):
 	dt_scores = []
 	for i in range(1, len(X.columns) + 1):
 		dt_classifier = DecisionTreeClassifier(max_features = i, random_state = 0)
@@ -111,7 +111,7 @@ def train_diabetes_models():
 	KNN(X_train, D_train, X_test, D_test)
 
 	# Decision Tree
-	decision_tree(X_train, D_train, X_test, D_test)
+	decision_tree(X_train, D_train, X_test, D_test, X)
 
 	# Naive Bayes
 	naive_bayes(X_train, D_train, X_test, D_test)
@@ -128,8 +128,8 @@ def train_diabetes_models():
 	# p = knn_classifier_test.predict(df)
 	# print(p)
 
-# train_diabetes_models()
-build_NN()
+train_diabetes_models()
+# build_NN()
 
 
 
