@@ -18,7 +18,7 @@ def load_dataframe():
 	return heart
 
 
-def plot_diagrams(diabetes):
+def plot_diagrams(heart):
 	# Show correlation between features
 	plt.matshow(heart.corr())
 	plt.xticks(np.arange(heart.shape[1]), heart.columns)
