@@ -10,14 +10,6 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 
 
-def build_NB_classifier(X_train, Y_train):
-	# Naive Bayes
-	model = GaussianNB()
-	model.fit(X_train, Y_train)	
-
-	return model
-
-
 def load_dataframe():
 	# Load diabetes dataset into pandas dataframe
 	data_path = "../../FYP_Data/Health_Survey/"
@@ -81,7 +73,8 @@ def decision_tree(X_train, D_train, X_test, D_test):
 
 
 def naive_bayes(X_train, D_train, X_test, D_test):
-	model = build_NB_classifier(X_train, D_train)
+	model = GaussianNB()
+	model.fit(X_train, D_train)
 	test_pred = model.predict(X_test)
 	print(f'Accuracy of NB: {metrics.accuracy_score(D_test, test_pred)}')
 
