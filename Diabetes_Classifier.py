@@ -26,14 +26,7 @@ def load_dataframe():
 	return diabetes
 
 
-def build_NN():
-	diabetes = load_dataframe()
-
-	
-
-def train_diabetes_models():
-	diabetes = load_dataframe()
-	
+def plot_diagrams(diabetes):
 	# Show correlation between features
 	plt.matshow(diabetes.corr())
 	plt.xticks(np.arange(diabetes.shape[1]), diabetes.columns)
@@ -52,17 +45,8 @@ def train_diabetes_models():
 	plt.ylabel('Count')
 	plt.show()
 
-	# Use dummy columns for the categorical features
-	diabetes = pd.get_dummies(diabetes, columns = ['Short_Breath', 'Chest_Pains', 'High_Chol_Hist', 'High_BP_Hist', 'Reg_Pulse', 'Pulse_Type'])
-	columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'Protein', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
-	standardScaler = StandardScaler()
-	diabetes[columns_to_scale] = standardScaler.fit_transform(diabetes[columns_to_scale])
 
-	D = diabetes['Diabetes']
-	X = diabetes.drop(['Diabetes'], axis = 1)
-	X_train, X_test, D_train, D_test = train_test_split(X, D, test_size = 0.33, random_state = 0)
-
-	# KNN
+def KNN(X_train, D_train, X_test, D_test):
 	knn_scores = []
 	for k in range(1,30):
 		knn_classifier = KNeighborsClassifier(n_neighbors = k)
@@ -78,7 +62,8 @@ def train_diabetes_models():
 	plt.title('K Neighbors Classifier scores for different K values')
 	plt.show()
 
-	# Decision Tree
+
+def decision_tree(X_train, D_train, X_test, D_test):
 	dt_scores = []
 	for i in range(1, len(X.columns) + 1):
 		dt_classifier = DecisionTreeClassifier(max_features = i, random_state = 0)
@@ -94,10 +79,40 @@ def train_diabetes_models():
 	plt.title('Decision Tree Classifier scores for different number of maximum features')
 	plt.show()
 
-	# Naive Bayes
+
+def naive_bayes(X_train, D_train, X_test, D_test):
 	model = build_NB_classifier(X_train, D_train)
 	test_pred = model.predict(X_test)
 	print(f'Accuracy of NB: {metrics.accuracy_score(D_test, test_pred)}')
+
+
+def build_NN():
+	diabetes = load_dataframe()
+
+	
+
+def train_diabetes_models():
+	diabetes = load_dataframe()
+	plot_diagrams(diabetes)
+
+	# Use dummy columns for the categorical features
+	diabetes = pd.get_dummies(diabetes, columns = ['Short_Breath', 'Chest_Pains', 'High_Chol_Hist', 'High_BP_Hist', 'Reg_Pulse', 'Pulse_Type'])
+	columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'Protein', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
+	standardScaler = StandardScaler()
+	diabetes[columns_to_scale] = standardScaler.fit_transform(diabetes[columns_to_scale])
+
+	D = diabetes['Diabetes']
+	X = diabetes.drop(['Diabetes'], axis = 1)
+	X_train, X_test, D_train, D_test = train_test_split(X, D, test_size = 0.33, random_state = 0)
+
+	# KNN
+	KNN(X_train, D_train, X_test, D_test)
+
+	# Decision Tree
+	decision_tree(X_train, D_train, X_test, D_test)
+
+	# Naive Bayes
+	naive_bayes(X_train, D_train, X_test, D_test)
 
 	# Test the KNN classifier
 	# knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
