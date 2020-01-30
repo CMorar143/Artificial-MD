@@ -38,6 +38,15 @@ def plot_diagrams(diabetes):
 	plt.show()
 
 
+def scale_values(diabetes):
+	diabetes = pd.get_dummies(diabetes, columns = ['Short_Breath', 'Chest_Pains', 'High_Chol_Hist', 'High_BP_Hist', 'Reg_Pulse', 'Pulse_Type'])
+	columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'Protein', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
+	standardScaler = StandardScaler()
+	diabetes[columns_to_scale] = standardScaler.fit_transform(diabetes[columns_to_scale])
+
+	return diabetes
+
+
 def KNN(X_train, D_train, X_test, D_test):
 	knn_scores = []
 	for k in range(1,30):
@@ -85,15 +94,15 @@ def build_NN():
 	
 
 def train_diabetes_models():
+	# Load dataframe
 	diabetes = load_dataframe()
+	
 	plot_diagrams(diabetes)
 
 	# Use dummy columns for the categorical features
-	diabetes = pd.get_dummies(diabetes, columns = ['Short_Breath', 'Chest_Pains', 'High_Chol_Hist', 'High_BP_Hist', 'Reg_Pulse', 'Pulse_Type'])
-	columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'Protein', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
-	standardScaler = StandardScaler()
-	diabetes[columns_to_scale] = standardScaler.fit_transform(diabetes[columns_to_scale])
+	diabetes = scale_values(diabetes)
 
+	# Split dataset
 	D = diabetes['Diabetes']
 	X = diabetes.drop(['Diabetes'], axis = 1)
 	X_train, X_test, D_train, D_test = train_test_split(X, D, test_size = 0.33, random_state = 0)

@@ -38,6 +38,15 @@ def plot_diagrams(diabetes):
 	plt.show()
 
 
+def scale_values(heart):
+	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
+	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
+	standardScaler = StandardScaler()
+	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
+
+	return heart
+
+
 def KNN(X_train, H_train, X_test, H_test):
 	knn_scores = []
 	for k in range(1,30):
@@ -80,13 +89,15 @@ def naive_bayes(X_train, H_train, X_test, H_test):
 
 
 def train_heart_models():
-	
-	# Use dummy columns for the categorical features
-	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
-	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
-	standardScaler = StandardScaler()
-	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
+	# Load dataframe
+	heart = load_dataframe()
 
+	plot_diagrams(heart)
+
+	# Use dummy columns for the categorical features
+	heart = scale_values(heart)
+
+	# Split dataset
 	H = heart['target']
 	X = heart.drop(['target'], axis = 1)
 	X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.33, random_state = 0)
