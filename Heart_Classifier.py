@@ -91,7 +91,6 @@ def naive_bayes(X_train, H_train, X_test, H_test):
 def train_heart_models():
 	# Load dataframe
 	heart = load_dataframe()
-
 	plot_diagrams(heart)
 
 	# Use dummy columns for the categorical features

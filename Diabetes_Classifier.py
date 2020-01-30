@@ -96,7 +96,6 @@ def build_NN():
 def train_diabetes_models():
 	# Load dataframe
 	diabetes = load_dataframe()
-	
 	plot_diagrams(diabetes)
 
 	# Use dummy columns for the categorical features
