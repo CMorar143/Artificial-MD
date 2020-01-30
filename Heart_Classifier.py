@@ -10,20 +10,15 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 
 
-def build_NB_classifier(X_train, Y_train):
-	# Naive Bayes
-	model = GaussianNB()
-	model.fit(X_train, Y_train)	
-
-	return model
-
-
-def train_heart_models():
+def load_dataframe():
 	# Load heart disease dataset into pandas dataframe
 	pathHeart = "../../FYP_Data/heart-disease-uci/"
-	
 	heart = pd.read_csv(pathHeart + 'new_cleveland.csv')
-	
+
+	return heart
+
+
+def plot_diagrams(diabetes):
 	# Show correlation between features
 	plt.matshow(heart.corr())
 	plt.xticks(np.arange(heart.shape[1]), heart.columns)
@@ -42,17 +37,8 @@ def train_heart_models():
 	plt.ylabel('Count')
 	plt.show()
 
-	# Use dummy columns for the categorical features
-	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
-	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
-	standardScaler = StandardScaler()
-	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
-	H = heart['target']
-	X = heart.drop(['target'], axis = 1)
-	X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.33, random_state = 0)
-
-	# KNN
+def KNN(X_train, H_train, X_test, H_test):
 	knn_scores = []
 	for k in range(1,30):
 		knn_classifier = KNeighborsClassifier(n_neighbors = k)
@@ -68,7 +54,8 @@ def train_heart_models():
 	plt.title('K Neighbors Classifier scores for different K values')
 	plt.show()
 
-	# Decision Tree
+
+def decision_tree(X_train, H_train, X_test, H_test):
 	dt_scores = []
 	for i in range(1, len(X.columns) + 1):
 		dt_classifier = DecisionTreeClassifier(max_features = i, random_state = 0)
@@ -85,11 +72,34 @@ def train_heart_models():
 	plt.show()
 
 
-	# Naive Bayes
-	model = build_NB_classifier(X_train, H_train)
+def naive_bayes(X_train, H_train, X_test, H_test):
+	model = GaussianNB()
+	model.fit(X_train, H_train)
 	test_pred = model.predict(X_test)
 	print(f'Accuracy of NB: {metrics.accuracy_score(H_test, test_pred)}')
+
+
+def train_heart_models():
 	
+	# Use dummy columns for the categorical features
+	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
+	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
+	standardScaler = StandardScaler()
+	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
+
+	H = heart['target']
+	X = heart.drop(['target'], axis = 1)
+	X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.33, random_state = 0)
+
+	# KNN
+	KNN(X_train, H_train, X_test, H_test)
+
+	# Decision Tree
+	decision_tree(X_train, H_train, X_test, H_test)
+
+	# Naive Bayes
+	naive_bayes(X_train, H_train, X_test, H_test)
+
 	# Test the KNN classifier
 	# knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
 	# demo_values = [63, 145, 233, 150, 2.3, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]
