@@ -45,6 +45,8 @@ def scale_values(diabetes):
 	standardScaler = StandardScaler()
 	diabetes[columns_to_scale] = standardScaler.fit_transform(diabetes[columns_to_scale])
 
+	diabetes.to_csv(data_path + "Diabetes_scaled.csv", index=False)
+
 	return diabetes
 
 
