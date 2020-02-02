@@ -92,14 +92,16 @@ def naive_bayes(X_train, D_train, X_test, D_test):
 
 def build_NN():
 	diabetes = load_dataframe()
+	diabetes = scale_values(diabetes)
 
+	
 	
 def train_diabetes_models():
 	# Load dataframe
 	diabetes = load_dataframe()
 	plot_diagrams(diabetes)
 
-	# Use dummy columns for the categorical features
+	# Normalise values
 	diabetes = scale_values(diabetes)
 
 	# Split dataset
