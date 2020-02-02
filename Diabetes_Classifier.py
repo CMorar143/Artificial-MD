@@ -9,10 +9,11 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 
+data_path = "../../FYP_Data/Health_Survey/"
 
 def load_dataframe():
 	# Load diabetes dataset into pandas dataframe
-	data_path = "../../FYP_Data/Health_Survey/"
+	# data_path = "../../FYP_Data/Health_Survey/"
 	diabetes = pd.read_csv(data_path + 'Diabetes.csv')
 
 	return diabetes
