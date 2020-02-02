@@ -39,7 +39,7 @@ def plot_diagrams(heart):
 
 
 def scale_values(heart):
-	heart = pd.get_dummies(heart, columns = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang'])
+	heart = pd.get_dummies(heart, columns = ['cp', 'fbs', 'exang'])
 	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
 	standardScaler = StandardScaler()
 	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])

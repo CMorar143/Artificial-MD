@@ -94,7 +94,6 @@ def build_NN():
 	diabetes = load_dataframe()
 
 	
-
 def train_diabetes_models():
 	# Load dataframe
 	diabetes = load_dataframe()
