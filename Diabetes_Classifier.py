@@ -94,7 +94,13 @@ def build_NN():
 	diabetes = load_dataframe()
 	diabetes = scale_values(diabetes)
 
+	# Split dataset
+	Y = diabetes['Diabetes']
+	X = diabetes.drop(['Diabetes'], axis = 1)
 	
+
+
+
 	
 def train_diabetes_models():
 	# Load dataframe
@@ -130,8 +136,8 @@ def train_diabetes_models():
 	# p = knn_classifier_test.predict(df)
 	# print(p)
 
-train_diabetes_models()
-# build_NN()
+# train_diabetes_models()
+build_NN()
 
 
 
