@@ -40,7 +40,6 @@ def plot_diagrams(diabetes):
 
 
 def scale_values(diabetes):
-	# diabetes = pd.get_dummies(diabetes, columns = ['Short_Breath', 'Chest_Pains', 'High_Chol_Hist', 'High_BP_Hist', 'Reg_Pulse', 'Pulse_Type'])
 	columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'Protein', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
 	standardScaler = StandardScaler()
 	diabetes[columns_to_scale] = standardScaler.fit_transform(diabetes[columns_to_scale])
