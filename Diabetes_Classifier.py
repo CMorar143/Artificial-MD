@@ -5,9 +5,12 @@ from sklearn import preprocessing, metrics
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+
+# For each model
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.neural_network import MLPClassifier
 
 data_path = "../../FYP_Data/Health_Survey/"
 
@@ -47,6 +50,16 @@ def scale_values(diabetes):
 	diabetes.to_csv(data_path + "Diabetes_scaled.csv", index=False)
 
 	return diabetes
+
+
+def scale_values_NN(X_train, X_test):
+	standardScaler = StandardScaler()
+	standardScaler.fit(X_train)
+
+	X_train = standardScaler.transform(X_train)
+	X_test = standardScaler.transform(X_test)
+
+	return X_train, X_test
 
 
 def KNN(X_train, D_train, X_test, D_test):
@@ -92,13 +105,12 @@ def naive_bayes(X_train, D_train, X_test, D_test):
 
 def build_NN():
 	diabetes = load_dataframe()
-	diabetes = scale_values(diabetes)
 
 	# Split dataset
-	Y = diabetes['Diabetes']
+	y = diabetes['Diabetes']
 	X = diabetes.drop(['Diabetes'], axis = 1)
-	
-
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
+	X_train, X_test = scale_values_NN(X_train, X_test)
 
 
 	
