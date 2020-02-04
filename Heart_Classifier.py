@@ -60,6 +60,10 @@ def scale_values_NN(X_train, X_test):
 	return X_train, X_test
 
 
+def split_dataset(X, D):
+	return train_test_split(X, D, test_size = 0.28, random_state = 0)
+
+
 def KNN(X_train, H_train, X_test, H_test):
 	knn_scores = []
 	for k in range(1,30):
@@ -132,7 +136,7 @@ def train_heart_models():
 	# Split dataset
 	H = heart['target']
 	X = heart.drop(['target'], axis = 1)
-	X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.33, random_state = 0)
+	X_train, X_test, H_train, H_test = split_dataset(X, H)
 
 	# KNN
 	KNN(X_train, H_train, X_test, H_test)

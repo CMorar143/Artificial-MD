@@ -65,7 +65,7 @@ def scale_values_NN(X_train, X_test):
 
 
 def split_dataset(X, D):
-	return train_test_split(X, D, test_size = 0.33, random_state = 0)
+	return train_test_split(X, D, test_size = 0.25, random_state = 0)
 
 
 def KNN(X_train, D_train, X_test, D_test):
@@ -165,7 +165,7 @@ def train_diabetes_models():
 	# demo_values = [63, 145, 233, 150, 2.3, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]
 	# knn_classifier_test.fit(X_train, D_train)
 
-	# df = pd.DataFrame(columns = X_test.columns) 
+	# df = pd.DataFrame(columns = X_test.columns)
 	# df.loc[0] = demo_values
 	# print(df)
 
