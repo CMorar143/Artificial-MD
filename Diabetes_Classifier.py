@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 from sklearn import preprocessing, metrics
 from sklearn.metrics import classification_report, confusion_matrix
 import numpy as np
+from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
@@ -129,11 +130,23 @@ def train_diabetes_models():
 
 	# Normalise values
 	diabetes = scale_values(diabetes)
-	
+
 	# Split dataset
 	D = diabetes['Diabetes']
 	X = diabetes.drop(['Diabetes'], axis = 1)
-	X_train, X_test, D_train, D_test = train_test_split(X, D, test_size = 0.33, random_state = 0)
+
+	# With oversampling
+	# X_train, X_test, D_train, D_test = split_dataset()
+	
+	sm = SMOTE(random_state=52)
+	x_sm, d_sm = sm.fit_sample(X, D)
+	
+	# Without Oversampling
+	X_train, X_test, D_train, D_test = train_test_split(x_sm, d_sm, test_size = 0.33, random_state = 0)
+
+	print(D.value_counts())
+	print("\n\n\n")
+	print(d_sm.value_counts())
 
 	# KNN
 	KNN(X_train, D_train, X_test, D_test)
@@ -156,8 +169,8 @@ def train_diabetes_models():
 	# p = knn_classifier_test.predict(df)
 	# print(p)
 
-# train_diabetes_models()
-build_NN()
+train_diabetes_models()
+# build_NN()
 
 
 

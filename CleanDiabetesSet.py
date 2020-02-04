@@ -4,6 +4,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
 from sklearn.impute import KNNImputer
+from imblearn.over_sampling import SMOTE
 
 def impute_dataset(df, imputer):
 	X = df.drop(['Diabetes'], axis = 1)
