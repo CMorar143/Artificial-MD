@@ -129,7 +129,7 @@ def train_diabetes_models():
 
 	# Normalise values
 	diabetes = scale_values(diabetes)
-
+	
 	# Split dataset
 	D = diabetes['Diabetes']
 	X = diabetes.drop(['Diabetes'], axis = 1)

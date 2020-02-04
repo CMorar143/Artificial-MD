@@ -1,13 +1,16 @@
 # Start by importing libraries
 import pandas as pd
 from matplotlib import pyplot as plt
+from sklearn import preprocessing, metrics
+from sklearn.metrics import classification_report, confusion_matrix
 import numpy as np
-from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.neural_network import MLPClassifier
 
 
 def load_dataframe():
@@ -45,6 +48,16 @@ def scale_values(heart):
 	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
 	return heart
+
+
+def scale_values_NN(X_train, X_test):
+	standardScaler = StandardScaler()
+	standardScaler.fit(X_train)
+
+	X_train = standardScaler.transform(X_train)
+	X_test = standardScaler.transform(X_test)
+
+	return X_train, X_test
 
 
 def KNN(X_train, H_train, X_test, H_test):
@@ -88,6 +101,26 @@ def naive_bayes(X_train, H_train, X_test, H_test):
 	print(f'Accuracy of NB: {metrics.accuracy_score(H_test, test_pred)}')
 
 
+def build_NN():
+	heart = load_dataframe()
+
+	# Split dataset
+	y = heart['target']
+	X = heart.drop(['target'], axis = 1)
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
+	X_train, X_test = scale_values_NN(X_train, X_test)
+
+	# Build NN
+	mlp = MLPClassifier(hidden_layer_sizes=(10, 10, 10), max_iter=1000)
+	mlp.fit(X_train, y_train.values.ravel())
+	predictions = mlp.predict(X_test)
+
+	# Evaluate NN
+	print(confusion_matrix(y_test,predictions))
+	print(classification_report(y_test,predictions))
+	
+
+
 def train_heart_models():
 	# Load dataframe
 	heart = load_dataframe()
@@ -123,4 +156,5 @@ def train_heart_models():
 	# print(p)
 
 
-train_heart_models()
+# train_heart_models()
+build_NN()
