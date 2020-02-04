@@ -140,12 +140,12 @@ def train_diabetes_models():
 	X = diabetes.drop(['Diabetes'], axis = 1)
 
 	# With oversampling
-	# sm = SMOTE(random_state=52)
-	# x_sm, d_sm = sm.fit_sample(X, D)
-	# X_train, X_test, D_train, D_test = split_dataset(x_sm, d_sm)
+	sm = SMOTE(random_state=52)
+	x_sm, d_sm = sm.fit_sample(X, D)
+	X_train, X_test, D_train, D_test = split_dataset(x_sm, d_sm)
 	
 	# Without Oversampling
-	X_train, X_test, D_train, D_test = split_dataset(X, D)
+	# X_train, X_test, D_train, D_test = split_dataset(X, D)
 
 	print(D.value_counts())
 	print("\n\n\n")
