@@ -111,7 +111,7 @@ def build_NN():
 	# Split dataset
 	y = heart['target']
 	X = heart.drop(['target'], axis = 1)
-	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20)
+	X_train, X_test, y_train, y_test = split_dataset(X, y)
 	X_train, X_test = scale_values_NN(X_train, X_test)
 
 	# Build NN
