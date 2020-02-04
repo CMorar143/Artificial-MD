@@ -64,6 +64,10 @@ def scale_values_NN(X_train, X_test):
 	return X_train, X_test
 
 
+def split_dataset(X, D):
+	return train_test_split(X, D, test_size = 0.33, random_state = 0)
+
+
 def KNN(X_train, D_train, X_test, D_test):
 	knn_scores = []
 	for k in range(1,30):
@@ -136,13 +140,12 @@ def train_diabetes_models():
 	X = diabetes.drop(['Diabetes'], axis = 1)
 
 	# With oversampling
-	# X_train, X_test, D_train, D_test = split_dataset()
-	
-	sm = SMOTE(random_state=52)
-	x_sm, d_sm = sm.fit_sample(X, D)
+	# sm = SMOTE(random_state=52)
+	# x_sm, d_sm = sm.fit_sample(X, D)
+	# X_train, X_test, D_train, D_test = split_dataset(x_sm, d_sm)
 	
 	# Without Oversampling
-	X_train, X_test, D_train, D_test = train_test_split(x_sm, d_sm, test_size = 0.33, random_state = 0)
+	X_train, X_test, D_train, D_test = split_dataset(X, D)
 
 	print(D.value_counts())
 	print("\n\n\n")
