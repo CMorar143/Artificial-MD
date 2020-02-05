@@ -10,6 +10,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
 
 
@@ -102,7 +103,14 @@ def naive_bayes(X_train, H_train, X_test, H_test):
 	model = GaussianNB()
 	model.fit(X_train, H_train)
 	test_pred = model.predict(X_test)
-	print(f'Accuracy of NB: {metrics.accuracy_score(H_test, test_pred)}')
+	print(f'Accuracy of NB: {metrics.accuracy_score(H_test, test_pred)}\n')
+
+
+def linear_support_vector(X_train, H_train, X_test, H_test):
+	svm_model = LinearSVC(random_state=0)
+	svm_model.fit(X_train, H_train)
+	test_pred = model.predict(X_test)
+	print(f'Accuracy of LVM: {metrics.accuracy_score(H_test, test_pred)}\n')
 
 
 def build_NN():
@@ -146,6 +154,9 @@ def train_heart_models():
 
 	# Naive Bayes
 	naive_bayes(X_train, H_train, X_test, H_test)
+
+	# Linear Support Vector
+	linear_support_vector(X_train, H_train, X_test, H_test)
 
 	# Test the KNN classifier
 	# knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
