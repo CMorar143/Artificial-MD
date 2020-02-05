@@ -109,7 +109,7 @@ def naive_bayes(X_train, H_train, X_test, H_test):
 def linear_support_vector(X_train, H_train, X_test, H_test):
 	svm_model = LinearSVC(random_state=0)
 	svm_model.fit(X_train, H_train)
-	test_pred = model.predict(X_test)
+	test_pred = svm_model.predict(X_test)
 	print(f'Accuracy of LVM: {metrics.accuracy_score(H_test, test_pred)}\n')
 
 
@@ -171,5 +171,5 @@ def train_heart_models():
 	# print(p)
 
 
-# train_heart_models()
-build_NN()
+train_heart_models()
+# build_NN()
