@@ -109,6 +109,13 @@ def naive_bayes(X_train, D_train, X_test, D_test):
 	print(f'Accuracy of NB: {metrics.accuracy_score(D_test, test_pred)}')
 
 
+def linear_support_vector(X_train, D_train, X_test, D_test):
+	svm_model = LinearSVC(random_state=0)
+	svm_model.fit(X_train, D_train)
+	test_pred = svm_model.predict(X_test)
+	print(f'Accuracy of LVM: {metrics.accuracy_score(D_test, test_pred)}\n')
+
+
 def build_NN():
 	diabetes = load_dataframe()
 
@@ -147,10 +154,6 @@ def train_diabetes_models():
 	# Without Oversampling
 	# X_train, X_test, D_train, D_test = split_dataset(X, D)
 
-	print(D.value_counts())
-	print("\n\n\n")
-	print(d_sm.value_counts())
-
 	# KNN
 	KNN(X_train, D_train, X_test, D_test)
 
@@ -159,6 +162,9 @@ def train_diabetes_models():
 
 	# Naive Bayes
 	naive_bayes(X_train, D_train, X_test, D_test)
+
+	# Linear Support Vector
+	linear_support_vector(X_train, D_train, X_test, D_test)
 
 	# Test the KNN classifier
 	# knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
