@@ -1,5 +1,6 @@
 # Start by importing libraries
 import pandas as pd
+import matplotlib.patches as patches
 from matplotlib import pyplot as plt
 from sklearn import preprocessing, metrics
 from sklearn.metrics import classification_report, confusion_matrix
@@ -125,6 +126,13 @@ def print_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc):
 	print(f'Accuracy of Naive Bayes: {nb_acc}\n')
 	print(f'Accuracy of LVM: {lsv_acc}\n')
 
+	Labels = [
+		'K Nearest Neighbour',
+		'Decision Tree',
+		'Naive Bayes',
+		'Linear Support Vector'
+	]
+
 
 def build_NN():
 	heart = load_dataframe()
@@ -172,6 +180,9 @@ def train_heart_models():
 	lsv_acc = linear_support_vector(X_train, H_train, X_test, H_test)
 
 	print_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc)
+
+
+
 
 	# Test the KNN classifier
 	# knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
