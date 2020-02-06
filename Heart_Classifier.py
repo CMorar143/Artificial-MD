@@ -1,19 +1,22 @@
-# Start by importing libraries
 import pandas as pd
-import matplotlib.patches as patches
-from matplotlib import pyplot as plt
-from sklearn import preprocessing, metrics
-from sklearn.metrics import classification_report, confusion_matrix
 import numpy as np
+from matplotlib import pyplot as plt
+
+# For data preparation
+from sklearn import preprocessing, metrics
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
+# For building models
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
 
+# For evaluation
+from yellowbrick.classifier import ClassificationReport
+from sklearn.metrics import classification_report, confusion_matrix
 
 def load_dataframe():
 	# Load heart disease dataset into pandas dataframe
@@ -108,7 +111,12 @@ def naive_bayes(X_train, H_train, X_test, H_test):
 	model = GaussianNB()
 	model.fit(X_train, H_train)
 	test_pred = model.predict(X_test)
-
+	
+	visualizer = ClassificationReport(model, classes=['Won','Loss'])
+	visualizer.fit(X_train, H_train)
+	visualizer.score(X_test, H_test)
+	g = visualizer.poof()
+	
 	return metrics.accuracy_score(H_test, test_pred)
 
 
@@ -120,7 +128,7 @@ def linear_support_vector(X_train, H_train, X_test, H_test):
 	return metrics.accuracy_score(H_test, test_pred)
 
 
-def print_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc):
+def display_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc):
 	print(f'Accuracy of KNN: {knn_acc}\n')
 	print(f'Accuracy of Decision tree: {dt_acc}\n')
 	print(f'Accuracy of Naive Bayes: {nb_acc}\n')
@@ -190,7 +198,7 @@ def train_heart_models():
 	# Linear Support Vector
 	lsv_acc = linear_support_vector(X_train, H_train, X_test, H_test)
 
-	print_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc)
+	display_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc)
 
 
 
