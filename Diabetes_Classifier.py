@@ -12,6 +12,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
 
 data_path = "../../FYP_Data/Health_Survey/"
@@ -22,6 +23,7 @@ def load_dataframe():
 	diabetes = pd.read_csv(data_path + 'Diabetes.csv')
 
 	return diabetes
+
 
 
 def plot_diagrams(diabetes):
@@ -110,7 +112,7 @@ def naive_bayes(X_train, D_train, X_test, D_test):
 
 
 def linear_support_vector(X_train, D_train, X_test, D_test):
-	svm_model = LinearSVC(random_state=0)
+	svm_model = LinearSVC(random_state=0, max_iter=10000)
 	svm_model.fit(X_train, D_train)
 	test_pred = svm_model.predict(X_test)
 	print(f'Accuracy of LVM: {metrics.accuracy_score(D_test, test_pred)}\n')
