@@ -126,12 +126,23 @@ def print_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc):
 	print(f'Accuracy of Naive Bayes: {nb_acc}\n')
 	print(f'Accuracy of LVM: {lsv_acc}\n')
 
-	Labels = [
-		'K Nearest Neighbour',
-		'Decision Tree',
-		'Naive Bayes',
-		'Linear Support Vector'
+	accuracies = [
+		knn_acc, dt_acc, 
+		nb_acc, lsv_acc
 	]
+
+	labels = [
+		'K Nearest Neighbour', 'Decision Tree',
+		'Naive Bayes', 'Linear Support Vector'
+	]
+
+	index = np.arange(len(labels))
+	plt.bar(index, accuracies)
+	plt.xlabel('ML Model', fontsize=9)
+	plt.ylabel('%  of accuracy', fontsize=9)
+	plt.xticks(index, labels, fontsize=7, rotation=30)
+	plt.title('Accuracy for the different types of ML models')
+	plt.show()
 
 
 def build_NN():
@@ -157,7 +168,7 @@ def build_NN():
 def train_heart_models():
 	# Load dataframe
 	heart = load_dataframe()
-	plot_diagrams(heart)
+	# plot_diagrams(heart)
 
 	# Use dummy columns for the categorical features
 	heart = scale_values(heart)
