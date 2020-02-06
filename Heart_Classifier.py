@@ -81,6 +81,8 @@ def KNN(X_train, H_train, X_test, H_test):
 	plt.title('K Neighbors Classifier scores for different K values')
 	plt.show()
 
+	return max(knn_scores)
+
 
 def decision_tree(X_train, H_train, X_test, H_test, X):
 	dt_scores = []
@@ -98,19 +100,30 @@ def decision_tree(X_train, H_train, X_test, H_test, X):
 	plt.title('Decision Tree Classifier scores for different number of maximum features')
 	plt.show()
 
+	return max(dt_scores)
+
 
 def naive_bayes(X_train, H_train, X_test, H_test):
 	model = GaussianNB()
 	model.fit(X_train, H_train)
 	test_pred = model.predict(X_test)
-	print(f'Accuracy of NB: {metrics.accuracy_score(H_test, test_pred)}\n')
+
+	return metrics.accuracy_score(H_test, test_pred)
 
 
 def linear_support_vector(X_train, H_train, X_test, H_test):
 	svm_model = LinearSVC(random_state=0, max_iter=3500)
 	svm_model.fit(X_train, H_train)
 	test_pred = svm_model.predict(X_test)
-	print(f'Accuracy of LVM: {metrics.accuracy_score(H_test, test_pred)}\n')
+
+	return metrics.accuracy_score(H_test, test_pred)
+
+
+def print_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc):
+	print(f'Accuracy of KNN: {knn_acc}\n')
+	print(f'Accuracy of Decision tree: {dt_acc}\n')
+	print(f'Accuracy of Naive Bayes: {nb_acc}\n')
+	print(f'Accuracy of LVM: {lsv_acc}\n')
 
 
 def build_NN():
@@ -147,16 +160,18 @@ def train_heart_models():
 	X_train, X_test, H_train, H_test = split_dataset(X, H)
 
 	# KNN
-	KNN(X_train, H_train, X_test, H_test)
+	knn_acc = KNN(X_train, H_train, X_test, H_test)
 
 	# Decision Tree
-	decision_tree(X_train, H_train, X_test, H_test, X)
+	dt_acc = decision_tree(X_train, H_train, X_test, H_test, X)
 
 	# Naive Bayes
-	naive_bayes(X_train, H_train, X_test, H_test)
+	nb_acc = naive_bayes(X_train, H_train, X_test, H_test)
 
 	# Linear Support Vector
-	linear_support_vector(X_train, H_train, X_test, H_test)
+	lsv_acc = linear_support_vector(X_train, H_train, X_test, H_test)
+
+	print_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc)
 
 	# Test the KNN classifier
 	# knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
