@@ -16,7 +16,7 @@ from sklearn.neural_network import MLPClassifier
 
 # For evaluation
 from yellowbrick.classifier import ClassificationReport
-from sklearn.metrics import classification_report, confusion_matrix
+# from sklearn.metrics import classification_report, confusion_matrix
 
 def load_dataframe():
 	# Load heart disease dataset into pandas dataframe
@@ -115,7 +115,7 @@ def naive_bayes(X_train, H_train, X_test, H_test):
 	visualizer = ClassificationReport(model, classes=['Won','Loss'])
 	visualizer.fit(X_train, H_train)
 	visualizer.score(X_test, H_test)
-	_ = visualizer.poof()
+	visualizer.poof()
 
 	return metrics.accuracy_score(H_test, test_pred)
 
@@ -128,7 +128,7 @@ def linear_support_vector(X_train, H_train, X_test, H_test):
 	visualizer = ClassificationReport(svm_model, classes=['Won','Loss'])
 	visualizer.fit(X_train, H_train)
 	visualizer.score(X_test, H_test)
-	_ = visualizer.poof()
+	visualizer.poof()
 
 	return metrics.accuracy_score(H_test, test_pred)
 
