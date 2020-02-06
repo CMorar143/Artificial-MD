@@ -108,7 +108,7 @@ def naive_bayes(X_train, D_train, X_test, D_test):
 	model = GaussianNB()
 	model.fit(X_train, D_train)
 	test_pred = model.predict(X_test)
-	print(f'Accuracy of NB: {metrics.accuracy_score(D_test, test_pred)}')
+	print(f'Accuracy of NB: {metrics.accuracy_score(D_test, test_pred)}\n')
 
 
 def linear_support_vector(X_train, D_train, X_test, D_test):

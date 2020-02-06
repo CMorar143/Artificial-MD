@@ -107,7 +107,7 @@ def naive_bayes(X_train, H_train, X_test, H_test):
 
 
 def linear_support_vector(X_train, H_train, X_test, H_test):
-	svm_model = LinearSVC(random_state=0)
+	svm_model = LinearSVC(random_state=0, max_iter=3500)
 	svm_model.fit(X_train, H_train)
 	test_pred = svm_model.predict(X_test)
 	print(f'Accuracy of LVM: {metrics.accuracy_score(H_test, test_pred)}\n')
