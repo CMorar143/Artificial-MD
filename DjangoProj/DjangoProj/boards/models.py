@@ -71,7 +71,13 @@ class Reminders(models.Model):
 
 
 
+class Allergy(models.Model):
+	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
+	medication = models.ForeignKey('Medication', on_delete=models.CASCADE, null=True)
+	name = models.CharField(max_length=50)
 
+	def __str__(self):
+		return self.name
 
 
 
