@@ -81,6 +81,32 @@ class Allergy(models.Model):
 
 
 
+class Medical_history(models.Model):
+	exam = models.ForeignKey('Examination', on_delete=models.CASCADE)
+	heart_attack = models.BooleanField()
+	angina = models.BooleanField()
+	breathlessness = models.BooleanField()
+	chest_pain = models.BooleanField()
+	high_chol = models.BooleanField()
+	high_bp = models.BooleanField()
+	hoarseness = models.BooleanField()
+	wheezing = models.BooleanField()
+	sweating = models.BooleanField()
+	diabetes = models.BooleanField()
+	stressed = models.BooleanField()
+	childhood_illness = models.CharField(max_length=20, null=True)
+
+	def __str__(self):
+		fields = (
+			self.heart_attack, self.angina, self.breathlessness,
+			self.chest_pain, self.high_chol, self.high_bp,
+			self.hoarseness, self.wheezing, self.sweating,
+			self.diabetes, self.stressed, self.childhood_illness
+		)
+		return str(fields)
+
+
+
 class Investigation(models.Model):
 	visit = models.ForeignKey('Visit', on_delete=models.CASCADE)
 	date = models.DateTimeField(auto_now_add=True)
