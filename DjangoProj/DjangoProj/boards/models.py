@@ -4,17 +4,24 @@ from django.conf import settings
 
 # Create your models here.
 class Patient(models.Model):
+	family = models.ForeignKey('Family', on_delete=models.CASCADE)
 	patient_name = models.CharField(max_length=50)
-	# DOB = models.DateTimeField()
+	DOB = models.DateTimeField()
 	age = models.PositiveIntegerField()
 	address = models.TextField(max_length=400)
 	occupation = models.CharField(max_length=30)
 	marital_status = models.PositiveIntegerField()
+	acc_balance = models.PositiveIntegerField()
+	tel_num = models.PositiveIntegerField(null=True)
+	home_num = models.PositiveIntegerField(null=True)
+	next_app = models.DateTimeField(null=True)
+	recall_period = models.PositiveIntegerField(null=True)
 
 	def __str__(self):
 		fields = (
-			self.patient_name, self.age, self.address,
-			self.occupation, self.marital_status
+			self.patient_name, self.DOB, self.age, self.address,
+			self.occupation, self.marital_status, self.acc_balance
+			self.tel_num, self.home_num, self.next_app, self.recall_period 
 		)
 		return str(fields)
 
