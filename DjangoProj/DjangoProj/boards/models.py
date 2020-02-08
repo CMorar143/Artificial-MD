@@ -98,6 +98,16 @@ class Investigation(models.Model):
 
 
 
+class Medication(models.Model):
+	ailment = models.ForeignKey('Ailment', on_delete=models.CASCADE)
+	allergy = models.ForeignKey('Allergy', on_delete=models.CASCADE)
+	name = models.CharField(max_length=50)
+
+	def __str__(self):
+		return self.name
+
+
+
 class Doctor(models.Model):
 	name = models.CharField(max_length=30)
 	username = models.CharField(max_length=20, unique=True)
