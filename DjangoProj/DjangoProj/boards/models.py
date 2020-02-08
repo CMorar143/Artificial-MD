@@ -81,6 +81,23 @@ class Allergy(models.Model):
 
 
 
+class Investigation(models.Model):
+	visit = models.ForeignKey('Visit', on_delete=models.CASCADE)
+	date = models.DateTimeField(auto_now_add=True)
+	further_actions = models.CharField(max_length=150)
+	ref_to = models.CharField(max_length=100, null=True)
+	ref_reason = models.CharField(max_length=150, null=True)
+	result = models.CharField(max_length=200)
+
+	def __str__(self):
+		fields = (
+			self.date, self.further_actions, self.ref_to, 
+			self.ref_reason, self.result
+		)
+		return str(fields)
+
+
+
 class Doctor(models.Model):
 	name = models.CharField(max_length=30)
 	username = models.CharField(max_length=20, unique=True)
