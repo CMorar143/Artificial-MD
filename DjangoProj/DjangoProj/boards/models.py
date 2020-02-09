@@ -91,11 +91,12 @@ class Allergy(models.Model):
 
 
 class Medical_history(models.Model):
+	patient = models.ForeignKey('Patient', primary_key=True, on_delete=models.CASCADE)
 	exam = models.ForeignKey('Examination', on_delete=models.CASCADE)
 	heart_attack = models.BooleanField()
 	angina = models.BooleanField()
 	breathlessness = models.BooleanField()
-	chest_pain = models.BooleanField()
+	chest_pain = models.PositiveIntegerField()
 	high_chol = models.BooleanField()
 	high_bp = models.BooleanField()
 	hoarseness = models.BooleanField()
@@ -155,23 +156,33 @@ class Doctor(models.Model):
 
 
 class Examination(models.Model):
+	# Diabetes
 	height = models.FloatField()
 	weight = models.FloatField()
+	pulse_rate = models.PositiveIntegerField()
+	reg_pulse = models.BooleanField()
+	pulse_type = models.PositiveIntegerField()
+	protein = models.FloatField()
+	hdl_chol = models.FloatField()
+
+	# Heart disease
+
+
+	# Both
+	blood_systolic = models.FloatField()
+	blood_diastolic = models.FloatField()
+
+	
 	heart_rate = models.PositiveIntegerField()
 	heart_rhythm = models.PositiveIntegerField()
 	oxygen = models.FloatField()
-
 	age = models.PositiveIntegerField(default=0)
 	sex = models.PositiveIntegerField()
-	chest_pain = models.PositiveIntegerField()
-	blood_systolic = models.FloatField()
-	blood_diastolic = models.FloatField()
+	
 	chol_overall = models.FloatField()
 	smoke_per_day = models.PositiveIntegerField()
 	smoker_years = models.PositiveIntegerField()
 	fasting_glucose = models.FloatField()
-	hist_diabetes = models.BooleanField()
-	hist_heart_disease = models.BooleanField()
 	exerc_angina = models.BooleanField()
 	date = models.DateTimeField(auto_now_add=True)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
