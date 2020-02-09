@@ -165,8 +165,8 @@ class Examination(models.Model):
 	reg_pulse = models.BooleanField()
 	pulse_type = models.PositiveIntegerField()
 	protein = models.FloatField()
-	hdl_chol = models.FloatField()
-	ldl_chol = models.FloatField()
+	hdl_chol = models.FloatField(null=True)
+	ldl_chol = models.FloatField(null=True)
 	triglyceride = models.FloatField()
 	uric_acid = models.FloatField()
 
