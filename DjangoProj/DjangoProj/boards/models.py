@@ -156,8 +156,7 @@ class Doctor(models.Model):
 
 
 class Examination(models.Model):
-	date = models.DateTimeField(auto_now_add=True)
-	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+	visit = models.ForeignKey('Visit', on_delete=models.CASCADE)
 
 	# Diabetes
 	height = models.FloatField()
