@@ -156,36 +156,33 @@ class Doctor(models.Model):
 
 
 class Examination(models.Model):
+	date = models.DateTimeField(auto_now_add=True)
+	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+
 	# Diabetes
 	height = models.FloatField()
 	weight = models.FloatField()
-	pulse_rate = models.PositiveIntegerField()
 	reg_pulse = models.BooleanField()
 	pulse_type = models.PositiveIntegerField()
 	protein = models.FloatField()
 	hdl_chol = models.FloatField()
+	ldl_chol = models.FloatField()
+	triglyceride = models.FloatField()
+	uric_acid = models.FloatField()
 
 	# Heart disease
-
+	age = models.PositiveIntegerField(default=0)
+	sex = models.PositiveIntegerField()
+	smoke_per_day = models.PositiveIntegerField()
+	smoker_years = models.PositiveIntegerField()
+	exerc_angina = models.BooleanField()
 
 	# Both
 	blood_systolic = models.FloatField()
 	blood_diastolic = models.FloatField()
-
-	
-	heart_rate = models.PositiveIntegerField()
-	heart_rhythm = models.PositiveIntegerField()
-	oxygen = models.FloatField()
-	age = models.PositiveIntegerField(default=0)
-	sex = models.PositiveIntegerField()
-	
 	chol_overall = models.FloatField()
-	smoke_per_day = models.PositiveIntegerField()
-	smoker_years = models.PositiveIntegerField()
 	fasting_glucose = models.FloatField()
-	exerc_angina = models.BooleanField()
-	date = models.DateTimeField(auto_now_add=True)
-	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
+	pulse_rate = models.PositiveIntegerField()
 
 	def __str__(self):
 		fields = (
