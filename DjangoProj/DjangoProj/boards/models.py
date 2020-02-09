@@ -20,7 +20,7 @@ class Patient(models.Model):
 	def __str__(self):
 		fields = (
 			self.patient_name, self.DOB, self.age, self.address,
-			self.occupation, self.marital_status, self.acc_balance
+			self.occupation, self.marital_status, self.acc_balance,
 			self.tel_num, self.home_num, self.next_app, self.recall_period 
 		)
 		return str(fields)
@@ -31,9 +31,10 @@ class Family(models.Model):
 	family_name = models.CharField(max_length=30)
 	family_hist = models.CharField(max_length=100, null=True)
 
-	fields = (
-			self.family_name, self.family_hist
-		)
+	def __str__(self):
+		fields = (
+				self.family_name, self.family_hist
+			)
 		return str(fields)
 
 
@@ -57,6 +58,7 @@ class Visit(models.Model):
 
 class Ailment(models.Model):
 	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
+	medication = models.ForeignKey('Medication', on_delete=models.CASCADE, null=True)
 	description = models.CharField(max_length=50)
 
 	def __str__(self):
@@ -132,8 +134,6 @@ class Investigation(models.Model):
 
 
 class Medication(models.Model):
-	ailment = models.ForeignKey('Ailment', on_delete=models.CASCADE)
-	allergy = models.ForeignKey('Allergy', on_delete=models.CASCADE)
 	name = models.CharField(max_length=50)
 
 	def __str__(self):
@@ -155,6 +155,12 @@ class Doctor(models.Model):
 
 
 class Examination(models.Model):
+	height = models.FloatField()
+	weight = models.FloatField()
+	heart_rate = models.PositiveIntegerField()
+	heart_rhythm = models.PositiveIntegerField()
+	oxygen = models.FloatField()
+
 	age = models.PositiveIntegerField(default=0)
 	sex = models.PositiveIntegerField()
 	chest_pain = models.PositiveIntegerField()
@@ -166,7 +172,6 @@ class Examination(models.Model):
 	fasting_glucose = models.FloatField()
 	hist_diabetes = models.BooleanField()
 	hist_heart_disease = models.BooleanField()
-	heart_rate = models.PositiveIntegerField()
 	exerc_angina = models.BooleanField()
 	date = models.DateTimeField(auto_now_add=True)
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete = models.CASCADE)
