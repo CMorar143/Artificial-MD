@@ -8,6 +8,7 @@ class Patient(models.Model):
 	patient_name = models.CharField(max_length=50)
 	DOB = models.DateTimeField()
 	age = models.PositiveIntegerField()
+	sex = models.PositiveIntegerField()
 	address = models.TextField(max_length=400)
 	occupation = models.CharField(max_length=30)
 	marital_status = models.PositiveIntegerField()
@@ -170,8 +171,6 @@ class Examination(models.Model):
 	uric_acid = models.FloatField()
 
 	# Heart disease
-	age = models.PositiveIntegerField(default=0)
-	sex = models.PositiveIntegerField()
 	smoke_per_day = models.PositiveIntegerField()
 	smoker_years = models.PositiveIntegerField()
 	exerc_angina = models.BooleanField()
