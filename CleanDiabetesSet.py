@@ -99,16 +99,11 @@ def process_dir():
 		'CDQ001',
 		'BPQ080',
 		'BPQ020',
-		# 'BMXHT',
-		# 'BMXWT',
 		'BMXBMI',
-		# 'BPXCHR',
 		'BPXPULS',
 		'BPXPTY',
 		'BPXSY1',
 		'BPXDI1',
-		# 'BPXSY2',
-		# 'BPXDI2',
 		'LBXSTP',
 		'LBDHDD',
 		'LBDLDL',
@@ -123,9 +118,8 @@ def process_dir():
 
 	for f in df_list[1:]:
 		df_combined = pd.merge(df_combined, f, on='SEQN', sort=False)
-
+	
 	df_combined.set_index('SEQN', inplace=True)
-
 	df_input_params = df_combined[input_params]
 
 	df_input_params.columns = Features
@@ -143,26 +137,26 @@ def process_dir():
 		dropna_features.append(Features[col])
 
 	# print(dropna_features)
-	df_input_params.dropna(subset=dropna_features, inplace=True)
+	# df_input_params.dropna(subset=dropna_features, inplace=True)
 	
-	# Impute the remaining missing values
-	imputer = KNNImputer(n_neighbors=3)
-	df_input_params = impute_dataset(df_input_params, imputer)
+	# # Impute the remaining missing values
+	# imputer = KNNImputer(n_neighbors=3)
+	# df_input_params = impute_dataset(df_input_params, imputer)
 
-	# round the imputed values for dichotomous features
-	print(df_input_params['High_BP_Hist'].value_counts())
-	df_input_params['High_BP_Hist'] = df_input_params['High_BP_Hist'].round()
-	print(df_input_params['High_BP_Hist'].value_counts())
+	# # round the imputed values for dichotomous features
+	# print(df_input_params['High_BP_Hist'].value_counts())
+	# df_input_params['High_BP_Hist'] = df_input_params['High_BP_Hist'].round()
+	# print(df_input_params['High_BP_Hist'].value_counts())
 
-	print(df_input_params['High_Chol_Hist'].value_counts())
-	df_input_params['High_Chol_Hist'] = df_input_params['High_Chol_Hist'].round()
-	print(df_input_params['High_Chol_Hist'].value_counts())
+	# print(df_input_params['High_Chol_Hist'].value_counts())
+	# df_input_params['High_Chol_Hist'] = df_input_params['High_Chol_Hist'].round()
+	# print(df_input_params['High_Chol_Hist'].value_counts())
 
-	print(df_input_params['Reg_Pulse'].value_counts())
-	df_input_params['Reg_Pulse'] = df_input_params['Reg_Pulse'].round()
-	print(df_input_params['Reg_Pulse'].value_counts())
+	# print(df_input_params['Reg_Pulse'].value_counts())
+	# df_input_params['Reg_Pulse'] = df_input_params['Reg_Pulse'].round()
+	# print(df_input_params['Reg_Pulse'].value_counts())
 	
-	df_input_params.to_csv(path + "Diabetes.csv", index=False)
+	# df_input_params.to_csv(path + "Diabetes.csv", index=False)
 
 
 
@@ -184,7 +178,6 @@ def process_dir():
 
 	d = dict(df_input_params.apply(pd.Series.nunique))
 	count = len(df_input_params)
-
 
 	for i in Features:
 		# Count
@@ -233,12 +226,12 @@ def process_dir():
 		# print("count_missing", count_missing)
 		print("perc_missing", perc_missing)
 		print("card", card)
-		print("min_value", min_value)
+		# print("min_value", min_value)
 		# print("first_qrt", first_qrt)
 		# print("mean", mean)
 		# print("median", median)
 		# print("third_qrt", third_qrt)
-		print("max_value", max_value)
+		# print("max_value", max_value)
 		# print("stand_dev", stand_dev)
 		# print("mode:",mode)
 		# print("\n")
