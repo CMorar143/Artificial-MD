@@ -47,6 +47,12 @@ class exam(TemplateView):
 		args = {'form': form, 'exam_input': exam_input}
 		return render(request, self.template_name, args)
 
+# class choose_exam(TemplateView):
+# 	template_name = 'choose_exam.html'
+
+# 	def get(self, request):
+# 		return render(request, self.template_name)
+
 class results(TemplateView):
 	template_name = 'results.html'
 	

@@ -162,54 +162,10 @@ def process_dir():
 	df_input_params['Reg_Pulse'] = df_input_params['Reg_Pulse'].round()
 	print(df_input_params['Reg_Pulse'].value_counts())
 	
-
 	df_input_params.to_csv(path + "Diabetes.csv", index=False)
 
-	# Show correlation between features
-	# plt.matshow(df_input_params.corr())
-	# plt.xticks(np.arange(df_input_params.shape[1]), df_input_params.columns)
-	# plt.yticks(np.arange(df_input_params.shape[1]), df_input_params.columns)
-	# plt.colorbar()
-	# plt.show()
-	# plt.close()
-
-	# seqn_array = df_combined['SEQN']
-	# print(df_combined[['SDDSRVYR']])
-	# print(df_combined.head())
-
-	# featureNames = pd.read_csv(path + './Feature_Dictionary/FeatureNames.txt')
-	# # print(featureNames.head())
-	# # fname = list(featureNames)
-	# # print("fname length:", len(fname))
-	# desc = pd.read_csv(path + './Feature_Dictionary/NAHNES_2014_Dictionary.csv')
-	# # print(desc.head())
-
-	# d = dict(zip(list(desc['Variable Name']), list(desc['Variable Description'])))
-	# # print(list(d.keys())[list(d.values()).index('Respondent sequence number')])
-
-	# list_of_keys = list(d.keys())
-
-	# print(medications['RXDRSC1'].value_counts())
-
-	# print(len(list_of_keys))
-	print()
-
-	# For checking cardinality
-	# d2 = dict(demographic.apply(pd.Series.nunique))
-
-	# demographic.fillna("?", inplace=True)
 
 
-
-
-
-	# # For Categorical features
-	# mode = ''
-	# mode_freq = 0
-	# mode_perc = 0
-	# mode2 = ''
-	# mode2_freq = 0
-	# mode2_perc = 0
 
 	# For Continous features
 	min_value = 0
@@ -295,78 +251,7 @@ def process_dir():
 		# print("mode2_freq:",mode2_freq)
 		# print("\n")
 		# print("mode2_perc:",mode2_perc)
-		# print("\n\n\n\nNEXT\n\n\n\n")
-		# print("\n\n\n\nNEXT\n\n\n\n")
 		print("\nNEXT\n")
-
-
-		# Cont = demographic.to_csv('C16460726CONT.csv', index_label = 'FEATURENAME')
-		# Cat = demographic.to_csv('C16460726CAT.csv', index_label = 'FEATURENAME')
-
-		# for i in Cat_Features:
-		#     # Count
-		#     array = demographic[i + ',']
-
-		#     d2 = dict(array.value_counts())
-		#     # count_missing = d[' ?']
-
-		#     # % Missing
-		#     array2 = set(array)
-		#     if (' ?') in array2:
-		#         count_missing = d2[' ?']
-		#         perc_missing = (count_missing / count) * 100
-		#     else:
-		#         count_missing = 0
-		#         perc_missing = 0
-
-		#     # Cardinality
-		#     card = d[i + ',']
-
-		#     # if count_missing > 0:
-		#         # card = card - 1
-
-		#     # Mode
-		#     mode = list(d2)[0]
-
-		#     # Mode Freq.
-		#     mode_freq = d2[mode] #array.value_counts()[array.mode()]
-
-		#     # Mode %
-		#     mode_perc = (mode_freq / count) * 100
-
-		#     # 2nd Mode
-		#     mode2 = list(d2)[1]
-
-		#     # 2nd Mode Freq.
-		#     mode2_freq = d2[mode2]
-
-		#     # 2nd Mode %
-		#     mode2_perc = (mode2_freq / count) * 100
-
-		#     print(array.describe())
-		#     print("\n")
-		#     print(array.value_counts())
-		#     print("\n")
-		#     print("count:", count)
-		#     print("\n")
-		#     print("count_missing:",count_missing)
-		#     print("\n")
-		#     print("perc_missing:",perc_missing)
-		#     print("\n")
-		#     print("card:",card)
-		#     print("\n")
-		#     print("mode:",mode)
-		#     print("\n")
-		#     print("mode_freq:",mode_freq)
-		#     print("\n")
-		#     print("mode_perc:",mode_perc)
-		#     print("\n")
-		#     print("mode2:",mode2)
-		#     print("\n")
-		#     print("mode2_freq:",mode2_freq)
-		#     print("\n")
-		#     print("mode2_perc:",mode2_perc)
-		#     print("\n\n\n\nNEXT\n\n\n\n")
 
 
 def main():
