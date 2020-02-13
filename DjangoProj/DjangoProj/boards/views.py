@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect
 # from .models import Patient
 # from django.settings import BASEDIR
 from django.views.generic import TemplateView
-from boards.forms import ExamForm
-from boards.models import Examination
+from boards.forms import ExamForm, PatientForm
+from boards.models import Examination, Patient
 
 # For Machine learning model
 import pandas as pd
@@ -52,7 +52,9 @@ class patient(TemplateView):
 	template_name = 'patient.html'
 
 	def get(self, request):
-		return render(request, self.template_name)
+		patients = Patient.objects.all()
+
+		return render(request, self.template_name, {'patients': patients})
 
 
 class results(TemplateView):

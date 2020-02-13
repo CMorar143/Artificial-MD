@@ -23,6 +23,9 @@ TRUE_OR_FALSE = (
 	(False, 'No')
 )
 
+class PatientForm(forms.ModelForm):
+	
+
 class ExamForm(forms.ModelForm):
 	age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
