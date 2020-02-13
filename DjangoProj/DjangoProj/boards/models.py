@@ -4,15 +4,17 @@ from django.conf import settings
 
 # Create your models here.
 class Patient(models.Model):
-	family = models.ForeignKey('Family', on_delete=models.CASCADE)
+	family = models.ForeignKey('Family', on_delete=models.CASCADE, null=True)
 	patient_name = models.CharField(max_length=50)
 	DOB = models.DateTimeField()
 	age = models.PositiveIntegerField()
 	sex = models.PositiveIntegerField()
-	address = models.TextField(max_length=400)
+	address_line1 = models.CharField(max_length=40, null=True)
+	address_line2 = models.CharField(max_length=40, null=True)
+	address_line3 = models.CharField(max_length=40, null=True)
 	occupation = models.CharField(max_length=30)
 	marital_status = models.PositiveIntegerField()
-	acc_balance = models.PositiveIntegerField()
+	acc_balance = models.PositiveIntegerField(default=0)
 	tel_num = models.PositiveIntegerField(null=True)
 	home_num = models.PositiveIntegerField(null=True)
 	next_app = models.DateTimeField(null=True)
@@ -20,9 +22,10 @@ class Patient(models.Model):
 
 	def __str__(self):
 		fields = (
-			self.patient_name, self.DOB, self.age, self.address,
-			self.occupation, self.marital_status, self.acc_balance,
-			self.tel_num, self.home_num, self.next_app, self.recall_period 
+			self.patient_name, self.DOB, self.age, self.address_line1,
+			self.address_line2, self.address_line3,	self.occupation, 
+			self.marital_status, self.acc_balance, self.tel_num, 
+			self.home_num, self.next_app, self.recall_period 
 		)
 		return str(fields)
 

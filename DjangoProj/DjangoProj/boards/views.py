@@ -53,8 +53,26 @@ class patient(TemplateView):
 
 	def get(self, request):
 		patients = Patient.objects.all()
+		form = PatientForm()
 
-		return render(request, self.template_name, {'patients': patients})
+		return render(request, self.template_name, {'patients': patients, 'form': form})
+
+	def post(self, request):
+		form = PatientForm(request.POST)
+		if form.is_valid():
+
+			# Save data to  model
+			patient = form.save(commit=False)
+			patient.user = request.user
+			patient.save()
+			patient_input = form.cleaned_data
+			return redirect('exam')
+			
+			# To remove the value from the input box after submitting
+			# form = PatientForm()
+
+		args = {'form': form, 'exam_input': patient_input}
+		return render(request, self.template_name, args)
 
 
 class results(TemplateView):
