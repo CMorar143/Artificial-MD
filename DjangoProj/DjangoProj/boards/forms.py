@@ -44,8 +44,8 @@ class ExamForm(forms.ModelForm):
 	smoke_per_day = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	smoker_years = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	fasting_glucose = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-	hist_diabetes = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
-	hist_heart_disease = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
+	# hist_diabetes = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
+	# hist_heart_disease = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
 	heart_rate = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	exerc_angina = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
 	
@@ -56,6 +56,7 @@ class ExamForm(forms.ModelForm):
 			'reg_pulse', 'pulse_type', 'protein', 'hdl_chol',
 			'ldl_chol', 'triglyceride', 'uric_acid', 'blood_systolic',
 			'blood_diastolic', 'chol_overall', 'smoke_per_day',
-			'smoker_years', 'fasting_glucose', 'hist_diabetes',
-			'hist_heart_disease', 'heart_rate', 'exerc_angina'
+			'smoker_years', 'fasting_glucose', 
+			# 'hist_diabetes', 'hist_heart_disease', 
+			'heart_rate', 'exerc_angina'
 		)
