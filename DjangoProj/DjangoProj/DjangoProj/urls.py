@@ -20,7 +20,7 @@ from django.conf.urls import url
 from django.views.generic.base import TemplateView
 
 from boards import views
-from boards.views import exam, patient
+from boards.views import exam, patient, test
 
 urlpatterns = [
 	# url(r'^$', views.login, name='login'),
@@ -29,6 +29,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     path('exam/', exam.as_view(), name='exam'),
     path('patient/', patient.as_view(), name='patient'),
+    path('test/', test.as_view(), name='test'),
     # path('choose_exam/', views.choose_exam.as_view(), name='choose_exam'),
     path('results/', views.results.as_view(), name='results')
 ]
