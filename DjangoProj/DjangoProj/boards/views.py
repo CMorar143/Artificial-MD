@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 # from django.http import HttpResponse
 # from django.settings import BASEDIR
 from django.views.generic import TemplateView
-from boards.forms import ExamForm, CreatePatientForm
+from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm
 from boards.models import Examination, Patient
 
 # For Machine learning model
@@ -53,7 +53,7 @@ class patient(TemplateView):
 	def get(self, request):
 		patients = Patient.objects.all()
 		Createform = CreatePatientForm()
-
+		Selectform = SelectPatientform()
 		return render(request, self.template_name, {'patients': patients, 'Createform': Createform})
 
 	def post(self, request):
