@@ -31,7 +31,10 @@ MARITAL_STATUS = (
 	(4, 'Divorced')
 )
 
-class PatientForm(forms.ModelForm):
+class SelectPatientForm(forms.Form):
+	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+class CreatePatientForm(forms.ModelForm):
 	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'form-control'}))
 	DOB = forms.DateField(initial=datetime.date.today, widget=forms.SelectDateWidget(years=range(1900, 2020), attrs={'class': 'form-datefield'}))
 	age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))

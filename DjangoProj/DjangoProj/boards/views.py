@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
 # from django.http import HttpResponse
-# from .models import Patient
 # from django.settings import BASEDIR
 from django.views.generic import TemplateView
-from boards.forms import ExamForm, PatientForm
+from boards.forms import ExamForm, CreatePatientForm
 from boards.models import Examination, Patient
 
 # For Machine learning model
@@ -53,25 +52,25 @@ class patient(TemplateView):
 
 	def get(self, request):
 		patients = Patient.objects.all()
-		form = PatientForm()
+		Createform = CreatePatientForm()
 
-		return render(request, self.template_name, {'patients': patients, 'form': form})
+		return render(request, self.template_name, {'patients': patients, 'Createform': Createform})
 
 	def post(self, request):
-		form = PatientForm(request.POST)
-		if form.is_valid():
+		Createform = CreatePatientForm(request.POST)
+		if Createform.is_valid():
 
 			# Save data to  model
-			patient = form.save(commit=False)
+			patient = Createform.save(commit=False)
 			patient.user = request.user
 			patient.save()
-			patient_input = form.cleaned_data
+			patient_input = Createform.cleaned_data
 			return redirect('exam')
 			
 			# To remove the value from the input box after submitting
-			# form = PatientForm()
+			# form = CreatePatientForm()
 
-		args = {'form': form, 'exam_input': patient_input}
+		args = {'Createform': Createform, 'exam_input': patient_input}
 		return render(request, self.template_name, args)
 
 
