@@ -50,9 +50,9 @@ class exam(TemplateView):
 
 class test(TemplateView):
 	template_name = 'test.html'
-
+	patient = 'Test'
 	def get(self, request):
-		return render(request, self.template_name)
+		return render(request, self.template_name, {'patient': patient})
 
 
 
