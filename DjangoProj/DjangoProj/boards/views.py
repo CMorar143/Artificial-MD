@@ -50,9 +50,12 @@ class exam(TemplateView):
 
 class test(TemplateView):
 	template_name = 'test.html'
-	patient = 'Test'
+	
 	def get(self, request):
-		return render(request, self.template_name, {'patient': patient})
+		args = {}
+		patient = 'Test'
+		args['patient'] = patient
+		return render(request, self.template_name, args)
 
 
 
@@ -84,7 +87,7 @@ class patient(TemplateView):
 			return render(request, self.template_name, args)
 
 		elif 'select_patient' in request.POST:
-			return redirect('login')
+			return redirect('test')
 
 
 
