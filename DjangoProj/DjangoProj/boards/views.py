@@ -53,25 +53,30 @@ class patient(TemplateView):
 	def get(self, request):
 		patients = Patient.objects.all()
 		Createform = CreatePatientForm()
-		Selectform = SelectPatientform()
-		return render(request, self.template_name, {'patients': patients, 'Createform': Createform})
+		Selectform = SelectPatientForm()
+		return render(request, self.template_name, {'patients': patients, 'Createform': Createform, 'Selectform': Selectform})
 
 	def post(self, request):
-		Createform = CreatePatientForm(request.POST)
-		if Createform.is_valid():
+		if 'create_patient' in request.POST:
+			Createform = CreatePatientForm(request.POST)
+			if Createform.is_valid():
 
-			# Save data to  model
-			patient = Createform.save(commit=False)
-			patient.user = request.user
-			patient.save()
-			patient_input = Createform.cleaned_data
-			return redirect('exam')
-			
-			# To remove the value from the input box after submitting
-			# form = CreatePatientForm()
+				# Save data to  model
+				patient = Createform.save(commit=False)
+				patient.user = request.user
+				patient.save()
+				patient_input = Createform.cleaned_data
+				return redirect('exam')
+				
+				# To remove the value from the input box after submitting
+				# form = CreatePatientForm()
 
-		args = {'Createform': Createform, 'exam_input': patient_input}
-		return render(request, self.template_name, args)
+			args = {'Createform': Createform, 'Selectform': Selectform, 'exam_input': patient_input}
+			return render(request, self.template_name, args)
+
+		elif 'select_patient' in request.POST:
+			return redirect('login')
+
 
 
 class results(TemplateView):
