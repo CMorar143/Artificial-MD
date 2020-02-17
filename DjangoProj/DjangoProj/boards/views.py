@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
+from urllib.parse import urlencode
 # from django.http import HttpResponse
 # from django.settings import BASEDIR
 from django.views.generic import TemplateView
@@ -53,8 +55,9 @@ class test(TemplateView):
 	
 	def get(self, request):
 		args = {}
-		patient = 'Test'
+		patient = request.GET.get('patient')
 		args['patient'] = patient
+
 		return render(request, self.template_name, args)
 
 
@@ -87,7 +90,14 @@ class patient(TemplateView):
 			return render(request, self.template_name, args)
 
 		elif 'select_patient' in request.POST:
-			return redirect('test')
+			args = {}
+			patient = 'Test_from_post'
+			args['patient'] = patient
+
+			base_url = reverse('test')
+			query_string =  urlencode(args)
+			url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
+			return redirect(url)
 
 
 
