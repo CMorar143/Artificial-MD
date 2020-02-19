@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from urllib.parse import urlencode
+from django.conf import settings
 # from django.http import HttpResponse
 # from django.settings import BASEDIR
 from django.views.generic import TemplateView
@@ -95,21 +96,10 @@ class patient(TemplateView):
 				args = {}
 				patient = Selectform.cleaned_data['patient_name']
 				args['patient'] = patient
+				p = Patient.objects.get(patient_name=patient)
 
-				p = Patient.objects.get(name=patient)
+				visit = Visit.objects.create(doctor=request.user, patient=p, reason="For examination")
 
-				visit = Visit.objects.create(doctor=settings.AUTH_USER_MODEL, patient=p, )
-
-				doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-				patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
-				date = models.DateTimeField(auto_now_add=True)
-				patient_symptoms = models.CharField(max_length=300, null=True)
-				doctor_notes = models.CharField(max_length=100, null=True)
-				outcome = models.CharField(max_length=50)
-
-
-				
-				
 				base_url = reverse('test')
 				query_string =  urlencode(args)
 				url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42

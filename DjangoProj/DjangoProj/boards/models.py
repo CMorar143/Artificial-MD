@@ -47,13 +47,13 @@ class Visit(models.Model):
 	doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
 	date = models.DateTimeField(auto_now_add=True)
-	patient_symptoms = models.CharField(max_length=300, null=True)
+	reason = models.CharField(max_length=300, null=True)
 	doctor_notes = models.CharField(max_length=100, null=True)
 	outcome = models.CharField(max_length=50, null=True)
 
 	def __str__(self):
 		fields = (
-			self.date, self.patient_symptoms, 
+			self.date, self.reason, 
 			self.doctor_notes, self.outcome
 		)
 		return str(fields)
