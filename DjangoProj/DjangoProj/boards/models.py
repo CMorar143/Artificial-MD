@@ -96,7 +96,7 @@ class Allergy(models.Model):
 
 class Medical_history(models.Model):
 	patient = models.ForeignKey('Patient', primary_key=True, on_delete=models.CASCADE)
-	exam = models.ForeignKey('Examination', on_delete=models.CASCADE)
+	# exam = models.ForeignKey('Examination', on_delete=models.CASCADE)
 	heart_attack = models.BooleanField()
 	angina = models.BooleanField()
 	breathlessness = models.BooleanField()
