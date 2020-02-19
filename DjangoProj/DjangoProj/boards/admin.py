@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Patient, Family, Visit, Ailment, Reminders, Allergy, Medical_history, Investigation, Medication, User, Examination
+from .models import Patient, Family, Visit, Ailment, Reminders, Allergy, Medical_history, Investigation, Medication, Doctor, Examination
 
 admin.site.register(Patient)
 admin.site.register(Family)

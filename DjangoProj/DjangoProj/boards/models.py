@@ -44,7 +44,7 @@ class Family(models.Model):
 
 
 class Visit(models.Model):
-	doctor = models.ForeignKey('Doctor', on_delete=models.CASCADE)
+	doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
 	date = models.DateTimeField(auto_now_add=True)
 	patient_symptoms = models.CharField(max_length=300, null=True)
@@ -146,7 +146,7 @@ class Medication(models.Model):
 
 
 
-class User(models.Model):
+class Doctor(models.Model):
 	name = models.CharField(max_length=30)
 	username = models.CharField(max_length=20, unique=True)
 	pin = models.PositiveIntegerField(unique=True)
