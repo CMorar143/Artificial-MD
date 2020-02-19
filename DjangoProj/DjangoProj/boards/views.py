@@ -90,14 +90,20 @@ class patient(TemplateView):
 			return render(request, self.template_name, args)
 
 		elif 'select_patient' in request.POST:
-			args = {}
-			patient = 'Test_from_post'
-			args['patient'] = patient
+			Selectform = SelectPatientForm(request.POST)
+			if Selectform.is_valid():
+				args = {}
+				# data = request.POST.copy()
+				# patient = data.get('patient_name')
+				patient = Selectform.cleaned_data['patient_name']
+				args['patient'] = patient
+				
+				base_url = reverse('test')
+				query_string =  urlencode(args)
+				url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
+				return redirect(url)
+		# return render(request, 'test.html', {"patient" : patient})
 
-			base_url = reverse('test')
-			query_string =  urlencode(args)
-			url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
-			return redirect(url)
 
 
 
