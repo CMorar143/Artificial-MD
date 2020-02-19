@@ -146,16 +146,16 @@ class Medication(models.Model):
 
 
 
-class Doctor(models.Model):
-	name = models.CharField(max_length=30)
-	username = models.CharField(max_length=20, unique=True)
-	pin = models.PositiveIntegerField(unique=True)
+# class Doctor(models.Model):
+# 	name = models.CharField(max_length=30)
+# 	username = models.CharField(max_length=20, unique=True)
+# 	pin = models.PositiveIntegerField(unique=True)
 
-	def __str__(self):
-		fields = (
-			self.name, self.username, self.pin
-		)
-		return str(fields)
+# 	def __str__(self):
+# 		fields = (
+# 			self.name, self.username, self.pin
+# 		)
+# 		return str(fields)
 
 
 
