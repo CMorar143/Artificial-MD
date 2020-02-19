@@ -49,12 +49,11 @@ class CreatePatientForm(forms.ModelForm):
 
 	class Meta:
 		model = Patient
-		fields = "__all__"
-		# (
-			# 'patient_name', 'DOB', 'age', 'sex',
-			# 'address_line1', 'address_line2', 'address_line3',
-			# 'occupation', 'marital_status',	'tel_num', 'home_num',
-		# )
+		fields = (
+			'patient_name', 'DOB', 'age', 'sex',
+			'address_line1', 'address_line2', 'address_line3',
+			'occupation', 'marital_status',	'tel_num', 'home_num',
+		)
 
 class ExamForm(forms.ModelForm):
 	# age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))

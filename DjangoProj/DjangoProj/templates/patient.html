@@ -10,16 +10,12 @@
   <main>
     <h2>Patients</h2>
 
-    {% for patient in patients %}
-      {{ patient.patient_name }} <br>
-    {% endfor %}
-
     <form method="post">
       {% csrf_token %}
       {{ Selectform.as_p }}
-      <input name="select_patient" type="submit" value="Select" />
+      <input name="select_patient" type="submit" value="Create visit" />
     </form>
-
+    <br>
     <form method="post">
       {% csrf_token %}
       {{ Createform.as_p }}
