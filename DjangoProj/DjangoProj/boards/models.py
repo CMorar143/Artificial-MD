@@ -49,7 +49,7 @@ class Visit(models.Model):
 	date = models.DateTimeField(auto_now_add=True)
 	patient_symptoms = models.CharField(max_length=300, null=True)
 	doctor_notes = models.CharField(max_length=100, null=True)
-	outcome = models.CharField(max_length=50)
+	outcome = models.CharField(max_length=50, null=True)
 
 	def __str__(self):
 		fields = (

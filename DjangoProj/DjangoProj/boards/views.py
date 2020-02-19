@@ -5,7 +5,7 @@ from urllib.parse import urlencode
 # from django.settings import BASEDIR
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm
-from boards.models import Examination, Patient
+from boards.models import Examination, Patient, Visit
 
 # For Machine learning model
 import pandas as pd
@@ -93,10 +93,22 @@ class patient(TemplateView):
 			Selectform = SelectPatientForm(request.POST)
 			if Selectform.is_valid():
 				args = {}
-				# data = request.POST.copy()
-				# patient = data.get('patient_name')
 				patient = Selectform.cleaned_data['patient_name']
 				args['patient'] = patient
+
+				p = Patient.objects.get(name=patient)
+
+				visit = Visit.objects.create(doctor=settings.AUTH_USER_MODEL, patient=p, )
+
+				doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+				patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
+				date = models.DateTimeField(auto_now_add=True)
+				patient_symptoms = models.CharField(max_length=300, null=True)
+				doctor_notes = models.CharField(max_length=100, null=True)
+				outcome = models.CharField(max_length=50)
+
+
+				
 				
 				base_url = reverse('test')
 				query_string =  urlencode(args)
