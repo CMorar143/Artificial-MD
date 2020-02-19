@@ -27,7 +27,7 @@ class Patient(models.Model):
 			self.marital_status, self.acc_balance, self.tel_num, 
 			self.home_num, self.next_app, self.recall_period 
 		)
-		return str(fields)
+		return str(self.patient_name)
 
 
 

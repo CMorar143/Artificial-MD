@@ -32,7 +32,7 @@ MARITAL_STATUS = (
 )
 
 class SelectPatientForm(forms.Form):
-	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	patient_name = forms.ModelChoiceField(queryset=Patient.objects.all())
 
 class CreatePatientForm(forms.ModelForm):
 	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'form-control'}))
