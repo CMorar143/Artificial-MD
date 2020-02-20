@@ -173,11 +173,12 @@ class Examination(models.Model):
 	triglyceride = models.FloatField()
 	uric_acid = models.FloatField()
 
-	# Heart disease
-	smoke_per_day = models.PositiveIntegerField()
-	smoker_years = models.PositiveIntegerField()
-	exerc_angina = models.BooleanField()
+	# Heart disease 
 	pulse_rate = models.PositiveIntegerField()
+	smoke_per_day = models.PositiveIntegerField() 
+	smoker_years = models.PositiveIntegerField() 
+	# exerc_angina = models.BooleanField()
+	
 
 	# Both
 	blood_systolic = models.FloatField()

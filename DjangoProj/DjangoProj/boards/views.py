@@ -6,7 +6,7 @@ from django.conf import settings
 # from django.settings import BASEDIR
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm
-from boards.models import Examination, Patient, Visit
+from boards.models import Examination, Patient, Visit, Medical_history
 
 # For Machine learning model
 import pandas as pd
@@ -101,7 +101,7 @@ class patient(TemplateView):
 				visit = Visit.objects.create(doctor=request.user, patient=p, reason="For examination")
 
 				base_url = reverse('exam')
-				query_string =  urlencode(args)
+				query_string = urlencode(args)
 				url = '{}?{}'.format(base_url, query_string)
 				return redirect(url)
 		# return render(request, 'test.html', {"patient" : patient})
@@ -112,8 +112,11 @@ class patient(TemplateView):
 class results(TemplateView):
 	template_name = 'results.html'
 	
-	def get_exams(self):
-		exams = [Examination.objects.latest('date')]
+	def get_data(self):
+		p_name = request.GET.get('patient')
+		exams = Examination.objects.latest('date')
+		patient = Patient.objects.get(patient_name=p_name)
+		med_hist = Medical_history.objects.get(patient=patient)
 		exam_values = Examination.objects.values()
 		return exams, exam_values
 
@@ -134,7 +137,7 @@ class results(TemplateView):
 		standardScaler = StandardScaler()
 		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
-		return heart
+		return heart, standardScaler
 
 
 	def split_dataset(self, X, D):
@@ -178,7 +181,7 @@ class results(TemplateView):
 
 
 	def get(self, request):
-		exams, exam_values = self.get_exams()
+		exam, patient, med_hist = self.get_data()
 		Features = [
 			'age', 'sex', 'chest_pain', 'blood_systolic', 
 			'blood_diastolic', 'chol_overall', 'smoke_per_day', 
@@ -217,7 +220,7 @@ class results(TemplateView):
 		# plot_diagrams(heart)
 
 		# Use dummy columns for the categorical features
-		heart = self.scale_values(heart)
+		heart, standardScaler = self.scale_values(heart)
 
 		# Split dataset
 		H = heart['target']
@@ -236,36 +239,37 @@ class results(TemplateView):
 		# Linear Support Vector
 		lsv_acc = self.linear_support_vector(X_train, H_train, X_test, H_test)
 
-		# Predict heart disease
-		# Extract values
-		exam_param = []
-		exam_df = []
-		exam_predict = []
-		for f in range(len(Features)):
-			exam_param.append(Features[f])
-			exam_param.append(exam_values[len(exam_values)-1][Features[f]])
-			exam_predict.append(exam_values[len(exam_values)-1][Features[f]])
-			exam_df.append(exam_param)
-			exam_param = []
+		# # Predict heart disease
+		# # Extract values
+		# exam_param = []
+		# exam_df = []
+		# exam_predict = []
+		# for f in range(len(Features)):
+		# 	exam_param.append(Features[f])
+		# 	exam_param.append(exam_values[len(exam_values)-1][Features[f]])
+		# 	exam_predict.append(exam_values[len(exam_values)-1][Features[f]])
+		# 	exam_df.append(exam_param)
+		# 	exam_param = []
 
-		exam_df = dict(exam_df)
-		print(exam_df)
-		exam_df = pd.DataFrame(exam_df, columns=Features, index=[1])
-		print(exam_df)
-		# exam_df = pd.get_dummies(exam_df, columns = dummies2)
-		# standardScaler = StandardScaler()
-		exam_df[columns_to_scale2] = standardScaler.transform(exam_df[columns_to_scale2])
-		print(exam_df)
-		# Pass prediction 
-		Row_list =[]
-		# Iterate over each row 
-		for i in range((exam_df.shape[0])):
-			Row_list.append(list(exam_df.iloc[i, :])) 
+		# exam_df = dict(exam_df)
+		# print(exam_df)
+		# exam_df = pd.DataFrame(exam_df, columns=Features, index=[1])
+		# print(exam_df)
+		# # exam_df = pd.get_dummies(exam_df, columns = dummies2)
+		# # standardScaler = StandardScaler()
+		# exam_df[columns_to_scale2] = standardScaler.transform(exam_df[columns_to_scale2])
+		# print(exam_df)
+		# # Pass prediction 
+		# Row_list =[]
+		# # Iterate over each row 
+		# for i in range((exam_df.shape[0])):
+		# 	Row_list.append(list(exam_df.iloc[i, :])) 
+		# # Print the list 
+		# print(Row_list) 
+		# prediction = knn_classifier.predict(Row_list)
+		# print(prediction)
 
-		# Print the list 
-		print(Row_list) 
-		prediction = knn_classifier.predict(Row_list)
-		print(prediction)
+
 
 
 		return render(request, self.template_name, {'exams':exams, 'prediction': prediction})
