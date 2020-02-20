@@ -117,6 +117,66 @@ class results(TemplateView):
 		exam_values = Examination.objects.values()
 		return exams, exam_values
 
+
+	def load_dataframe(self):
+		# Load heart disease dataset into pandas dataframe
+		current_dir =  os.path.abspath(os.path.dirname(__file__))
+		parent_dir = os.path.abspath(current_dir + "/../")
+		pathHeart = parent_dir + '/Data/new_cleveland.csv'
+		heart = pd.read_csv(pathHeart)
+
+		return heart
+
+
+	def scale_values(self, heart):
+		heart = pd.get_dummies(heart, columns = ['cp', 'fbs', 'exang'])
+		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
+		standardScaler = StandardScaler()
+		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
+
+		return heart
+
+
+	def split_dataset(self, X, D):
+		return train_test_split(X, D, test_size = 0.01, random_state = 0)
+
+
+	def KNN(self, X_train, H_train, X_test, H_test):
+		knn_scores = []
+		for k in range(1,30):
+			knn_classifier = KNeighborsClassifier(n_neighbors = k)
+			knn_classifier.fit(X_train, H_train)
+			knn_scores.append(knn_classifier.score(X_test, H_test))
+
+		return max(knn_scores)
+
+
+	def decision_tree(self, X_train, H_train, X_test, H_test, X):
+		dt_scores = []
+		for i in range(1, len(X.columns) + 1):
+			dt_classifier = DecisionTreeClassifier(max_features = i, random_state = 0)
+			dt_classifier.fit(X_train, H_train)
+			dt_scores.append(dt_classifier.score(X_test, H_test))
+
+		return max(dt_scores)
+
+
+	def naive_bayes(self, X_train, H_train, X_test, H_test):
+		model = GaussianNB()
+		model.fit(X_train, H_train)
+		test_pred = model.predict(X_test)
+
+		return metrics.accuracy_score(H_test, test_pred)
+
+
+	def linear_support_vector(self, X_train, H_train, X_test, H_test):
+		svm_model = LinearSVC(random_state=0, max_iter=3500)
+		svm_model.fit(X_train, H_train)
+		test_pred = svm_model.predict(X_test)
+
+		return metrics.accuracy_score(H_test, test_pred)
+
+
 	def get(self, request):
 		exams, exam_values = self.get_exams()
 		Features = [
@@ -132,28 +192,49 @@ class results(TemplateView):
 		dummies2 = ['sex', 'chest_pain', 'fasting_glucose', 'hist_diabetes', 'hist_heart_disease', 'exerc_angina']
 		columns_to_scale2 = ['age', 'blood_systolic', 'chol_overall', 'smoke_per_day', 'smoker_years', 'heart_rate', 'blood_diastolic']
 
-		# TODO
-		# Read csv file
-		current_dir =  os.path.abspath(os.path.dirname(__file__))
-		parent_dir = os.path.abspath(current_dir + "/../")
-		pathHeart = parent_dir + '/Data/new_cleveland.csv'
-		heart = pd.read_csv(pathHeart)
-		print(heart.head())
-		# Build classifier
+		# # TODO
+		# # Read csv file
+		# current_dir =  os.path.abspath(os.path.dirname(__file__))
+		# parent_dir = os.path.abspath(current_dir + "/../")
+		# pathHeart = parent_dir + '/Data/new_cleveland.csv'
+		# heart = pd.read_csv(pathHeart)
+		# print(heart.head())
+		# standardScaler = StandardScaler()
+		# heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
+		# print(heart.head())
+		# H = heart['target']
+		# X = heart.drop(['target'], axis = 1)
+		# X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.01, random_state = 0)
+
+		# # KNN
+		# knn_classifier = KNeighborsClassifier(n_neighbors = 3)
+		# knn_classifier.fit(X_train, H_train)
+		# test_pred = knn_classifier.predict(X_test)
+
+
+		# Load dataframe
+		heart = self.load_dataframe()
+		# plot_diagrams(heart)
+
 		# Use dummy columns for the categorical features
-		# heart.replace(to_replace = -9, value = np.NaN, inplace = True)
-		# heart = pd.get_dummies(heart, columns = dummies)
-		standardScaler = StandardScaler()
-		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
-		print(heart.head())
+		heart = self.scale_values(heart)
+
+		# Split dataset
 		H = heart['target']
 		X = heart.drop(['target'], axis = 1)
-		X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.01, random_state = 0)
+		X_train, X_test, H_train, H_test = self.split_dataset(X, H)
 
 		# KNN
-		knn_classifier = KNeighborsClassifier(n_neighbors = 3)
-		knn_classifier.fit(X_train, H_train)
-		test_pred = knn_classifier.predict(X_test)
+		knn_acc = self.KNN(X_train, H_train, X_test, H_test)
+
+		# Decision Tree
+		dt_acc = self.decision_tree(X_train, H_train, X_test, H_test, X)
+
+		# Naive Bayes
+		nb_acc = self.naive_bayes(X_train, H_train, X_test, H_test)
+
+		# Linear Support Vector
+		lsv_acc = self.linear_support_vector(X_train, H_train, X_test, H_test)
 
 		# Predict heart disease
 		# Extract values
