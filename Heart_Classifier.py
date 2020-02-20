@@ -52,7 +52,7 @@ def scale_values(heart):
 	standardScaler = StandardScaler()
 	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
-	return heart
+	return heart, standardScaler, columns_to_scale
 
 
 def scale_values_NN(X_train, X_test):
@@ -184,7 +184,7 @@ def train_heart_models():
 	# plot_diagrams(heart)
 
 	# Use dummy columns for the categorical features
-	heart = scale_values(heart)
+	heart, scaler, columns_to_scale = scale_values(heart)
 
 	# Split dataset
 	H = heart['target']
@@ -210,14 +210,17 @@ def train_heart_models():
 
 	# Test the KNN classifier
 	knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
-	demo_values = [63, 145, 233, 150, 2.3, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]
+	demo_values = [63, 1, 145, 85, 233, 50, 20, 1, 0, 1, 60, 0, 1, 0, 0, 0]
 	knn_classifier_test.fit(X_train, H_train)
 
 	df = pd.DataFrame(columns = X_test.columns) 
-	# df.loc[0] = demo_values
+	df.loc[0] = demo_values
 	print(df)
 
-	# p = knn_classifier_test.predict(df)
+	df[columns_to_scale] = scaler.transform(df[columns_to_scale])
+	print(df)
+
+	p = knn_classifier_test.predict(df)
 	# print(p)
 
 
