@@ -100,7 +100,7 @@ class patient(TemplateView):
 
 				visit = Visit.objects.create(doctor=request.user, patient=p, reason="For examination")
 
-				base_url = reverse('test')
+				base_url = reverse('exam')
 				query_string =  urlencode(args)
 				url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
 				return redirect(url)

@@ -8,6 +8,7 @@ GENDER_CHOICES = (
 )
 
 CHEST_PAIN_CHOICES = (
+	(0, 'None'),
 	(1, 'Typical Angina'),
 	(2, 'Atypical Angina'),
 	(3, 'Non-anginal pain'),
