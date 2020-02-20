@@ -89,8 +89,8 @@ class ExamForm(forms.ModelForm):
 			'height', 'weight',
 			'reg_pulse', 'pulse_type', 'protein', 'hdl_chol',
 			'ldl_chol', 'triglyceride', 'uric_acid', 'blood_systolic',
-			'blood_diastolic', 'chol_overall', 'smoke_per_day',
-			'smoker_years', 'fasting_glucose', 
+			'blood_diastolic', 'chol_overall','heart_rate',
+			'smoke_per_day', 'smoker_years', 'fasting_glucose', 
 			# 'hist_diabetes', 'hist_heart_disease', 
-			'heart_rate'#, 'exerc_angina'
+			#, 'exerc_angina'
 		)

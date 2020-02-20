@@ -189,9 +189,11 @@ class Examination(models.Model):
 
 	def __str__(self):
 		fields = (
-			self.age, self.sex, self.chest_pain, self.blood_systolic,
-			self.blood_diastolic, self.chol_overall, self.smoke_per_day, 
-			self.smoker_years, self.fasting_glucose, self.hist_diabetes,
-			self.hist_heart_disease, self.heart_rate, self.exerc_angina
+			self.height, self.weight, self.reg_pulse, self.pulse_type,
+			self.protein, self.hdl_chol, self.ldl_chol, 
+			self.triglyceride, self.uric_acid, self.pulse_rate, 
+			self.smoke_per_day, self.smoker_years,
+			self.blood_systolic, self.blood_diastolic, 
+			self.chol_overall, self.fasting_glucose
 		)
 		return str(fields)
