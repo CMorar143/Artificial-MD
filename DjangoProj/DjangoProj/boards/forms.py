@@ -80,7 +80,7 @@ class ExamForm(forms.ModelForm):
 	# hist_diabetes = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
 	# hist_heart_disease = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
 	heart_rate = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-	exerc_angina = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
+	# exerc_angina = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
 	
 	class Meta:
 		model = Examination
@@ -92,5 +92,5 @@ class ExamForm(forms.ModelForm):
 			'blood_diastolic', 'chol_overall', 'smoke_per_day',
 			'smoker_years', 'fasting_glucose', 
 			# 'hist_diabetes', 'hist_heart_disease', 
-			'heart_rate', 'exerc_angina'
+			'heart_rate'#, 'exerc_angina'
 		)

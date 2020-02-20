@@ -177,13 +177,14 @@ class Examination(models.Model):
 	smoke_per_day = models.PositiveIntegerField()
 	smoker_years = models.PositiveIntegerField()
 	exerc_angina = models.BooleanField()
+	pulse_rate = models.PositiveIntegerField()
 
 	# Both
 	blood_systolic = models.FloatField()
 	blood_diastolic = models.FloatField()
 	chol_overall = models.FloatField()
 	fasting_glucose = models.FloatField()
-	pulse_rate = models.PositiveIntegerField()
+	
 
 	def __str__(self):
 		fields = (
