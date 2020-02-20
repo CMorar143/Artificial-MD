@@ -47,7 +47,7 @@ def plot_diagrams(heart):
 
 
 def scale_values(heart):
-	heart = pd.get_dummies(heart, columns = ['cp', 'fbs', 'exang'])
+	heart = pd.get_dummies(heart, columns = ['cp'])
 	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
 	standardScaler = StandardScaler()
 	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
@@ -192,30 +192,30 @@ def train_heart_models():
 	X_train, X_test, H_train, H_test = split_dataset(X, H)
 
 	# KNN
-	knn_acc = KNN(X_train, H_train, X_test, H_test)
+	# knn_acc = KNN(X_train, H_train, X_test, H_test)
 
 	# Decision Tree
-	dt_acc = decision_tree(X_train, H_train, X_test, H_test, X)
+	# dt_acc = decision_tree(X_train, H_train, X_test, H_test, X)
 
 	# Naive Bayes
-	nb_acc = naive_bayes(X_train, H_train, X_test, H_test)
+	# nb_acc = naive_bayes(X_train, H_train, X_test, H_test)
 
 	# Linear Support Vector
-	lsv_acc = linear_support_vector(X_train, H_train, X_test, H_test)
+	# lsv_acc = linear_support_vector(X_train, H_train, X_test, H_test)
 
-	display_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc)
+	# display_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc)
 
 
 
 
 	# Test the KNN classifier
-	# knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
-	# demo_values = [63, 145, 233, 150, 2.3, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]
-	# knn_classifier_test.fit(X_train, H_train)
+	knn_classifier_test = KNeighborsClassifier(n_neighbors = 8)
+	demo_values = [63, 145, 233, 150, 2.3, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0]
+	knn_classifier_test.fit(X_train, H_train)
 
-	# df = pd.DataFrame(columns = X_test.columns) 
+	df = pd.DataFrame(columns = X_test.columns) 
 	# df.loc[0] = demo_values
-	# print(df)
+	print(df)
 
 	# p = knn_classifier_test.predict(df)
 	# print(p)
