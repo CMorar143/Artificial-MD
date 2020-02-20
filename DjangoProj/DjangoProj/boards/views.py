@@ -77,7 +77,7 @@ class patient(TemplateView):
 			Createform = CreatePatientForm(request.POST)
 			if Createform.is_valid():
 
-				# Save data to  model
+				# Save data to model
 				patient = Createform.save(commit=False)
 				patient.user = request.user
 				patient.save()
@@ -117,8 +117,21 @@ class results(TemplateView):
 		exams = Examination.objects.latest('date')
 		patient = Patient.objects.get(patient_name=p_name)
 		med_hist = Medical_history.objects.get(patient=patient)
-		exam_values = Examination.objects.values()
-		return exams, exam_values
+
+		exam_vals = exams.values()
+		patient_vals = patient.values('age', 'sex')
+		med_hist_vals = med_hist.values(
+			'heart_attack', 'angina', 'breathlessness',
+			'chest_pain', 'high_chol', 'high_bp',
+			'diabates'
+			)
+
+		# Extract heart data
+		
+
+		# Extract diabates data
+
+		return 
 
 
 	def load_dataframe(self):
