@@ -48,8 +48,8 @@ def plot_diagrams(diabetes):
 
 def scale_values(diabetes):
 	columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'Protein', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
-	standardScaler = StandardScaler()
-	diabetes[columns_to_scale] = standardScaler.fit_transform(diabetes[columns_to_scale])
+	min_max_scaler = preprocessing.MinMaxScaler()
+	diabetes[columns_to_scale] = min_max_scaler.fit_transform(diabetes[columns_to_scale])
 
 	diabetes.to_csv(data_path + "Diabetes_scaled.csv", index=False)
 
