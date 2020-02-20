@@ -102,7 +102,7 @@ class patient(TemplateView):
 
 				base_url = reverse('exam')
 				query_string =  urlencode(args)
-				url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
+				url = '{}?{}'.format(base_url, query_string)
 				return redirect(url)
 		# return render(request, 'test.html', {"patient" : patient})
 
