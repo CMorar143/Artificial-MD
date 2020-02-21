@@ -134,11 +134,11 @@ class results(TemplateView):
 
 		# Extract heart data
 		heart_vals = []
-
+		
 
 		# Extract diabates data
 		diabetes_vals = []
-
+		
 
 		return heart_vals, diabetes_vals
 
@@ -159,7 +159,7 @@ class results(TemplateView):
 		standardScaler = StandardScaler()
 		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
-		return heart, standardScaler
+		return heart, standardScaler, columns_to_scale
 
 
 	def split_dataset(self, X, D):
@@ -203,11 +203,11 @@ class results(TemplateView):
 			'hist_heart_disease', 'heart_rate', 'exerc_angina'
 		]
 
-		dummies = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang']
-		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
+		# dummies = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang']
+		# columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
 
-		dummies2 = ['sex', 'chest_pain', 'fasting_glucose', 'hist_diabetes', 'hist_heart_disease', 'exerc_angina']
-		columns_to_scale2 = ['age', 'blood_systolic', 'chol_overall', 'smoke_per_day', 'smoker_years', 'heart_rate', 'blood_diastolic']
+		# dummies2 = ['sex', 'chest_pain', 'fasting_glucose', 'hist_diabetes', 'hist_heart_disease', 'exerc_angina']
+		# columns_to_scale2 = ['age', 'blood_systolic', 'chol_overall', 'smoke_per_day', 'smoker_years', 'heart_rate', 'blood_diastolic']
 
 		# # TODO
 		# # Read csv file
@@ -234,7 +234,7 @@ class results(TemplateView):
 		# plot_diagrams(heart)
 
 		# Use dummy columns for the categorical features
-		heart, standardScaler = self.scale_values(heart)
+		heart, standardScaler, columns_to_scale = self.scale_values(heart)
 
 		# Split dataset
 		H = heart['target']
@@ -242,16 +242,16 @@ class results(TemplateView):
 		X_train, X_test, H_train, H_test = self.split_dataset(X, H)
 
 		# KNN
-		knn_classifier = self.KNN(X_train, H_train, X_test, H_test)
+		knn_classifier = self.KNN(X_train, H_train)
 
 		# Decision Tree
-		dt_classifier = self.decision_tree(X_train, H_train, X_test, H_test, X)
+		dt_classifier = self.decision_tree(X_train, H_train)
 
 		# Naive Bayes
-		nb_classifier = self.naive_bayes(X_train, H_train, X_test, H_test)
+		nb_classifier = self.naive_bayes(X_train, H_train)
 
 		# Linear Support Vector
-		lsv_classifier = self.linear_support_vector(X_train, H_train, X_test, H_test)
+		lsv_classifier = self.linear_support_vector(X_train, H_train)
 
 		# # Predict heart disease
 		# # Extract values
