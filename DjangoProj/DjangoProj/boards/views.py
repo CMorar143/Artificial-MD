@@ -37,8 +37,12 @@ class exam(TemplateView):
 		if form.is_valid():
 
 			# Save data to  model
+			p_name = request.GET.get('patient')
+			patient = Patient.objects.get(patient_name=p_name)
+			visit = Visit.objects.get(patient=patient).latest('date')
 			exam = form.save(commit=False)
 			exam.user = request.user
+			exam.visit = visit
 			exam.save()
 			exam_input = form.cleaned_data
 			return redirect('results')
@@ -114,8 +118,10 @@ class results(TemplateView):
 	
 	def get_data(self):
 		p_name = request.GET.get('patient')
-		exams = Examination.objects.latest('date')
+
 		patient = Patient.objects.get(patient_name=p_name)
+		visit = Visit.objects.get(patient=patient).latest('date')
+		exams = Examination.objects.get(visit=visit)
 		med_hist = Medical_history.objects.get(patient=patient)
 
 		exam_vals = exams.values()
@@ -127,11 +133,14 @@ class results(TemplateView):
 			)
 
 		# Extract heart data
+		heart_vals = []
 
 
 		# Extract diabates data
+		diabetes_vals = []
 
-		return 
+
+		return heart_vals, diabetes_vals
 
 
 	def load_dataframe(self):
@@ -144,13 +153,12 @@ class results(TemplateView):
 		return heart
 
 
-	def scale_values(self, heart):
+	def scale_values(self, heart, standardScaler):
 		heart = pd.get_dummies(heart, columns = ['cp'])
 		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
-		standardScaler = StandardScaler()
 		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
-		return heart, standardScaler
+		return heart
 
 
 	def split_dataset(self, X, D):
@@ -225,7 +233,8 @@ class results(TemplateView):
 		# plot_diagrams(heart)
 
 		# Use dummy columns for the categorical features
-		heart, standardScaler = self.scale_values(heart)
+		standardScaler = StandardScaler()
+		heart = self.scale_values(heart, standardScaler)
 
 		# Split dataset
 		H = heart['target']
