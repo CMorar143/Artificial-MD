@@ -157,40 +157,32 @@ class results(TemplateView):
 		return train_test_split(X, D, test_size = 0.01, random_state = 0)
 
 
-	def KNN(self, X_train, H_train, X_test, H_test):
-		knn_scores = []
-		for k in range(1,30):
-			knn_classifier = KNeighborsClassifier(n_neighbors = k)
-			knn_classifier.fit(X_train, H_train)
-			knn_scores.append(knn_classifier.score(X_test, H_test))
+	def KNN(self, X_train, H_train):
+		knn_classifier = KNeighborsClassifier(n_neighbors = 9)
+		knn_classifier.fit(X_train, H_train)
 
-		return max(knn_scores)
+		return knn_classifier
 
 
-	def decision_tree(self, X_train, H_train, X_test, H_test, X):
-		dt_scores = []
-		for i in range(1, len(X.columns) + 1):
-			dt_classifier = DecisionTreeClassifier(max_features = i, random_state = 0)
-			dt_classifier.fit(X_train, H_train)
-			dt_scores.append(dt_classifier.score(X_test, H_test))
-
-		return max(dt_scores)
+	def decision_tree(self, X_train, H_train):
+		dt_classifier = DecisionTreeClassifier(max_features = 10, random_state = 0)
+		dt_classifier.fit(X_train, H_train)
+		
+		return dt_classifier
 
 
-	def naive_bayes(self, X_train, H_train, X_test, H_test):
+	def naive_bayes(self, X_train, H_train):
 		model = GaussianNB()
 		model.fit(X_train, H_train)
-		test_pred = model.predict(X_test)
+		
+		return model
 
-		return metrics.accuracy_score(H_test, test_pred)
 
-
-	def linear_support_vector(self, X_train, H_train, X_test, H_test):
+	def linear_support_vector(self, X_train, H_train):
 		svm_model = LinearSVC(random_state=0, max_iter=3500)
 		svm_model.fit(X_train, H_train)
-		test_pred = svm_model.predict(X_test)
-
-		return metrics.accuracy_score(H_test, test_pred)
+		
+		return svm_model
 
 
 	def get(self, request):
@@ -241,16 +233,16 @@ class results(TemplateView):
 		X_train, X_test, H_train, H_test = self.split_dataset(X, H)
 
 		# KNN
-		knn_acc = self.KNN(X_train, H_train, X_test, H_test)
+		knn_classifier = self.KNN(X_train, H_train, X_test, H_test)
 
 		# Decision Tree
-		dt_acc = self.decision_tree(X_train, H_train, X_test, H_test, X)
+		dt_classifier = self.decision_tree(X_train, H_train, X_test, H_test, X)
 
 		# Naive Bayes
-		nb_acc = self.naive_bayes(X_train, H_train, X_test, H_test)
+		nb_classifier = self.naive_bayes(X_train, H_train, X_test, H_test)
 
 		# Linear Support Vector
-		lsv_acc = self.linear_support_vector(X_train, H_train, X_test, H_test)
+		lsv_classifier = self.linear_support_vector(X_train, H_train, X_test, H_test)
 
 		# # Predict heart disease
 		# # Extract values
