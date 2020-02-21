@@ -131,11 +131,15 @@ class results(TemplateView):
 	def get_data(self, request):
 		p_name = request.GET.get('patient')
 
-		patient = Patient.objects.get(patient_name=p_name)
-		visit = Visit.objects.filter(patient=patient).order_by('-id')[0]
-		exams = Examination.objects.get(visit=visit)
-		med_hist = Medical_history.objects.get(patient=patient)
+		patient = Patient.objects.filter(patient_name__in=p_name)
 
+		visit = Visit.objects.filter(patient__in=patient).order_by('-id')[0]
+		print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+		print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+		exams = Examination.objects.filter(visit__in=visit)
+		med_hist = Medical_history.objects.filter(patient__in=patient)
+		print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+		print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 		exam_vals = exams.values()
 		patient_vals = patient.values_list('age', 'sex', flat=True)
 		med_hist_vals = med_hist.values(
@@ -148,7 +152,8 @@ class results(TemplateView):
 		fbs = 0
 		if (exam_vals['fasting_glucose'] > 120):
 			fbs = 1
-
+		print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+		print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 		# Extract heart data
 		heart_vals = []
 		heart_vals.extend(patient_vals)
