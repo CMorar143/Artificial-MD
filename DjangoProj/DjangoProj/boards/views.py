@@ -125,22 +125,40 @@ class results(TemplateView):
 		med_hist = Medical_history.objects.get(patient=patient)
 
 		exam_vals = exams.values()
-		patient_vals = patient.values('age', 'sex')
+		patient_vals = patient.values_list('age', 'sex', flat=True)
 		med_hist_vals = med_hist.values(
 			'heart_attack', 'angina', 'breathlessness',
 			'chest_pain', 'high_chol', 'high_bp',
 			'diabates'
 			)
 
+		# Check if glucose is above 120 for heart dataset
+		fbs = 0
+		if (exam_vals['fasting_glucose'] > 120):
+			fbs = 1
+
 		# Extract heart data
 		heart_vals = []
-		
+		heart_vals.extend(patient_vals)
+		heart_vals.append(med_hist_vals['chest_pain'])
+		heart_vals.append(exam_vals['blood_systolic'])
+		heart_vals.append(exam_vals['blood_diastolic'])
+		heart_vals.append(exam_vals['chol_overall'])
+		heart_vals.append(exam_vals['smoke_per_day'])
+		heart_vals.append(exam_vals['smoker_years'])
+		heart_vals.append(fbs)
+		heart_vals.append(med_hist_vals['diabates'])
+		heart_vals.append(med_hist_vals['heart_attack'])
+		heart_vals.append(exam_vals['heart_rate'])
+		heart_vals.append(med_hist_vals['angina'])
+		print(heart_vals)
+
 
 		# Extract diabates data
 		diabetes_vals = []
-		
 
-		return heart_vals, diabetes_vals
+
+		return heart_vals#, diabetes_vals
 
 
 	def load_dataframe(self):
@@ -195,7 +213,7 @@ class results(TemplateView):
 
 
 	def get(self, request):
-		exam, patient, med_hist = self.get_data()
+		heart_vals = self.get_data()
 		Features = [
 			'age', 'sex', 'chest_pain', 'blood_systolic', 
 			'blood_diastolic', 'chol_overall', 'smoke_per_day', 
@@ -253,6 +271,17 @@ class results(TemplateView):
 		# Linear Support Vector
 		lsv_classifier = self.linear_support_vector(X_train, H_train)
 
+		predict_df = pd.DataFrame(columns = X_test.columns) 
+		predict_df.loc[0] = heart_vals
+		print(predict_df)
+
+		predict_df[columns_to_scale] = scaler.transform(predict_df[columns_to_scale])
+		print(predict_df)
+
+		prediction = knn_classifier.predict(predict_df)
+		print(prediction)
+
+
 		# # Predict heart disease
 		# # Extract values
 		# exam_param = []
@@ -286,7 +315,7 @@ class results(TemplateView):
 
 
 
-		return render(request, self.template_name, {'exams':exams, 'prediction': prediction})
+		return render(request, self.template_name, {'heart_vals': heart_vals, 'prediction': prediction})
 
 
 
