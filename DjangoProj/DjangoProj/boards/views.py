@@ -39,12 +39,24 @@ class exam(TemplateView):
 			# Save data to  model
 			p_name = request.GET.get('patient')
 			patient = Patient.objects.get(patient_name=p_name)
-			visit = Visit.objects.get(patient=patient).latest('date')
+			visit = Visit.objects.filter(patient=patient).order_by('-id')[0]
+			print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+			print(visit)
+			print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+
 			exam = form.save(commit=False)
 			exam.user = request.user
 			exam.visit = visit
 			exam.save()
 			exam_input = form.cleaned_data
+
+			p_arg = {}
+			p_arg['patient'] = p_name
+			base_url = reverse('results')
+			query_string = urlencode(p_arg)
+			url = '{}?{}'.format(base_url, query_string)
+			return redirect(url)
+
 			return redirect('results')
 			
 			# To remove the value from the input box after submitting
@@ -116,11 +128,11 @@ class patient(TemplateView):
 class results(TemplateView):
 	template_name = 'results.html'
 	
-	def get_data(self):
+	def get_data(self, request):
 		p_name = request.GET.get('patient')
 
 		patient = Patient.objects.get(patient_name=p_name)
-		visit = Visit.objects.get(patient=patient).latest('date')
+		visit = Visit.objects.filter(patient=patient).order_by('-id')[0]
 		exams = Examination.objects.get(visit=visit)
 		med_hist = Medical_history.objects.get(patient=patient)
 
@@ -213,7 +225,7 @@ class results(TemplateView):
 
 
 	def get(self, request):
-		heart_vals = self.get_data()
+		heart_vals = self.get_data(request)
 		Features = [
 			'age', 'sex', 'chest_pain', 'blood_systolic', 
 			'blood_diastolic', 'chol_overall', 'smoke_per_day', 
@@ -275,6 +287,7 @@ class results(TemplateView):
 		predict_df.loc[0] = heart_vals
 		print(predict_df)
 
+		predict_df = pd.get_dummies(predict_df, columns = ['cp'])
 		predict_df[columns_to_scale] = scaler.transform(predict_df[columns_to_scale])
 		print(predict_df)
 
