@@ -153,12 +153,13 @@ class results(TemplateView):
 		return heart
 
 
-	def scale_values(self, heart, standardScaler):
+	def scale_values(self, heart):
 		heart = pd.get_dummies(heart, columns = ['cp'])
 		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
+		standardScaler = StandardScaler()
 		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
-		return heart
+		return heart, standardScaler
 
 
 	def split_dataset(self, X, D):
@@ -233,8 +234,7 @@ class results(TemplateView):
 		# plot_diagrams(heart)
 
 		# Use dummy columns for the categorical features
-		standardScaler = StandardScaler()
-		heart = self.scale_values(heart, standardScaler)
+		heart, standardScaler = self.scale_values(heart)
 
 		# Split dataset
 		H = heart['target']
