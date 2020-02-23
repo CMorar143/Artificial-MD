@@ -15,8 +15,13 @@ import numpy as np
 import os
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import LinearSVC
+from sklearn.neural_network import MLPClassifier
+
 
 # # Create your views here.
 # def login(request):
@@ -142,22 +147,21 @@ class results(TemplateView):
 		# print(med_hist)
 
 		exam_vals = exams.values()[0]
-		print(exam_vals)
+		# print(exam_vals)
 		patient_vals = patient.values_list('age', 'sex')[0]
-		print(patient_vals)
+		# print(patient_vals)
 		med_hist_vals = med_hist.values(
 			'heart_attack', 'angina', 'breathlessness',
 			'chest_pain', 'high_chol', 'high_bp',
 			'diabetes'
 			)[0]
-		print(med_hist_vals)
+		# print(med_hist_vals)
 
 		# Check if glucose is above 120 for heart dataset
 		fbs = 0
 		if (exam_vals['fasting_glucose'] > 120):
 			fbs = 1
 		
-		print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 		# Extract heart data
 		heart_vals = []
 		heart_vals.extend(patient_vals)
@@ -168,10 +172,10 @@ class results(TemplateView):
 		heart_vals.append(exam_vals['smoke_per_day'])
 		heart_vals.append(exam_vals['smoker_years'])
 		heart_vals.append(fbs)
-		heart_vals.append(med_hist_vals['diabetes'])
-		heart_vals.append(med_hist_vals['heart_attack'])
+		heart_vals.append(0 if med_hist_vals['diabetes']==False else 1)
+		heart_vals.append(0 if med_hist_vals['heart_attack']==False else 1)
 		heart_vals.append(exam_vals['heart_rate'])
-		heart_vals.append(med_hist_vals['angina'])
+		heart_vals.append(0 if med_hist_vals['angina']==False else 1)
 		print(heart_vals)
 
 
@@ -235,12 +239,13 @@ class results(TemplateView):
 
 	def get(self, request):
 		heart_vals = self.get_data(request)
-		Features = [
-			'age', 'sex', 'chest_pain', 'blood_systolic', 
-			'blood_diastolic', 'chol_overall', 'smoke_per_day', 
-			'smoker_years', 'fasting_glucose', 'hist_diabetes',
-			'hist_heart_disease', 'heart_rate', 'exerc_angina'
-		]
+		print(heart_vals)
+		# Features = [
+		# 	'age', 'sex', 'chest_pain', 'blood_systolic', 
+		# 	'blood_diastolic', 'chol_overall', 'smoke_per_day', 
+		# 	'smoker_years', 'fasting_glucose', 'hist_diabetes',
+		# 	'hist_heart_disease', 'heart_rate', 'exerc_angina'
+		# ]
 
 		# dummies = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang']
 		# columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
@@ -270,7 +275,10 @@ class results(TemplateView):
 
 		# Load dataframe
 		heart = self.load_dataframe()
-		# plot_diagrams(heart)
+
+		# Put new data into dataframe
+		heart_vals = pd.DataFrame(heart_vals).transpose()
+		heart_vals.columns = heart.drop(['target'], axis = 1).columns
 
 		# Use dummy columns for the categorical features
 		heart, standardScaler, columns_to_scale = self.scale_values(heart)
@@ -291,14 +299,17 @@ class results(TemplateView):
 
 		# Linear Support Vector
 		lsv_classifier = self.linear_support_vector(X_train, H_train)
-
-		predict_df = pd.DataFrame(columns = X_test.columns) 
-		predict_df.loc[0] = heart_vals
+		
+		# Scaling the new instance and getting dummies for cp col
+		heart_vals = pd.get_dummies(heart_vals, columns = ['cp'])
+		heart_vals[columns_to_scale] = standardScaler.transform(heart_vals[columns_to_scale])
+		heart_vals = heart_vals.reindex(columns=heart.columns, fill_value=0)
+		
+		predict_df = pd.DataFrame(columns = X_test.columns)
+		
+		predict_df.loc[0] = heart_vals.loc[0]
 		print(predict_df)
-
-		predict_df = pd.get_dummies(predict_df, columns = ['cp'])
-		predict_df[columns_to_scale] = scaler.transform(predict_df[columns_to_scale])
-		print(predict_df)
+		print(X_train.head())
 
 		prediction = knn_classifier.predict(predict_df)
 		print(prediction)
@@ -337,7 +348,7 @@ class results(TemplateView):
 
 
 
-		return render(request, self.template_name, {'heart_vals': heart_vals, 'prediction': prediction})
+		return render(request, self.template_name, {'heart_vals': heart_vals.loc[0], 'prediction': prediction})
 
 
 
