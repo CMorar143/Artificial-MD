@@ -181,9 +181,30 @@ class results(TemplateView):
 
 		# Extract diabates data
 		diabetes_vals = []
+		diabetes_vals.append(0 if med_hist_vals['breathlessness']==False else 1)
+		diabetes_vals.append(med_hist_vals['chest_pain'])
+		diabetes_vals.append(0 if med_hist_vals['high_chol']==False else 1)
+		diabetes_vals.append(0 if med_hist_vals['high_bp']==False else 1)
+		
+		# Calculate BMI
+		height = exam_vals['height']
+		weight = exam_vals['weight']
+		bmi = weight / (height*height)
+		diabetes_vals.append(bmi)
 
+		diabetes_vals.append(0 if exam_vals['reg_pulse']==False else 1)
+		diabetes_vals.append(exam_vals['pulse_type'])
+		diabetes_vals.append(exam_vals['blood_systolic'])
+		diabetes_vals.append(exam_vals['blood_diastolic'])
+		diabetes_vals.append(exam_vals['protein'])
+		diabetes_vals.append(exam_vals['hdl_chol'])
+		diabetes_vals.append(exam_vals['ldl_chol'])
+		diabetes_vals.append(exam_vals['chol_overall'])
+		diabetes_vals.append(exam_vals['fasting_glucose'])
+		diabetes_vals.append(exam_vals['triglyceride'])
+		diabetes_vals.append(exam_vals['uric_acid'])
 
-		return heart_vals#, diabetes_vals
+		return heart_vals, diabetes_vals
 
 
 	def load_dataframe(self):
@@ -238,40 +259,8 @@ class results(TemplateView):
 
 
 	def get(self, request):
-		heart_vals = self.get_data(request)
-		print(heart_vals)
-		# Features = [
-		# 	'age', 'sex', 'chest_pain', 'blood_systolic', 
-		# 	'blood_diastolic', 'chol_overall', 'smoke_per_day', 
-		# 	'smoker_years', 'fasting_glucose', 'hist_diabetes',
-		# 	'hist_heart_disease', 'heart_rate', 'exerc_angina'
-		# ]
-
-		# dummies = ['sex', 'cp', 'fbs', 'dm', 'famhist', 'exang']
-		# columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
-
-		# dummies2 = ['sex', 'chest_pain', 'fasting_glucose', 'hist_diabetes', 'hist_heart_disease', 'exerc_angina']
-		# columns_to_scale2 = ['age', 'blood_systolic', 'chol_overall', 'smoke_per_day', 'smoker_years', 'heart_rate', 'blood_diastolic']
-
-		# # TODO
-		# # Read csv file
-		# current_dir =  os.path.abspath(os.path.dirname(__file__))
-		# parent_dir = os.path.abspath(current_dir + "/../")
-		# pathHeart = parent_dir + '/Data/new_cleveland.csv'
-		# heart = pd.read_csv(pathHeart)
-		# print(heart.head())
-		# standardScaler = StandardScaler()
-		# heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
-		# print(heart.head())
-		# H = heart['target']
-		# X = heart.drop(['target'], axis = 1)
-		# X_train, X_test, H_train, H_test = train_test_split(X, H, test_size = 0.01, random_state = 0)
-
-		# # KNN
-		# knn_classifier = KNeighborsClassifier(n_neighbors = 3)
-		# knn_classifier.fit(X_train, H_train)
-		# test_pred = knn_classifier.predict(X_test)
-
+		heart_vals, diabetes_vals = self.get_data(request)
+		print(diabetes_vals)
 
 		# Load dataframe
 		heart = self.load_dataframe()
@@ -303,15 +292,10 @@ class results(TemplateView):
 		# Scaling the new instance and getting dummies for cp col
 		heart_vals = pd.get_dummies(heart_vals, columns = ['cp'])
 		heart_vals[columns_to_scale] = standardScaler.transform(heart_vals[columns_to_scale])
-		heart_vals = heart_vals.reindex(columns=heart.columns, fill_value=0)
-		
-		predict_df = pd.DataFrame(columns = X_test.columns)
-		
-		predict_df.loc[0] = heart_vals.loc[0]
-		print(predict_df)
-		print(X_train.head())
+		heart_vals = heart_vals.reindex(columns=X.columns, fill_value=0)
 
-		prediction = knn_classifier.predict(predict_df)
+		# Making prediction
+		prediction = knn_classifier.predict(heart_vals)
 		print(prediction)
 
 
