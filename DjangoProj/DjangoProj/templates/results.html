@@ -4,13 +4,22 @@
 
 {% block content %}
 
-Fields are {{ heart_vals }}<br><br>
-{% if prediction == 0 %}
+{% if heart_pred == 0 %}
 	Prediction: Patient is unlikely to have heart disease <br>
 {% endif %}
 
-{% if prediction == 1 %}
+{% if heart_pred == 1 %}
 	Prediction: Patient is likely to have heart disease <br>
 {% endif %}
+
+{% if diabetes_pred == 0 %}
+	Prediction: Patient is unlikely to have diabetes <br>
+{% endif %}
+
+{% if diabetes_pred == 1 %}
+	Prediction: Patient is likely to have diabetes <br>
+{% endif %}
   <a href="{% url 'exam' %}">Perform Another Exam</a>
+  	<br>
+  <a href="{% url 'patient' %}">Select Another Patient</a>
 {% endblock %}

@@ -15,7 +15,7 @@ import numpy as np
 import os
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn import metrics
+from sklearn import metrics, preprocessing
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -179,7 +179,7 @@ class results(TemplateView):
 		print(heart_vals)
 
 
-		# Extract diabates data
+		# Extract diabetes data
 		diabetes_vals = []
 		diabetes_vals.append(0 if med_hist_vals['breathlessness']==False else 1)
 		diabetes_vals.append(med_hist_vals['chest_pain'])
@@ -207,7 +207,7 @@ class results(TemplateView):
 		return heart_vals, diabetes_vals
 
 
-	def load_dataframe(self):
+	def load_heart(self):
 		# Load heart disease dataset into pandas dataframe
 		current_dir =  os.path.abspath(os.path.dirname(__file__))
 		parent_dir = os.path.abspath(current_dir + "/../")
@@ -216,14 +216,30 @@ class results(TemplateView):
 
 		return heart
 
+	def load_diabetes(self):
+		# Load heart disease dataset into pandas dataframe
+		current_dir =  os.path.abspath(os.path.dirname(__file__))
+		parent_dir = os.path.abspath(current_dir + "/../")
+		pathDiabetes = parent_dir + '/Data/Diabetes.csv'
+		diabetes = pd.read_csv(pathDiabetes)
 
-	def scale_values(self, heart):
+		return diabetes
+
+
+	def scale_heart(self, heart):
 		heart = pd.get_dummies(heart, columns = ['cp'])
 		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
 		standardScaler = StandardScaler()
 		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 
 		return heart, standardScaler, columns_to_scale
+
+	def scale_diabetes(self, diabetes):
+		columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'Protein', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
+		min_max_scaler = preprocessing.MinMaxScaler()
+		diabetes[columns_to_scale] = min_max_scaler.fit_transform(diabetes[columns_to_scale])
+
+		return diabetes, min_max_scaler, columns_to_scale
 
 
 	def split_dataset(self, X, D):
@@ -262,15 +278,19 @@ class results(TemplateView):
 		heart_vals, diabetes_vals = self.get_data(request)
 		print(diabetes_vals)
 
-		# Load dataframe
-		heart = self.load_dataframe()
+		# Load dataframes
+		heart = self.load_heart()
+		diabetes = self.load_diabetes()
 
 		# Put new data into dataframe
 		heart_vals = pd.DataFrame(heart_vals).transpose()
-		heart_vals.columns = heart.drop(['target'], axis = 1).columns
+		heart_vals.columns = heart.drop(['target'], axis=1).columns
+
+		diabetes_vals = pd.DataFrame(diabetes_vals).transpose()
+		diabetes_vals.columns = diabetes.drop(['Diabetes'],axis=1).columns
 
 		# Use dummy columns for the categorical features
-		heart, standardScaler, columns_to_scale = self.scale_values(heart)
+		heart, standardScaler, columns_to_scale = self.scale_heart(heart)
 
 		# Split dataset
 		H = heart['target']
@@ -295,44 +315,50 @@ class results(TemplateView):
 		heart_vals = heart_vals.reindex(columns=X.columns, fill_value=0)
 
 		# Making prediction
-		prediction = knn_classifier.predict(heart_vals)
-		print(prediction)
+		heart_pred = knn_classifier.predict(heart_vals)
+		print(heart_pred)
 
 
-		# # Predict heart disease
-		# # Extract values
-		# exam_param = []
-		# exam_df = []
-		# exam_predict = []
-		# for f in range(len(Features)):
-		# 	exam_param.append(Features[f])
-		# 	exam_param.append(exam_values[len(exam_values)-1][Features[f]])
-		# 	exam_predict.append(exam_values[len(exam_values)-1][Features[f]])
-		# 	exam_df.append(exam_param)
-		# 	exam_param = []
+		# Diabetes
+		# Load dataframes
+		diabetes = self.load_diabetes()
 
-		# exam_df = dict(exam_df)
-		# print(exam_df)
-		# exam_df = pd.DataFrame(exam_df, columns=Features, index=[1])
-		# print(exam_df)
-		# # exam_df = pd.get_dummies(exam_df, columns = dummies2)
-		# # standardScaler = StandardScaler()
-		# exam_df[columns_to_scale2] = standardScaler.transform(exam_df[columns_to_scale2])
-		# print(exam_df)
-		# # Pass prediction 
-		# Row_list =[]
-		# # Iterate over each row 
-		# for i in range((exam_df.shape[0])):
-		# 	Row_list.append(list(exam_df.iloc[i, :])) 
-		# # Print the list 
-		# print(Row_list) 
-		# prediction = knn_classifier.predict(Row_list)
-		# print(prediction)
+		# Put new data into dataframe
+		diabetes_vals = pd.DataFrame(diabetes_vals)
+		print(diabetes_vals)
+		diabetes_vals.columns = diabetes.drop(['Diabetes'],axis=1).columns
+
+		# Use dummy columns for the categorical features
+		diabetes, min_max_scaler, columns_to_scale = self.scale_diabetes(diabetes)
+		
+		# Split dataset
+		D = diabetes['Diabetes']
+		X = diabetes.drop(['Diabetes'], axis = 1)
+		X_train, X_test, D_train, D_test = self.split_dataset(X, D)
+
+		# KNN
+		knn_classifier = self.KNN(X_train, D_train)
+
+		# Decision Tree
+		dt_classifier = self.decision_tree(X_train, D_train)
+
+		# Naive Bayes
+		nb_classifier = self.naive_bayes(X_train, D_train)
+
+		# Linear Support Vector
+		lsv_classifier = self.linear_support_vector(X_train, D_train)
+		
+		# Scaling the new instance
+		diabetes_vals[columns_to_scale] = min_max_scaler.transform(diabetes_vals[columns_to_scale])
+
+		# Making prediction
+		diabetes_pred = knn_classifier.predict(diabetes_vals)
+		print(diabetes_pred)
 
 
-
-
-		return render(request, self.template_name, {'heart_vals': heart_vals.loc[0], 'prediction': prediction})
+		# Send predictions
+		predictions = {'heart_pred': heart_pred, 'diabetes_pred': diabetes_pred}
+		return render(request, self.template_name, predictions)
 
 
 
