@@ -141,19 +141,23 @@ class results(TemplateView):
 		med_hist = Medical_history.objects.filter(patient__in=patient)
 		# print(med_hist)
 
-		exam_vals = exams.values()
-		patient_vals = patient.values_list('age', 'sex', flat=True)
+		exam_vals = exams.values()[0]
+		print(exam_vals)
+		patient_vals = patient.values_list('age', 'sex')[0]
+		print(patient_vals)
 		med_hist_vals = med_hist.values(
 			'heart_attack', 'angina', 'breathlessness',
 			'chest_pain', 'high_chol', 'high_bp',
-			'diabates'
-			)
+			'diabetes'
+			)[0]
+		print(med_hist_vals)
 
 		# Check if glucose is above 120 for heart dataset
 		fbs = 0
 		if (exam_vals['fasting_glucose'] > 120):
 			fbs = 1
-
+		
+		print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 		# Extract heart data
 		heart_vals = []
 		heart_vals.extend(patient_vals)
@@ -164,7 +168,7 @@ class results(TemplateView):
 		heart_vals.append(exam_vals['smoke_per_day'])
 		heart_vals.append(exam_vals['smoker_years'])
 		heart_vals.append(fbs)
-		heart_vals.append(med_hist_vals['diabates'])
+		heart_vals.append(med_hist_vals['diabetes'])
 		heart_vals.append(med_hist_vals['heart_attack'])
 		heart_vals.append(exam_vals['heart_rate'])
 		heart_vals.append(med_hist_vals['angina'])
