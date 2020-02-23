@@ -229,10 +229,10 @@ class results(TemplateView):
 	def scale_heart(self, heart):
 		heart = pd.get_dummies(heart, columns = ['cp'])
 		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
-		standardScaler = StandardScaler()
-		heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
+		min_max_scaler = preprocessing.MinMaxScaler()
+		heart[columns_to_scale] = min_max_scaler.fit_transform(heart[columns_to_scale])
 
-		return heart, standardScaler, columns_to_scale
+		return heart, min_max_scaler, columns_to_scale
 
 	def scale_diabetes(self, diabetes):
 		columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'Protein', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
@@ -280,17 +280,13 @@ class results(TemplateView):
 
 		# Load dataframes
 		heart = self.load_heart()
-		diabetes = self.load_diabetes()
 
 		# Put new data into dataframe
 		heart_vals = pd.DataFrame(heart_vals).transpose()
 		heart_vals.columns = heart.drop(['target'], axis=1).columns
 
-		diabetes_vals = pd.DataFrame(diabetes_vals).transpose()
-		diabetes_vals.columns = diabetes.drop(['Diabetes'],axis=1).columns
-
 		# Use dummy columns for the categorical features
-		heart, standardScaler, columns_to_scale = self.scale_heart(heart)
+		heart, min_max_scaler, columns_to_scale = self.scale_heart(heart)
 
 		# Split dataset
 		H = heart['target']
@@ -311,12 +307,11 @@ class results(TemplateView):
 		
 		# Scaling the new instance and getting dummies for cp col
 		heart_vals = pd.get_dummies(heart_vals, columns = ['cp'])
-		heart_vals[columns_to_scale] = standardScaler.transform(heart_vals[columns_to_scale])
+		heart_vals[columns_to_scale] = min_max_scaler.transform(heart_vals[columns_to_scale])
 		heart_vals = heart_vals.reindex(columns=X.columns, fill_value=0)
 
 		# Making prediction
 		heart_pred = knn_classifier.predict(heart_vals)
-		print(heart_pred)
 
 
 		# Diabetes
@@ -324,8 +319,7 @@ class results(TemplateView):
 		diabetes = self.load_diabetes()
 
 		# Put new data into dataframe
-		diabetes_vals = pd.DataFrame(diabetes_vals)
-		print(diabetes_vals)
+		diabetes_vals = pd.DataFrame(diabetes_vals).transpose()
 		diabetes_vals.columns = diabetes.drop(['Diabetes'],axis=1).columns
 
 		# Use dummy columns for the categorical features
@@ -353,7 +347,6 @@ class results(TemplateView):
 
 		# Making prediction
 		diabetes_pred = knn_classifier.predict(diabetes_vals)
-		print(diabetes_pred)
 
 
 		# Send predictions
