@@ -14,7 +14,6 @@ from matplotlib import pyplot as plt
 import numpy as np
 import os
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from sklearn import metrics, preprocessing
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -44,10 +43,7 @@ class exam(TemplateView):
 			# Save data to  model
 			p_name = request.GET.get('patient')
 			patient = Patient.objects.get(patient_name=p_name)
-			visit = Visit.objects.filter(patient=patient).order_by('-id')[0]
-			print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
-			print(visit)
-			print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+			visit = Visit.objects.filter(patient__in=patient).latest('date')
 
 			exam = form.save(commit=False)
 			exam.user = request.user
