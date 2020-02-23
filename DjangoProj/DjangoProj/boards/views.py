@@ -2,8 +2,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from urllib.parse import urlencode
 from django.conf import settings
-# from django.http import HttpResponse
-# from django.settings import BASEDIR
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm
 from boards.models import Examination, Patient, Visit, Medical_history
@@ -13,6 +11,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
 import os
+from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import train_test_split
 from sklearn import metrics, preprocessing
 from sklearn.neighbors import KNeighborsClassifier
@@ -33,35 +32,31 @@ class exam(TemplateView):
 
 	def get(self, request):
 		form = ExamForm()
-		# exams = Examination.objects.all()
 		return render(request, self.template_name, {'form': form})
 
 	def post(self, request):
 		form = ExamForm(request.POST)
 		if form.is_valid():
 
-			# Save data to  model
+			# Get patient and visit object linked to this exam
 			p_name = request.GET.get('patient')
 			patient = Patient.objects.get(patient_name=p_name)
-			visit = Visit.objects.filter(patient__in=patient).latest('date')
+			visit = Visit.objects.filter(patient=patient).latest('date')
 
+			# Save data to  model
 			exam = form.save(commit=False)
 			exam.user = request.user
 			exam.visit = visit
 			exam.save()
 			exam_input = form.cleaned_data
 
+			# Pass the patient name to the results page
 			p_arg = {}
 			p_arg['patient'] = p_name
 			base_url = reverse('results')
 			query_string = urlencode(p_arg)
 			url = '{}?{}'.format(base_url, query_string)
 			return redirect(url)
-
-			return redirect('results')
-			
-			# To remove the value from the input box after submitting
-			# form = ExamForm()
 
 		args = {'form': form, 'exam_input': exam_input}
 		return render(request, self.template_name, args)
@@ -324,7 +319,12 @@ class results(TemplateView):
 		# Split dataset
 		D = diabetes['Diabetes']
 		X = diabetes.drop(['Diabetes'], axis = 1)
-		X_train, X_test, D_train, D_test = self.split_dataset(X, D)
+		# X_train, X_test, D_train, D_test = self.split_dataset(X, D)
+
+		# With oversampling
+		sm = SMOTE(random_state=52)
+		x_sm, d_sm = sm.fit_sample(X, D)
+		X_train, X_test, D_train, D_test = self.split_dataset(x_sm, d_sm)
 
 		# KNN
 		knn_classifier = self.KNN(X_train, D_train)
@@ -348,50 +348,3 @@ class results(TemplateView):
 		# Send predictions
 		predictions = {'heart_pred': heart_pred, 'diabetes_pred': diabetes_pred}
 		return render(request, self.template_name, predictions)
-
-
-
-
-
-
-# def upload_csv(request):
-# 	data = {}
-# 	if "GET" == request.method:
-# 		return render(request, "myapp/upload_csv.html", data)
-#     # if not GET, then proceed
-# 	try:
-# 		csv_file = request.FILES["csv_file"]
-# 		if not csv_file.name.endswith('.csv'):
-# 			messages.error(request,'File is not CSV type')
-# 			return HttpResponseRedirect(reverse("myapp:upload_csv"))
-#         #if file is too large, return
-# 		if csv_file.multiple_chunks():
-# 			messages.error(request,"Uploaded file is too big (%.2f MB)." % (csv_file.size/(1000*1000),))
-# 			return HttpResponseRedirect(reverse("myapp:upload_csv"))
-
-# 		file_data = csv_file.read().decode("utf-8")		
-
-# 		lines = file_data.split("\n")
-# 		#loop over the lines and save them in db. If error , store as string and then display
-# 		for line in lines:						
-# 			fields = line.split(",")
-# 			data_dict = {}
-# 			data_dict["name"] = fields[0]
-# 			data_dict["start_date_time"] = fields[1]
-# 			data_dict["end_date_time"] = fields[2]
-# 			data_dict["notes"] = fields[3]
-# 			try:
-# 				form = EventsForm(data_dict)
-# 				if form.is_valid():
-# 					form.save()					
-# 				else:
-# 					logging.getLogger("error_logger").error(form.errors.as_json())												
-# 			except Exception as e:
-# 				logging.getLogger("error_logger").error(repr(e))					
-# 				pass
-
-# 	except Exception as e:
-# 		logging.getLogger("error_logger").error("Unable to upload file. "+repr(e))
-# 		messages.error(request,"Unable to upload file. "+repr(e))
-
-# 	return HttpResponseRedirect(reverse("myapp:upload_csv"))
