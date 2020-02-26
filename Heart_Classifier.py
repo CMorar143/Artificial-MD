@@ -49,10 +49,10 @@ def plot_diagrams(heart):
 def scale_values(heart):
 	heart = pd.get_dummies(heart, columns = ['cp'])
 	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
-	standardScaler = StandardScaler()
-	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
+	min_max_scaler = preprocessing.MinMaxScaler()
+	heart[columns_to_scale] = min_max_scaler.fit_transform(heart[columns_to_scale])
 
-	return heart, standardScaler, columns_to_scale
+	return heart, min_max_scaler, columns_to_scale
 
 
 def scale_values_NN(X_train, X_test):

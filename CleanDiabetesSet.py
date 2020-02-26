@@ -85,7 +85,7 @@ def process_dir():
 		'Diabetes'
 	]
 
-	Dich_Features = [
+	Bool_Features = [
 		'Short_Breath',
 		'Chest_Pains',
 		'High_Chol_Hist',
@@ -124,7 +124,7 @@ def process_dir():
 
 	df_input_params.columns = Features
 
-	for col in Dich_Features:
+	for col in Bool_Features:
 		df_input_params[col].replace(to_replace=1.0, value=0, inplace=True)
 		df_input_params[col].replace(to_replace=2.0, value=1, inplace=True)
 		df_input_params[col].replace(to_replace=9.0, value=np.NaN, inplace=True)
@@ -138,12 +138,13 @@ def process_dir():
 
 	# print(dropna_features)
 	# df_input_params.dropna(subset=dropna_features, inplace=True)
+	df_input_params.dropna(thresh=15, inplace=True)
 	
-	# # Impute the remaining missing values
-	# imputer = KNNImputer(n_neighbors=3)
+	# Impute the remaining missing values
+	imputer = KNNImputer(n_neighbors=3)
 	# df_input_params = impute_dataset(df_input_params, imputer)
 
-	# # round the imputed values for dichotomous features
+	# round the imputed values for dichotomous features
 	# print(df_input_params['High_BP_Hist'].value_counts())
 	# df_input_params['High_BP_Hist'] = df_input_params['High_BP_Hist'].round()
 	# print(df_input_params['High_BP_Hist'].value_counts())

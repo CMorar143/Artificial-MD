@@ -1,0 +1,80 @@
+\---DjangoProj
+    +---DjangoProj
+    |   |   manage.py
+    |   |   
+    |   +---boards
+    |   |   |   admin.py
+    |   |   |   apps.py
+    |   |   |   forms.py
+    |   |   |   models.py
+    |   |   |   tests.py
+    |   |   |   views.py
+    |   |   |   __init__.py
+    |   |   |   
+    |   |   +---migrations
+    |   |           
+    |   +---Data     
+    |   +---DjangoProj
+    |   |   |   settings.py
+    |   |   |   urls.py
+    |   |   |   wsgi.py
+    |   |   |   __init__.py
+    |   |   |
+    |   |   \
+    |   +---static
+    |   |   +---css
+    |   |   \---js
+    |   |
+    |   \---templates
+    |       |   base.html
+    |       |   exam.html
+    |       |   home.html
+    |       |   login.html
+    |       |   patient.html
+    |       |   results.html
+    |       |   test.html
+    |       |   
+    |       \---registration
+    |               login.html
+    |               
+    \---venv
+
+
+DjangoProj/
+ +-- DjangoProj/
+ |    +-- boards/
+ |    |    +-- migrations/
+ |    |        |-- __init__.py
+ |    |    |-- __init__.py
+ |    |    |-- admin.py
+ |    |    |-- apps.py
+ |    |    |-- forms.py
+ |    |    |-- models.py
+ |    |    |-- tests.py
+ |    |    |-- views.py
+ |    |
+ |    +-- Data/ 
+ |    | 
+ |    +-- DjangoProj/
+ |    |    |-- __init__.py
+ |    |    |-- settings.py
+ |    |    |-- urls.py
+ |    |    |-- wsgi.py
+ |    | 
+ |    +--static/ 
+ |    |    +-- css/
+ |    |    +-- js/
+ |    |    
+ |    +--templates/
+ |    |    |-- base.html
+ |    |    |-- exam.html
+ |    |    |-- home.html
+ |    |    |-- login.html
+ |    |    |-- patient.html
+ |    |    |-- results.html
+ |    |    |-- test.html  
+ |    |    +-- registration/
+ |    |        |-- login.html
+ |    |
+ |    |-- manage.py
+ +-- venv/
