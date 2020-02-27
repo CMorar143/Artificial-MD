@@ -1,0 +1,80 @@
+HEART
+	PATIENT
+		age
+		sex
+
+	MEDICAL_HISTORY
+		cp: chest pain type
+		dm (1 = history of diabetes; 0 = no such history)
+		famhist of heart disease
+		exang: exercise induced angina (1 = yes; 0 = no)
+
+	EXAMINATION
+		trestbps: resting blood pressure (in mm Hg on admission to the hospital)
+		trestbpd: resting blood pressure
+		chol: serum cholestoral in mg/dl
+		cigs (cigarettes per day)
+		years (number of years as a smoker)
+		fbs: (fasting blood sugar > 120 mg/dl) (1 = true; 0 = false)
+		thalrest: resting heart rate
+
+
+
+
+DIABETES
+	PATIENT
+
+	MEDICAL_HISTORY
+		Shortness of breath going upstairs
+		chest pains
+		Doctor told you - high cholesterol level
+		Ever told you had high blood pressure
+		
+
+	EXAMINATION
+		Body Mass Index (kg/m**2) [USING HEIGHT AND WIDTH]
+		Pulse regular or irregular?
+		Pulse type
+		Systolic: Blood pres (1st rdg) mm Hg
+		Diastolic: Blood pres (1st rdg) mm Hg
+		Total protein (g/dL)
+		HDL-Cholesterol (mg/dL)
+		LDL-cholesterol (mg/dL)
+		Total Cholesterol(mg/dL)
+		Fasting Glucose (mg/dL)
+		Triglyceride (mg/dL)
+		Uric acid (mg/dL)
+
+
+BOTH
+	PATIENT
+		age
+		sex
+
+	MEDICAL_HISTORY
+		dm (1 = history of diabetes; 0 = no such history)
+		famhist of heart disease
+		Shortness of breath going upstairs
+		chest pains
+		exang: exercise induced angina (1 = yes; 0 = no)
+		Doctor told you - high cholesterol level
+		Ever told you had high blood pressure
+		
+
+	EXAMINATION
+		chol: serum cholestoral in mg/dl
+		cigs (cigarettes per day)
+		years (number of years as a smoker)
+		fbs: (fasting blood sugar > 120 mg/dl) (1 = true; 0 = false)
+		thalrest: resting heart rate
+		Body Mass Index (kg/m**2) [USING HEIGHT AND WIDTH]
+		Pulse regular or irregular?
+		Pulse type
+		Systolic: Blood pres (1st rdg) mm Hg
+		Diastolic: Blood pres (1st rdg) mm Hg
+		Total protein (g/dL)
+		HDL-Cholesterol (mg/dL)
+		LDL-cholesterol (mg/dL)
+		Fasting Glucose (mg/dL)
+		Triglyceride (mg/dL)
+		Uric acid (mg/dL)
