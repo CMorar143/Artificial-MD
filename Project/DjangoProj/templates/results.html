@@ -1,4 +1,4 @@
-{% load static %}<!DOCTYPE html>
+<!-- {% load static %}<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -50,43 +50,48 @@
       </table>
     </div>
   </body>
-</html>
+</html> -->
 
 
-<!-- {% load static %}<!DOCTYPE html>
+{% load static %}<!DOCTYPE html>
 <html>
 	<head>
 	  <meta charset="utf-8">
 	  <title>Results</title>
 	  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+	  <link rel = "stylesheet" href = "https://www.w3schools.com/lib/w3.css">
 	  <link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Results.css' %}">
 	</head>
 	<body>
 	  <main>
-		<div id="heart_res" class="container p-3 my-3 border bg-dark text-white">
+		<div class="heart_res w3-container w3-black">
 			<h3> Heart Disease Prediction </h3>
-			{% if heart_pred == 0 %}
-				Prediction: Patient is unlikely to have heart disease <br>
-			{% endif %}
+			<div class="display w3-container">
+				{% if heart_pred == 0 %}
+					Patient is unlikely to have heart disease
+				{% endif %}
 
-			{% if heart_pred == 1 %}
-				Prediction: Patient is likely to have heart disease <br>
-			{% endif %}
+				{% if heart_pred == 1 %}
+					Patient is likely to have heart disease
+				{% endif %}
+			</div>
 		</div>
 
-		<div id="diabetes_res" class="container p-3 my-3 border bg-dark text-white">
-			<h3> Diabetes Prediction </h3>
-			{% if diabetes_pred == 0 %}
-				Prediction: Patient is unlikely to have diabetes <br>
-			{% endif %}
+		<div class="diabetes_res w3-container">
+			<h3 class="w3-container w3-black"> Diabetes Prediction </h3>
+			<div class="w3-container display">
+				{% if diabetes_pred == 0 %}
+					Patient is unlikely to have diabetes
+				{% endif %}
 
-			{% if diabetes_pred == 1 %}
-				Prediction: Patient is likely to have diabetes <br>
-			{% endif %}
+				{% if diabetes_pred == 1 %}
+					Patient is likely to have diabetes
+				{% endif %}
+			</div>
 		</div>
 		  <a href="{% url 'exam' %}">Perform Another Exam</a>
 		  	<br>
 		  <a href="{% url 'patient' %}">Select Another Patient</a>
 	  </main>
 	</body>
-</html> -->
+</html>

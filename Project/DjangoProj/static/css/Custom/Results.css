@@ -1,8 +1,25 @@
-#diabetes_res
+.heart_res,
+.diabetes_res
 {
 	float: left;
-	background-color: grey;
-	margin-left: 2em;
+/*	margin-top: 5em;
+	margin-left: 2em;*/
 	color: white;
-	max-width: 50%
+	max-width: 50%;
+	border-style: solid;
+	border-color: black;
+}
+
+.display
+{
+	background-color: white;
+	color: black;
+	width: 100%;
+}
+
+.heart_res h3,
+.diabetes_res h3
+{
+	width: 100%;
+	height: 100%;
 }
