@@ -49,10 +49,13 @@ def plot_diagrams(heart):
 def scale_values(heart):
 	heart = pd.get_dummies(heart, columns = ['cp'])
 	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
-	min_max_scaler = preprocessing.MinMaxScaler()
-	heart[columns_to_scale] = min_max_scaler.fit_transform(heart[columns_to_scale])
+	# min_max_scaler = preprocessing.MinMaxScaler()
+	# heart[columns_to_scale] = min_max_scaler.fit_transform(heart[columns_to_scale])
+	# return heart, min_max_scaler, columns_to_scale
 
-	return heart, min_max_scaler, columns_to_scale
+	standardScaler = StandardScaler()
+	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
+	return heart, standardScaler, columns_to_scale
 
 
 def scale_values_NN(X_train, X_test):
@@ -71,21 +74,26 @@ def split_dataset(X, D):
 
 def KNN(X_train, H_train, X_test, H_test):
 	knn_scores = []
-	for k in range(1,30):
+	max_score = 0
+	knn_val = 0
+	for k in range(1,21):
 		knn_classifier = KNeighborsClassifier(n_neighbors = k)
 		knn_classifier.fit(X_train, H_train)
 		knn_scores.append(knn_classifier.score(X_test, H_test))
+		if knn_classifier.score(X_test, H_test) > max_score:
+			max_score = knn_classifier.score(X_test, H_test)
+			knn_val = k
 
-	plt.plot([k for k in range(1, 30)], knn_scores, color = 'red')
-	for i in range(1,30):
+	plt.plot([k for k in range(1, 21)], knn_scores, color = 'red')
+	for i in range(1,21):
 		plt.text(i, knn_scores[i-1], (i, round(knn_scores[i-1], 2)))
-	plt.xticks([i for i in range(1, 30)])
+	plt.xticks([i for i in range(1, 21)])
 	plt.xlabel('Number of Neighbors (K)')
 	plt.ylabel('Scores')
 	plt.title('K Neighbors Classifier scores for different K values')
 	plt.show()
 
-	return max(knn_scores)
+	return max_score, knn_val
 
 
 def decision_tree(X_train, H_train, X_test, H_test, X):
@@ -133,8 +141,8 @@ def linear_support_vector(X_train, H_train, X_test, H_test):
 	return metrics.accuracy_score(H_test, test_pred)
 
 
-def display_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc):
-	print(f'Accuracy of KNN: {knn_acc}\n')
+def display_accuracies(knn_acc, knn_val, dt_acc, nb_acc, lsv_acc):
+	print(f'Accuracy of KNN value {knn_val}: {knn_acc}\n')
 	print(f'Accuracy of Decision tree: {dt_acc}\n')
 	print(f'Accuracy of Naive Bayes: {nb_acc}\n')
 	print(f'Accuracy of LVM: {lsv_acc}\n')
@@ -192,7 +200,7 @@ def train_heart_models():
 	X_train, X_test, H_train, H_test = split_dataset(X, H)
 
 	# KNN
-	knn_acc = KNN(X_train, H_train, X_test, H_test)
+	knn_acc, knn_val = KNN(X_train, H_train, X_test, H_test)
 
 	# Decision Tree
 	dt_acc = decision_tree(X_train, H_train, X_test, H_test, X)
@@ -203,7 +211,7 @@ def train_heart_models():
 	# Linear Support Vector
 	lsv_acc = linear_support_vector(X_train, H_train, X_test, H_test)
 
-	display_accuracies(knn_acc, dt_acc, nb_acc, lsv_acc)
+	display_accuracies(knn_acc, knn_val, dt_acc, nb_acc, lsv_acc)
 
 
 
