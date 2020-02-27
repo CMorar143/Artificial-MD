@@ -26,6 +26,11 @@
 	padding: 0.5em;
 }
 
+.disease
+{
+	font-weight: bold;
+}
+
 .result h3
 {
 	width: 100%;
