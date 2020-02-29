@@ -343,9 +343,12 @@ class results(TemplateView):
 		# Making prediction
 		diabetes_pred = knn_classifier.predict(diabetes_vals)
 
+		# Allow physician to choose further action
+		further_action_form = FurtherActionsForm()
+
 		# Send predictions
-		predictions = {'heart_pred': heart_pred, 'diabetes_pred': diabetes_pred}
-		return render(request, self.template_name, predictions)
+		args = {'heart_pred': heart_pred, 'diabetes_pred': diabetes_pred, 'further_action_form': further_action_form}
+		return render(request, self.template_name, args)
 
 	def post(request):
 		p_name = request.GET.get('patient')

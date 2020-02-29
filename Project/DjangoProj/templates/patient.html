@@ -13,13 +13,13 @@
     <form method="post">
       {% csrf_token %}
       {{ Selectform.as_p }}
-      <input name="select_patient" type="submit" value="Create visit" />
+      <input class="btn btn-primary" name="select_patient" type="submit" value="Create visit" />
     </form>
     <br>
     <form method="post">
       {% csrf_token %}
       {{ Createform.as_p }}
-      <input name="create_patient" type="submit" value="Create" />&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
+      <input class="btn btn-primary" name="create_patient" type="submit" value="Create" />&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
     </form>
     <!-- <h2>{{ exam_input }}</h2> -->
 
