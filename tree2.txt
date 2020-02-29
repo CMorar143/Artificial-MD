@@ -40,7 +40,7 @@
     \---venv
 
 
-DjangoProj/
+Project/
  +-- DjangoProj/
  |    +-- boards/
  |    |    +-- migrations/
@@ -66,15 +66,6 @@ DjangoProj/
  |    |    +-- js/
  |    |    
  |    +--templates/
- |    |    |-- base.html
- |    |    |-- exam.html
- |    |    |-- home.html
- |    |    |-- login.html
- |    |    |-- patient.html
- |    |    |-- results.html
- |    |    |-- test.html  
- |    |    +-- registration/
- |    |        |-- login.html
  |    |
  |    |-- manage.py
  +-- venv/

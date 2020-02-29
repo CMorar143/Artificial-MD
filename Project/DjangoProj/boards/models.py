@@ -127,7 +127,7 @@ class Investigation(models.Model):
 	further_actions = models.CharField(max_length=150)
 	ref_to = models.CharField(max_length=100, null=True)
 	ref_reason = models.CharField(max_length=150, null=True)
-	result = models.CharField(max_length=200)
+	result = models.CharField(max_length=200,null=True)
 
 	def __str__(self):
 		fields = (

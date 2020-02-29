@@ -1,5 +1,5 @@
 from django import forms
-from boards.models import Examination, Patient
+from boards.models import Examination, Patient, Investigation
 import datetime
 
 GENDER_CHOICES = (
@@ -13,6 +13,11 @@ CHEST_PAIN_CHOICES = (
 	(2, 'Atypical Angina'),
 	(3, 'Non-anginal pain'),
 	(4, 'Asymptomatic')
+)
+
+FURTHER_ACTIONS = (
+	('None', 'None'),
+	('Referral', 'Referral'),
 )
 
 PULSE_TYPE_CHOICES = (
@@ -34,6 +39,13 @@ MARITAL_STATUS = (
 
 class SelectPatientForm(forms.Form):
 	patient_name = forms.ModelChoiceField(queryset=Patient.objects.all())
+
+class FurtherActionsForm(forms.Form):
+	further_action = forms.ChoiceField(choices=FURTHER_ACTIONS, widget=forms.Select(attrs={'class': 'form-control'}))
+
+	class Meta:
+		model = Investigation
+		fields = ('further_action')
 
 class CreatePatientForm(forms.ModelForm):
 	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'form-control'}))

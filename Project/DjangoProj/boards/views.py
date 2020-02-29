@@ -3,8 +3,8 @@ from django.urls import reverse
 from urllib.parse import urlencode
 from django.conf import settings
 from django.views.generic import TemplateView
-from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm
-from boards.models import Examination, Patient, Visit, Medical_history
+from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm
+from boards.models import Examination, Patient, Visit, Medical_history, Investigation
 
 # For Machine learning model
 import pandas as pd
@@ -343,6 +343,16 @@ class results(TemplateView):
 
 		# Making prediction
 		diabetes_pred = knn_classifier.predict(diabetes_vals)
+
+
+		further_action_form = FurtherActionsForm(request.POST)
+		if further_action_form.is_valid():
+			# Save data to model
+			further_action = further_action_form.save(commit=False)
+			further_action.user = request.user
+			further_action.save()
+			patient_input = further_action.cleaned_data
+			return redirect('')
 
 
 		# Send predictions
