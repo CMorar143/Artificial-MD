@@ -7,22 +7,22 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}">
 </head>
 <body>
-  <main>
+  <div class="container">
     <h2>Patients</h2>
 
     <form method="post">
       {% csrf_token %}
       {{ Selectform.as_p }}
-      <input class="btn btn-primary" name="select_patient" type="submit" value="Create visit" />
+      <input class="btn btn-outline-dark" name="select_patient" type="submit" value="Create visit" />
     </form>
     <br>
     <form method="post">
       {% csrf_token %}
       {{ Createform.as_p }}
-      <input class="btn btn-primary" name="create_patient" type="submit" value="Create" />&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
+      <input class="btn btn-outline-dark" name="create_patient" type="submit" value="Create" />&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
     </form>
     <!-- <h2>{{ exam_input }}</h2> -->
 
-  </main>
+  </div>
 </body>
 </html>

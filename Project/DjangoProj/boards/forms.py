@@ -18,6 +18,7 @@ CHEST_PAIN_CHOICES = (
 FURTHER_ACTIONS = (
 	('None', 'None'),
 	('Referral', 'Referral'),
+	('Follow up appointment', 'Follow up appointment')
 )
 
 PULSE_TYPE_CHOICES = (
