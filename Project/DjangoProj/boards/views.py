@@ -195,7 +195,7 @@ class results(TemplateView):
 		diabetes_vals.append(exam_vals['triglyceride'])
 		diabetes_vals.append(exam_vals['uric_acid'])
 
-		return heart_vals, diabetes_vals
+		return heart_vals, diabetes_vals, patient
 
 
 	def load_heart(self):
@@ -266,7 +266,7 @@ class results(TemplateView):
 
 
 	def get(self, request):
-		heart_vals, diabetes_vals = self.get_data(request)
+		heart_vals, diabetes_vals, patient = self.get_data(request)
 		print(diabetes_vals)
 
 		# Load dataframes
@@ -348,8 +348,9 @@ class results(TemplateView):
 		further_action_form = FurtherActionsForm(request.POST)
 		if further_action_form.is_valid():
 			# Save data to model
+			visit = Visit.objects.filter(patient=patient).latest('date')
 			further_action = further_action_form.save(commit=False)
-			further_action.user = request.user
+			further_action.visit = request.user
 			further_action.save()
 			patient_input = further_action.cleaned_data
 			return redirect('')

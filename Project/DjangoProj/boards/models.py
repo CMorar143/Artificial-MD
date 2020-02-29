@@ -123,7 +123,6 @@ class Medical_history(models.Model):
 
 class Investigation(models.Model):
 	visit = models.ForeignKey('Visit', on_delete=models.CASCADE)
-	date = models.DateTimeField(auto_now_add=True)
 	further_actions = models.CharField(max_length=150)
 	ref_to = models.CharField(max_length=100, null=True)
 	ref_reason = models.CharField(max_length=150, null=True)
@@ -131,7 +130,7 @@ class Investigation(models.Model):
 
 	def __str__(self):
 		fields = (
-			self.date, self.further_actions, self.ref_to, 
+			self.further_actions, self.ref_to, 
 			self.ref_reason, self.result
 		)
 		return str(fields)

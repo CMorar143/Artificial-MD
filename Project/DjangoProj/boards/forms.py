@@ -41,11 +41,11 @@ class SelectPatientForm(forms.Form):
 	patient_name = forms.ModelChoiceField(queryset=Patient.objects.all())
 
 class FurtherActionsForm(forms.Form):
-	further_action = forms.ChoiceField(choices=FURTHER_ACTIONS, widget=forms.Select(attrs={'class': 'form-control'}))
+	further_actions = forms.ChoiceField(choices=FURTHER_ACTIONS, widget=forms.Select(attrs={'class': 'form-control'}))
 
 	class Meta:
 		model = Investigation
-		fields = ('further_action')
+		fields = '__all__'
 
 class CreatePatientForm(forms.ModelForm):
 	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'form-control'}))
