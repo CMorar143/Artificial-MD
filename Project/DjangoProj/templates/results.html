@@ -49,7 +49,11 @@
             </tr>
         </tbody>
       </table>
-      <button>Create Reminder</button>
+      <div class="container">
+      		{% csrf_token %}
+			{{ further_action_form.as_p }}
+			<button>Create Reminder</button>
+	  </div>	
     </div>
   </body>
 </html>

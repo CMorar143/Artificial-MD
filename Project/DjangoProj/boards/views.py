@@ -126,7 +126,6 @@ class results(TemplateView):
 	
 	def get_data(self, request):
 		p_name = request.GET.get('patient')
-
 		patient = Patient.objects.filter(patient_name=p_name)
 		# print(patient)
 		visit = Visit.objects.filter(patient__in=patient).latest('date')
@@ -195,7 +194,7 @@ class results(TemplateView):
 		diabetes_vals.append(exam_vals['triglyceride'])
 		diabetes_vals.append(exam_vals['uric_acid'])
 
-		return heart_vals, diabetes_vals, patient
+		return heart_vals, diabetes_vals
 
 
 	def load_heart(self):
@@ -266,7 +265,7 @@ class results(TemplateView):
 
 
 	def get(self, request):
-		heart_vals, diabetes_vals, patient = self.get_data(request)
+		heart_vals, diabetes_vals = self.get_data(request)
 		print(diabetes_vals)
 
 		# Load dataframes
@@ -344,18 +343,18 @@ class results(TemplateView):
 		# Making prediction
 		diabetes_pred = knn_classifier.predict(diabetes_vals)
 
+		# Send predictions
+		predictions = {'heart_pred': heart_pred, 'diabetes_pred': diabetes_pred}
+		return render(request, self.template_name, predictions)
 
+	def post(request):
+		p_name = request.GET.get('patient')
+		patient = Patient.objects.filter(patient_name=p_name)
 		further_action_form = FurtherActionsForm(request.POST)
 		if further_action_form.is_valid():
 			# Save data to model
 			visit = Visit.objects.filter(patient=patient).latest('date')
-			further_action = further_action_form.save(commit=False)
-			further_action.visit = request.user
-			further_action.save()
-			patient_input = further_action.cleaned_data
+			further_action = further_action_form.save()
+			further_action.visit = visit
+			patient_input = further_action_form.cleaned_data
 			return redirect('')
-
-
-		# Send predictions
-		predictions = {'heart_pred': heart_pred, 'diabetes_pred': diabetes_pred}
-		return render(request, self.template_name, predictions)
