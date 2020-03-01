@@ -24,6 +24,7 @@ from boards.views import exam, patient, test
 
 urlpatterns = [
 	# url(r'^$', views.login, name='login'),
+    url(r'^notifications/', include('notify.urls', 'notifications')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),

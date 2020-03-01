@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
+from notify.signals import notify
 from django.urls import reverse
 from urllib.parse import urlencode
 from django.conf import settings
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm
-from boards.models import Examination, Patient, Visit, Medical_history, Investigation
+from boards.models import Examination, Patient, Visit, Medical_history, Investigation, User
 
 # For Machine learning model
 import pandas as pd
@@ -358,9 +359,15 @@ class results(TemplateView):
 		if further_action_form.is_valid():
 			# Save data to model
 			visit = Visit.objects.filter(patient__in=patient).latest('date')
-
 			further_action = further_action_form.save(commit=False)
 			further_action.visit = visit
 			further_action.save()
 			patient_input = further_action_form.cleaned_data
+
+			# Send notification to the secretary
+			user = User.objects.get(username='PMorar')
+
+			notify.send(request.user, recipient=user, actor=request.user,
+			verb='followed you.', nf_type='followed_by_one_user')
+
 			return redirect('patient')
