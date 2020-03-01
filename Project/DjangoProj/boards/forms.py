@@ -18,7 +18,8 @@ CHEST_PAIN_CHOICES = (
 FURTHER_ACTIONS = (
 	('None', 'None'),
 	('Referral', 'Referral'),
-	('Follow up appointment', 'Follow up appointment')
+	('Follow up appointment', 'Follow up appointment'),
+	('Follow up phone call', 'Follow up phone call')
 )
 
 PULSE_TYPE_CHOICES = (
@@ -41,12 +42,12 @@ MARITAL_STATUS = (
 class SelectPatientForm(forms.Form):
 	patient_name = forms.ModelChoiceField(queryset=Patient.objects.all())
 
-class FurtherActionsForm(forms.Form):
+class FurtherActionsForm(forms.ModelForm):
 	further_actions = forms.ChoiceField(choices=FURTHER_ACTIONS, widget=forms.Select(attrs={'class': 'form-control'}))
 
 	class Meta:
 		model = Investigation
-		fields = '__all__'
+		fields = ('further_actions',)
 
 class CreatePatientForm(forms.ModelForm):
 	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'form-control'}))

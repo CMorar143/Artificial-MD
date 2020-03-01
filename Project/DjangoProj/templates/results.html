@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Results.css' %}"> -->
   </head>
-  <body>
+	<body>
     <div class="container">
       <ol class="breadcrumb my-4">
         <li class="breadcrumb-item active">The Results of the Exam are as Follows</li>
@@ -50,12 +50,14 @@
         </tbody>
       </table>
       <div class="container">
-      		{% csrf_token %}
-			{{ further_action_form.as_p }}
-			<button class="btn btn-outline-dark">Create Reminder</button>
-	  </div>	
-    </div>
-  </body>
+	      	<form method="post">
+				{% csrf_token %}
+				{{ further_action_form.as_p }}
+				<button class="btn btn-outline-dark" type="submit">Create Reminder</button>
+			</form>
+		</div>	
+	</div>
+	</body>
 </html>
 
 <!-- 

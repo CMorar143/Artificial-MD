@@ -350,14 +350,17 @@ class results(TemplateView):
 		args = {'heart_pred': heart_pred, 'diabetes_pred': diabetes_pred, 'further_action_form': further_action_form}
 		return render(request, self.template_name, args)
 
-	def post(request):
+	def post(self, request):
 		p_name = request.GET.get('patient')
 		patient = Patient.objects.filter(patient_name=p_name)
+		
 		further_action_form = FurtherActionsForm(request.POST)
 		if further_action_form.is_valid():
 			# Save data to model
-			visit = Visit.objects.filter(patient=patient).latest('date')
-			further_action = further_action_form.save()
+			visit = Visit.objects.filter(patient__in=patient).latest('date')
+
+			further_action = further_action_form.save(commit=False)
 			further_action.visit = visit
+			further_action.save()
 			patient_input = further_action_form.cleaned_data
-			return redirect('')
+			return redirect('patient')
