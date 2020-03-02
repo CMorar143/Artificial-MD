@@ -1,2 +1,0 @@
-Requirement already satisfied: elasticsearch in c:\users\cianmo~1\docume~1\colleg~1\year4\semest~1\fyp\fyp_co~1\coding\django~1\venv\lib\site-packages (7.5.1)
-Requirement already satisfied: urllib3>=1.21.1 in c:\users\cianmo~1\docume~1\colleg~1\year4\semest~1\fyp\fyp_co~1\coding\django~1\venv\lib\site-packages (from elasticsearch) (1.25.8)
