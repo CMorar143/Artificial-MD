@@ -10,11 +10,43 @@
   <div class="container">
     <h2>Patients</h2>
 
-    <form method="post">
-      {% csrf_token %}
-      {{ Selectform.as_p }}
-      <input class="btn btn-outline-dark" name="select_patient" type="submit" value="Create visit" />
+    <form class="form-inline my-2 my-lg-0">
+      <input 
+        class="form-control mr-sm-2" 
+        type="search" 
+        placeholder="Search" 
+        aria-label="Search"
+        name="search"
+      >
+      <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
     </form>
+
+  {% if searched_patients is not null %}
+    <table class="table">
+        <thead class="thead-inverse">
+          <tr class="bg-dark text-white">
+            <th>Patient Name</th>
+            <th>DOB</th>
+            <th>age</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in searched_patients %}
+            <tr>
+              <td>
+               {{ p.patient_name }}
+              </td>
+              <td class="align-middle">
+                {{ p.DOB }}
+              </td>
+              <td class="align-middle">
+                {{ p.age }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
     <br>
     <form method="post">
       {% csrf_token %}
@@ -26,3 +58,18 @@
   </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+<!-- Original form with dropdown -->
+    <!-- <form method="post" class="form-inline my-2 my-lg-0">
+      {% csrf_token %}
+      {{ Selectform.as_p }}
+      <input class="btn btn-outline-dark my-2 my-sm-1" name="select_patient" type="submit" value="Create visit" />
+      <input class="btn btn-outline-dark" name="create_reminder" type="submit" value="Create Reminder" />
+    </form> -->

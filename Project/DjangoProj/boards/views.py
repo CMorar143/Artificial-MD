@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from notify.signals import notify
 from django.urls import reverse
 from urllib.parse import urlencode
 from django.conf import settings
@@ -63,19 +62,6 @@ class exam(TemplateView):
 		return render(request, self.template_name, args)
 
 
-
-class test(TemplateView):
-	template_name = 'test.html'
-	
-	def get(self, request):
-		args = {}
-		patient = request.GET.get('patient')
-		args['patient'] = patient
-
-		return render(request, self.template_name, args)
-
-
-
 class patient(TemplateView):
 	template_name = 'patient.html'
 
@@ -83,7 +69,15 @@ class patient(TemplateView):
 		patients = Patient.objects.all()
 		Createform = CreatePatientForm()
 		Selectform = SelectPatientForm()
-		return render(request, self.template_name, {'patients': patients, 'Createform': Createform, 'Selectform': Selectform})
+		searched_name = ''
+		args = {'Createform': Createform, 'Selectform': Selectform}
+		
+		if 'search' in request.GET:
+			searched_name = request.GET['search']
+			searched_patients = patients.filter(patient_name__icontains=searched_name)
+			args['searched_patients'] = searched_patients
+		print(args)
+		return render(request, self.template_name, args)
 
 	def post(self, request):
 		if 'create_patient' in request.POST:
@@ -112,11 +106,13 @@ class patient(TemplateView):
 				p = Patient.objects.get(patient_name=patient)
 
 				visit = Visit.objects.create(doctor=request.user, patient=p, reason="For examination")
-
 				base_url = reverse('exam')
 				query_string = urlencode(args)
 				url = '{}?{}'.format(base_url, query_string)
 				return redirect(url)
+
+			# elif 'create_reminder' in request.POST:
+					
 		# return render(request, 'test.html', {"patient" : patient})
 
 
@@ -365,9 +361,10 @@ class results(TemplateView):
 			patient_input = further_action_form.cleaned_data
 
 			# Send notification to the secretary
-			user = User.objects.get(username='PMorar')
+			# user = User.objects.get(username='PMorar')
+			# print(user.first_name)
 
-			notify.send(request.user, recipient=user, actor=request.user,
-			verb='followed you.', nf_type='followed_by_one_user')
+			# notify.send(request.user, recipient=user, actor=request.user,
+			# verb='followed you.', nf_type='followed_by_one_user')
 
 			return redirect('patient')

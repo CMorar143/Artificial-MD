@@ -1,6 +1,7 @@
 from django import forms
 from boards.models import Examination, Patient, Investigation
 import datetime
+from dal import autocomplete
 
 GENDER_CHOICES = (
 	(1, 'Male'),
@@ -40,7 +41,14 @@ MARITAL_STATUS = (
 )
 
 class SelectPatientForm(forms.Form):
-	patient_name = forms.ModelChoiceField(queryset=Patient.objects.all())
+	patient_name = forms.ModelChoiceField(
+		queryset=Patient.objects.all(),
+		# widget=autocomplete.ModelSelect2(url='patient-autocomplete')
+	)
+
+	# class Meta:
+	# 	model = Patient
+	# 	fields = ('patient_name',)
 
 class FurtherActionsForm(forms.ModelForm):
 	further_actions = forms.ChoiceField(choices=FURTHER_ACTIONS, widget=forms.Select(attrs={'class': 'form-control'}))
