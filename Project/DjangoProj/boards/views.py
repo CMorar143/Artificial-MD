@@ -62,6 +62,15 @@ class exam(TemplateView):
 		return render(request, self.template_name, args)
 
 
+class patient_info(TemplateView):
+	template_name = 'patient_info.html'
+
+	def get(self, request, id):
+		patient = Patient.objects.filter(id=2)
+		print(patient)
+		return render(request, self.template_name, {'patient': patient})
+
+
 class patient(TemplateView):
 	template_name = 'patient.html'
 
@@ -97,19 +106,19 @@ class patient(TemplateView):
 			args = {'Createform': Createform, 'Selectform': Selectform, 'exam_input': patient_input}
 			return render(request, self.template_name, args)
 
-		elif 'select_patient' in request.POST:
-			Selectform = SelectPatientForm(request.POST)
-			if Selectform.is_valid():
-				args = {}
-				patient = Selectform.cleaned_data['patient_name']
-				args['patient'] = patient
-				p = Patient.objects.get(patient_name=patient)
+		# elif 'select_patient' in request.POST:
+		# 	Selectform = SelectPatientForm(request.POST)
+		# 	if Selectform.is_valid():
+		# 		args = {}
+		# 		patient = Selectform.cleaned_data['patient_name']
+		# 		args['patient'] = patient
+		# 		p = Patient.objects.get(patient_name=patient)
 
-				visit = Visit.objects.create(doctor=request.user, patient=p, reason="For examination")
-				base_url = reverse('exam')
-				query_string = urlencode(args)
-				url = '{}?{}'.format(base_url, query_string)
-				return redirect(url)
+		# 		visit = Visit.objects.create(doctor=request.user, patient=p, reason="For examination")
+		# 		base_url = reverse('exam')
+		# 		query_string = urlencode(args)
+		# 		url = '{}?{}'.format(base_url, query_string)
+		# 		return redirect(url)
 
 			# elif 'create_reminder' in request.POST:
 					

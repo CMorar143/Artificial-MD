@@ -34,7 +34,7 @@
           {% for p in searched_patients %}
             <tr>
               <td>
-               {{ p.patient_name }}
+               <a href="{% url 'patient_info' id=2 %}">{{ p.patient_name }}</a>
               </td>
               <td class="align-middle">
                 {{ p.DOB }}
