@@ -66,9 +66,8 @@ class patient_info(TemplateView):
 	template_name = 'patient_info.html'
 
 	def get(self, request, id):
-		patients = Patient.objects.all()
-		patient = patients.get(id=id)
-		print(patient)
+		patient = Patient.objects.get(id=id)
+		
 		return render(request, self.template_name, {'patient': patient})
 
 
