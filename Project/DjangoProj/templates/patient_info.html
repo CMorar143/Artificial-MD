@@ -7,28 +7,115 @@
     <link rel="stylesheet" href="{% static 'css/Custom/Navbar.css' %}">
   </head>
 	<body>
-<!--     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-home" aria-selected="true">Patient</a>
-      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-profile" aria-selected="false">Reminders</a>
-      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-messages" aria-selected="false">Diary</a>
-      <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-settings" aria-selected="false">Till</a>
-    </div> -->
     <ul>
-      <li><a class="active" href="#Patients">Patient</a></li>
-      <li><a href="#Reminders">Reminders</a></li>
-      <li><a href="#Diary">Diary</a></li>
-      <li><a href="#Till">Till</a></li>
+      <li><a class="active" href="#">Patient</a></li>
+      <li><a href="#">Reminders</a></li>
+      <li><a href="#">Diary</a></li>
+      <li><a href="#">Till</a></li>
     </ul>
     <div class="container main">
     	<h2>Patient Info</h2>
-      <input 
-        class="form-control mr-sm-2" 
-        type="search" 
-        placeholder="Search" 
-        aria-label="Search"
-        name="search"
-        value="{{ patient.patient_name }}" 
-      >
+      <div class="container main_patient_info">
+        Name: 
+        <input 
+          class="form-control mr-sm-2" 
+          name="name" 
+          value="{{ patient.patient_name }}" >
+        
+        Date of Birth:
+        <br>{{ patient.DOB }}
+        <br>
+
+        Address Line 1: 
+        <input 
+          class="form-control mr-sm-2" 
+          name="address1"
+          value="{{ patient.address_line1 }}" >
+
+        Address Line 2: 
+        <input 
+          class="form-control mr-sm-2" 
+          name="address2"
+          value="{{ patient.address_line2 }}" >
+
+        Address Line 3: 
+        <input 
+          class="form-control mr-sm-2" 
+          name="address3"
+          value="{{ patient.address_line3 }}" >
+
+        Telephone Number: 
+        <input 
+          class="form-control mr-sm-2" 
+          name="telephone"
+          value="{{ patient.tel_num }}" >
+
+        Home Phone Number: 
+        <input 
+          class="form-control mr-sm-2" 
+          name="telephone"
+          value="{{ patient.home_num }}" >
+        
+        Next Appointment: 
+        <input 
+          class="form-control mr-sm-2" 
+          name="nextApp"
+          value="{{ patient.next_app }}" >
+        
+        Recall Period: 
+        <input 
+          class="form-control mr-sm-2" 
+          name="recall"
+          value="{{ patient.recall_period }}" >
+        
+        {% if reminders is not None %}
+          Active Reminders:
+          <table class="table">
+            <thead class="thead-inverse">
+              <tr class="bg-dark text-white">
+                <th>Reminder Date</th>
+                <th>Location</th>
+                <th>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for reminder in reminders %}
+                <tr>
+                  <td>
+                   {{ reminder.rem_date }}
+                  </td>
+                  <td class="align-middle">
+                    {{ reminder.location }}
+                  </td>
+                  <td class="align-middle">
+                    {{ reminder.message }}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% endif %}
+      </div>
 	</div>
 	</body>
 </html>
+
+
+
+
+<!-- {% if searched_patients is not null %}
+    <table class="table">
+        <thead class="thead-inverse">
+          <tr class="bg-dark text-white">
+            <th>Patient Name</th>
+            <th>DOB</th>
+            <th>age</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in searched_patients %}
+            
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %} -->
