@@ -66,7 +66,7 @@
           value="{{ patient.address_line3 }}" >
 
         <h5>Health Info</h5>
-        
+
         Next Appointment: 
         <input 
           class="form-control mr-sm-2" 
@@ -106,6 +106,12 @@
             </tbody>
           </table>
         {% endif %}
+        {% for ail in ailments %}
+          {{ ail.name }}
+        {% endfor %}
+        {% for all in allergies %}
+          {{ all.name }}
+        {% endfor %}
       </div>
 	  </div>
 	</body>

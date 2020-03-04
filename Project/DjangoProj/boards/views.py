@@ -70,13 +70,12 @@ class patient_info(TemplateView):
 		patient = Patient.objects.get(id=id)
 		reminders = Reminder.objects.filter(patient_id=id)						
 		
-		a = Patient_Allergy.objects.filter(patient_id=id).values('allergy_id')
-		allergies = Allergy.objects.filter(id__in=a)
+		allergy_ids = Patient_Allergy.objects.filter(patient_id=id).values('allergy_id')
+		allergies = Allergy.objects.filter(id__in=allergy_ids)
 
-		# ail = Patient_Ailment.objects.filter(patient_id=id)
-		# ailments = Ailment.object.filter(id=ail.ailment)
+		ailment_ids = Patient_Ailment.objects.filter(patient_id=id).values('ailment_id')
+		ailments = Ailment.objects.filter(id__in=ailment_ids)
 
-		# ailments = Ailment.objects.filter()
 		# medication = Medication.objects.filter()
 		print(allergies)
 		args = {'patient': patient}
