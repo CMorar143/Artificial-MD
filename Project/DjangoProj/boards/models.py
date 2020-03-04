@@ -110,6 +110,7 @@ class Allergy_Medication(models.Model):
 
 
 class Reminder(models.Model):
+	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
 	rem_date = models.DateTimeField()
 	location = models.CharField(max_length=50, null=True)
 	message = models.CharField(max_length=150)
