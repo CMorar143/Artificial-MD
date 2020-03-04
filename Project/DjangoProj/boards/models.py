@@ -61,17 +61,55 @@ class Visit(models.Model):
 
 
 class Ailment(models.Model):
-	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
-	medication = models.ForeignKey('Medication', on_delete=models.CASCADE, null=True)
-	description = models.CharField(max_length=50)
+	name = models.CharField(max_length=50)
+	description = models.CharField(max_length=200)
 
 	def __str__(self):
-		return self.description
+		fields = (
+			self.name, 
+			self.description
+		)
+		return str(fields)
 
 
-
-class Reminders(models.Model):
+class Patient_Ailment(models.Model):
 	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
+	ailment = models.ForeignKey('Ailment', on_delete=models.CASCADE)
+
+
+
+class Allergy(models.Model):
+	name = models.CharField(max_length=50)
+
+	def __str__(self):
+		return self.name
+
+
+class Patient_Allergy(models.Model):
+	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
+	allergy = models.ForeignKey('Allergy', on_delete=models.CASCADE)
+
+
+
+class Medication(models.Model):
+	name = models.CharField(max_length=50)
+	description = models.CharField(max_length=150)
+
+	def __str__(self):
+		return self.name
+
+
+class Ailment_Medication(models.Model):
+	medication = models.ForeignKey('Medication', on_delete=models.CASCADE)
+	ailment = models.ForeignKey('Ailment', on_delete=models.CASCADE)
+
+
+class Allergy_Medication(models.Model):
+	medication = models.ForeignKey('Medication', on_delete=models.CASCADE)
+	allergy = models.ForeignKey('Allergy', on_delete=models.CASCADE)
+
+
+class Reminder(models.Model):
 	rem_date = models.DateTimeField()
 	location = models.CharField(max_length=50, null=True)
 	message = models.CharField(max_length=150)
@@ -81,16 +119,6 @@ class Reminders(models.Model):
 			self.rem_date, self.location, self.message
 		)
 		return str(fields)
-
-
-
-class Allergy(models.Model):
-	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
-	medication = models.ForeignKey('Medication', on_delete=models.CASCADE, null=True)
-	name = models.CharField(max_length=50)
-
-	def __str__(self):
-		return self.name
 
 
 
@@ -134,27 +162,6 @@ class Investigation(models.Model):
 			self.ref_reason, self.result
 		)
 		return str(fields)
-
-
-
-class Medication(models.Model):
-	name = models.CharField(max_length=50)
-
-	def __str__(self):
-		return self.name
-
-
-
-# class Doctor(models.Model):
-# 	name = models.CharField(max_length=30)
-# 	username = models.CharField(max_length=20, unique=True)
-# 	pin = models.PositiveIntegerField(unique=True)
-
-# 	def __str__(self):
-# 		fields = (
-# 			self.name, self.username, self.pin
-# 		)
-# 		return str(fields)
 
 
 

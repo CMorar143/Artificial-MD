@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 from django.conf import settings
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm
-from boards.models import Examination, Patient, Visit, Medical_history, Investigation, Reminders, User
+from boards.models import Examination, Patient, Visit, Medical_history, Investigation, Reminder, User
 
 # For Machine learning model
 import pandas as pd
@@ -67,13 +67,13 @@ class patient_info(TemplateView):
 
 	def get(self, request, id):
 		patient = Patient.objects.get(id=id)
-		reminders = Reminders.objects.filter(patient_id=id)
+		reminders = Reminder.objects.filter(patient_id=id)
 		
 		args = {'patient': patient}
 
 		if reminders.exists():
 			args['reminders'] = reminders
-			
+
 		return render(request, self.template_name, args)
 
 

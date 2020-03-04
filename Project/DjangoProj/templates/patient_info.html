@@ -14,8 +14,9 @@
       <li><a href="#">Till</a></li>
     </ul>
     <div class="container main">
-    	<h2>Patient Info</h2>
       <div class="container main_patient_info">
+        <h5>Patient Info</h5>
+        
         Name: 
         <input 
           class="form-control mr-sm-2" 
@@ -25,6 +26,26 @@
         Date of Birth:
         <br>{{ patient.DOB }}
         <br>
+
+        Occupation: 
+        <input 
+          class="form-control mr-sm-2" 
+          name="occupation" 
+          value="{{ patient.occupation }}" >
+        
+        <h5>Contact Information</h5>
+
+        Telephone Number: 
+        <input 
+          class="form-control mr-sm-2" 
+          name="telephone"
+          value="{{ patient.tel_num }}" >
+
+        Home Phone Number: 
+        <input 
+          class="form-control mr-sm-2" 
+          name="homeNumber"
+          value="{{ patient.home_num }}" >
 
         Address Line 1: 
         <input 
@@ -44,17 +65,7 @@
           name="address3"
           value="{{ patient.address_line3 }}" >
 
-        Telephone Number: 
-        <input 
-          class="form-control mr-sm-2" 
-          name="telephone"
-          value="{{ patient.tel_num }}" >
-
-        Home Phone Number: 
-        <input 
-          class="form-control mr-sm-2" 
-          name="telephone"
-          value="{{ patient.home_num }}" >
+        <h5>Health Info</h5>
         
         Next Appointment: 
         <input 
@@ -96,7 +107,7 @@
           </table>
         {% endif %}
       </div>
-	</div>
+	  </div>
 	</body>
 </html>
 
