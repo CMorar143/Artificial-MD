@@ -62,7 +62,7 @@ class Visit(models.Model):
 
 class Ailment(models.Model):
 	name = models.CharField(max_length=50)
-	description = models.CharField(max_length=200)
+	description = models.CharField(max_length=200, null=True)
 
 	def __str__(self):
 		fields = (
