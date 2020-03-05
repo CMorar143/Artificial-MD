@@ -23,11 +23,6 @@ FURTHER_ACTIONS = (
 	('Follow up phone call', 'Follow up phone call')
 )
 
-PULSE_TYPE_CHOICES = (
-	(1, 'Radial'),
-	(2, 'Brachial')
-)
-
 TRUE_OR_FALSE = (
 	(True, 'Yes'),
 	(False, 'No')
@@ -82,7 +77,6 @@ class ExamForm(forms.ModelForm):
 	height = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	weight = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	reg_pulse = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
-	pulse_type = forms.ChoiceField(choices=PULSE_TYPE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
 	protein = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	hdl_chol = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	ldl_chol = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
@@ -101,7 +95,7 @@ class ExamForm(forms.ModelForm):
 		model = Examination
 		fields = (
 			'height', 'weight',
-			'reg_pulse', 'pulse_type', 'protein', 'hdl_chol',
+			'reg_pulse', 'protein', 'hdl_chol',
 			'ldl_chol', 'triglyceride', 'uric_acid', 'blood_systolic',
 			'blood_diastolic', 'chol_overall','heart_rate',
 			'smoke_per_day', 'smoker_years', 'fasting_glucose', 

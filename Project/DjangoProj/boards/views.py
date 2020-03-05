@@ -210,7 +210,6 @@ class results(TemplateView):
 		diabetes_vals.append(bmi)
 
 		diabetes_vals.append(0 if exam_vals['reg_pulse']==False else 1)
-		diabetes_vals.append(exam_vals['pulse_type'])
 		diabetes_vals.append(exam_vals['blood_systolic'])
 		diabetes_vals.append(exam_vals['blood_diastolic'])
 		diabetes_vals.append(exam_vals['protein'])
