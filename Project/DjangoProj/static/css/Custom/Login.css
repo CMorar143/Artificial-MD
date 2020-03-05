@@ -1,0 +1,61 @@
+* {
+  box-sizing: border-box;
+}
+
+body
+{
+  font-family: Arial;
+  margin: 1.5em 5em 0 5em;
+  padding: 10px;
+  min-height: 100%;
+}
+
+.main
+{
+  margin-left: 7em;
+  background: #f1f1f1;
+  height: 100%;
+}
+
+.login_section
+{
+  float: left;
+  width: 40%;
+  margin: 7em;
+}
+
+.info 
+{
+  background-color: white;
+  margin: 0.5em;
+  padding: 2em;
+  min-height: 100%;
+}
+
+.info > h4
+{
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.field
+{
+  margin: 1em 0 0.7em 0;
+}
+
+.field_value
+{/*
+  border: 1px solid black;
+  border-radius: 5px;*/
+  padding: 0.25em;
+  max-width: 70%;
+  border-left: 4px solid black;
+  background-color: #f1f1f1;
+}
+
+.main:after
+{
+  content: "";
+  display: table;
+  clear: both;
+}
