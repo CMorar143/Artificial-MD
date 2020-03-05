@@ -17,61 +17,63 @@
     <div class="main">
     <div class="left_section">
       <div class="info">
-         <h5>Patient Info</h5>
-          
-          Name: 
-          <input 
-            class="form-control mr-sm-2" 
-            name="name" 
-            value="{{ patient.patient_name }}" >
-          
-          Date of Birth:
-          {{ patient.DOB }}
-          <br>
-
-          Occupation: 
-          <input 
-            class="form-control mr-sm-2" 
-            name="occupation" 
-            value="{{ patient.occupation }}" >
+         <h4>Patient Info</h4>
+          <div class="field">
+            Name: 
+            <div class="field_value" >
+              {{ patient.patient_name }}
+            </div>
+          </div>
+          <div class="field">
+            Date of Birth:
+            <div class="field_value" >
+              {{ patient.DOB }}
+            </div>
+          </div>
+          <div class="field">
+            Occupation: 
+            <div class="field_value" >
+              {{ patient.occupation }}
+            </div>            
+          </div>
       </div>
       <div class="info">
-        <h5>Contact Information</h5>
-
+        <h4>Contact Information</h4>
+        <div class="field">
           Telephone Number: 
-          <input 
-            class="form-control mr-sm-2" 
-            name="telephone"
-            value="{{ patient.tel_num }}" >
-
+          <div class="field_value" >
+            {{ patient.tel_num }}
+          </div>
+        </div>
+        <div class="field">
           Home Phone Number: 
-          <input 
-            class="form-control mr-sm-2" 
-            name="homeNumber"
-            value="{{ patient.home_num }}" >
-
+          <div class="field_value" >
+            {{ patient.home_num }}
+          </div>
+        </div>
+        <div class="field">
           Address Line 1: 
-          <input 
-            class="form-control mr-sm-2" 
-            name="address1"
-            value="{{ patient.address_line1 }}" >
-
+          <div class="field_value" >
+            {{ patient.address_line1 }}
+          </div>
+        </div>
+        <div class="field">
           Address Line 2: 
-          <input 
-            class="form-control mr-sm-2" 
-            name="address2"
-            value="{{ patient.address_line2 }}" >
-
+          <div class="field_value" >
+            {{ patient.address_line2 }}
+          </div>
+        </div>
+        <div class="field">
           Address Line 3: 
-          <input 
-            class="form-control mr-sm-2" 
-            name="address3"
-            value="{{ patient.address_line3 }}" >
+          <div class="field_value" >
+            {{ patient.address_line3 }}
+          </div>
+        </div>
       </div>
     </div>
     <div class="right_section">
       <div class="info">
-        <h5>Medical Info</h5>
+        <h4>Medical Info</h4>
 
           {% if reminders is not None %}
             Active Reminders:

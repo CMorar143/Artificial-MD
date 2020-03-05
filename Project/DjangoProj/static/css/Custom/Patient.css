@@ -37,6 +37,24 @@ body
   min-height: 100%;
 }
 
+.info > h4
+{
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.field
+{
+  margin: 1em 0 0.7em 0;
+}
+
+.field_value
+{
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 50%;
+}
+
 .main:after
 {
   content: "";
