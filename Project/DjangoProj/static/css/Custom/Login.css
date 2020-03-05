@@ -12,30 +12,43 @@ body
 
 .main
 {
-
+  width: 100%;
+  margin: 0 auto;
 }
 
 .login_section
-{/*
-  float: left;
-  width: 50%;
-  margin: 7em;*/
-  background: #f1f1f1;
-  /*height: 100%;*/
+{
+ /* background: #f1f1f1;
   max-width: 80%;
   position: absolute;
   padding: 10em;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+*/
+  width: 100%;  
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background: #fff; 
 }
 
 .info 
-{
+{/*
   background-color: white;
   margin: 0.5em;
   padding: 2em;
   min-height: 100%;
+  */
+  width: 390px;
+  background: #fff;
 }
 
 .info > h4

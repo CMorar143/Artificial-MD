@@ -7,16 +7,18 @@
 		<link rel="stylesheet" href="{% static 'css/Custom/Login.css' %}">
 	</head>
 	<body>
-		<div class="login_section">
-			<div class="info">
-				<h4>Login</h4>
-				<form method="post">
-					<!-- For security, to prevent CSRF attacks -->
-					{% csrf_token %}
-					<!-- Form content will be outputted between <p> tags -->
-					{{ form.as_p }}
-					<button type="submit">Login</button>
-				</form>
+		<div class="main">
+			<div class="login_section">
+				<div class="info">
+					<h4>Login</h4>
+					<form method="post">
+						<!-- For security, to prevent CSRF attacks -->
+						{% csrf_token %}
+						<!-- Form content will be outputted between <p> tags -->
+						{{ form.as_p }}
+						<button type="submit">Login</button>
+					</form>
+				</div>
 			</div>
 		</div>
 	</body>
