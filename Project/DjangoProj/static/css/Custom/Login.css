@@ -49,7 +49,7 @@ body
   */
   width: 390px;
   background: #fff;
-  padding-top: 1em;
+  padding-bottom: 3em;
 }
 
 .login_title
@@ -68,8 +68,6 @@ body
   display: block;
   width: 9em;
   height: 9em;
-  text-align: center;
-  /*overflow: hidden;*/
   margin: 0 auto;
   margin-bottom: 1.5em;
 }
@@ -90,5 +88,7 @@ body
 /*MIGHT NOT NEED!!*/
 form
 {
+  padding-left:
   width: 100%;
+  padding: 0 5em 0 5em;
 }
