@@ -49,12 +49,18 @@ body
   */
   width: 390px;
   background: #fff;
+  padding-top: 1em;
 }
 
-.info > h4
+.form_title
 {
   text-decoration: underline;
   font-weight: bold;
+  display: block;
+  font-size: 2em;
+  line-height: 1.2;
+  text-align: center;
+  padding-bottom: 2.5em;
 }
 
 .main:after
@@ -62,4 +68,10 @@ body
   content: "";
   display: table;
   clear: both;
+}
+
+/*MIGHT NOT NEED!!*/
+form
+{
+  width: 100%;
 }
