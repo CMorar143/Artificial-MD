@@ -1,15 +1,17 @@
-{% load static %}<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>Patients</title>
-	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-</head>
-<body>
-	<h1>Patients</h1>
+{% extends 'base.html' %}
 
-	{% for patient in patients %}
-		{{ patient.patient_name }} <br>
-	{% endfor %}
-</body>
-</html>
+{% block title %}Login{% endblock %}
+
+{% block content %}
+	<h2>Login</h2>
+	this is login
+	<form method="post">
+		<!-- For security, to prevent CSRF attacks -->
+		{% csrf_token %}
+
+		<!-- Form content will be outputted between <p> tags -->
+		{{ form.as_p }}
+		
+		<button type="submit">Login</button>
+	</form>
+{% endblock %}

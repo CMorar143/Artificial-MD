@@ -20,7 +20,7 @@ from django.conf.urls import url
 from django.views.generic.base import TemplateView
 
 from boards import views
-from boards.views import exam, patient, patient_info
+from boards.views import exam, patient, patient_info, home
 
 urlpatterns = [
 	# url(r'^$', views.login, name='login'),
@@ -28,7 +28,7 @@ urlpatterns = [
     # url(r'^notifications/', include('notify.urls', 'notifications')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('', home.as_view(), name='home'),
     path('exam/', exam.as_view(), name='exam'),
     path('patient/', patient.as_view(), name='patient'),
     path('patient_info/<int:id>/', patient_info.as_view(), name='patient_info'),

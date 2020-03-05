@@ -21,11 +21,17 @@ from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
 
 
-# # Create your views here.
-# def login(request):
-# 	patients = Patient.objects.all()
-	
-# 	return render(request, 'login.html', {'patients': patients})
+# Create your views here.
+class home(TemplateView):
+	template_name = 'home.html'
+
+	def get(self, request):
+		if request.user.is_authenticated:
+			print(request.user)
+			return redirect('logout')
+		else:
+			return redirect('login')
+		# return render(request, self.template_name)
 
 class exam(TemplateView):
 	template_name = 'exam.html'
@@ -106,7 +112,7 @@ class patient(TemplateView):
 			searched_name = request.GET['search']
 			searched_patients = patients.filter(patient_name__icontains=searched_name)
 			args['searched_patients'] = searched_patients
-		print(args)
+		
 		return render(request, self.template_name, args)
 
 	def post(self, request):
