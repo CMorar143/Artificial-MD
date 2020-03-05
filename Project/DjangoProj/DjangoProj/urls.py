@@ -34,6 +34,5 @@ urlpatterns = [
     path('patient_info/<int:id>/', patient_info.as_view(), name='patient_info'),
     # url(r'^patient_info/(?P<id>\w+)/$', views.patient_info, name='patient_info'),
     # path('test/', test.as_view(), name='test'),
-    # path('choose_exam/', views.choose_exam.as_view(), name='choose_exam'),
     path('results/', views.results.as_view(), name='results')
 ]
