@@ -12,16 +12,22 @@ body
 
 .main
 {
-  margin-left: 7em;
-  background: #f1f1f1;
-  height: 100%;
+
 }
 
 .login_section
-{
+{/*
   float: left;
-  width: 40%;
-  margin: 7em;
+  width: 50%;
+  margin: 7em;*/
+  background: #f1f1f1;
+  /*height: 100%;*/
+  max-width: 80%;
+  position: absolute;
+  padding: 10em;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .info 
@@ -36,21 +42,6 @@ body
 {
   text-decoration: underline;
   font-weight: bold;
-}
-
-.field
-{
-  margin: 1em 0 0.7em 0;
-}
-
-.field_value
-{/*
-  border: 1px solid black;
-  border-radius: 5px;*/
-  padding: 0.25em;
-  max-width: 70%;
-  border-left: 4px solid black;
-  background-color: #f1f1f1;
 }
 
 .main:after

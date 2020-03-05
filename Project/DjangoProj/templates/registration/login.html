@@ -4,28 +4,19 @@
 		<meta charset="utf-8">
 		<title>Login</title>
 		<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-		<link rel="stylesheet" href="{% static 'css/Custom/Navbar2.css' %}">
 		<link rel="stylesheet" href="{% static 'css/Custom/Login.css' %}">
 	</head>
 	<body>
-		<ul>
-			<li><a class="active" href="#">Patient</a></li>
-			<li><a href="#">Reminders</a></li>
-			<li><a href="#">Diary</a></li>
-			<li><a href="#">Till</a></li>
-		</ul>
-		<div class="main">
-			<div class="login_section">
-				<div class="info">
-					<h4>Login</h4>
-					<form method="post">
-						<!-- For security, to prevent CSRF attacks -->
-						{% csrf_token %}
-						<!-- Form content will be outputted between <p> tags -->
-						{{ form.as_p }}
-						<button type="submit">Login</button>
-					</form>
-				</div>
+		<div class="login_section">
+			<div class="info">
+				<h4>Login</h4>
+				<form method="post">
+					<!-- For security, to prevent CSRF attacks -->
+					{% csrf_token %}
+					<!-- Form content will be outputted between <p> tags -->
+					{{ form.as_p }}
+					<button type="submit">Login</button>
+				</form>
 			</div>
 		</div>
 	</body>
