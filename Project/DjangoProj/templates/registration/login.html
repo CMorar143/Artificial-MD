@@ -10,7 +10,10 @@
 		<div class="main">
 			<div class="login_section">
 				<div class="info">
-					<span class="form_title">Welcome</span>
+					<span class="login_title">Welcome</span>
+					<span class="login_logo">
+						<img src="{% static 'images/login_logo.jpg' %}" alt="logo">
+					</span>
 					<form method="post">
 						<!-- For security, to prevent CSRF attacks -->
 						{% csrf_token %}

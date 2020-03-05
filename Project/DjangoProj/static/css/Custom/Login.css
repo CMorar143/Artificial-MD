@@ -52,7 +52,7 @@ body
   padding-top: 1em;
 }
 
-.form_title
+.login_title
 {
   text-decoration: underline;
   font-weight: bold;
@@ -60,7 +60,24 @@ body
   font-size: 2em;
   line-height: 1.2;
   text-align: center;
-  padding-bottom: 2.5em;
+  padding-bottom: 1em;
+}
+
+.login_logo
+{
+  display: block;
+  width: 9em;
+  height: 9em;
+  text-align: center;
+  /*overflow: hidden;*/
+  margin: 0 auto;
+  margin-bottom: 1.5em;
+}
+
+.login_logo img
+{
+  width: 100%;
+  height: auto;
 }
 
 .main:after

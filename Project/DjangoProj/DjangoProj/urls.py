@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
 from django.views.generic.base import TemplateView
+# from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from boards import views
 from boards.views import exam, patient, patient_info, home
@@ -36,3 +37,5 @@ urlpatterns = [
     # path('test/', test.as_view(), name='test'),
     path('results/', views.results.as_view(), name='results')
 ]
+
+# url += staticfiles_urlpatterns()
