@@ -1,7 +1,7 @@
 ul 
 {
   list-style-type: none;
-  margin: 0;
+  margin-right: 2em;
   padding: 0;
   max-width: 20%;
   background-color: #f1f1f1;
@@ -34,32 +34,39 @@ li a:hover:not(.active)
   box-sizing: border-box;
 }
 
-.main 
+body
 {
   font-family: Arial;
-  margin-left: 10%;
+  margin: 0 4em 4em 4em;
   padding: 10px;
+}
+
+.main
+{
+  margin-left: 7em;
   background: #f1f1f1;
 }
 
 .left_section
 {
   float: left;
-  width: 30%;
+  width: 40%;
 }
 
 .right_section
 {
   float: left;
-  width: 70%;
+  width: 60%;
   background-color: #f1f1f1;
-  padding-left: 20px;
+  /*padding-left: 20px;*/
 }
 
 /* Add a card effect for articles */
 .info {
   background-color: white;
-  
+  margin: 0.5em;
+  padding: 2em;
+  min-height: 100%;
 }
 
 /* Clear floats after the columns */

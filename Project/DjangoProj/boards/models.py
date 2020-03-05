@@ -6,7 +6,7 @@ from django.conf import settings
 class Patient(models.Model):
 	family = models.ForeignKey('Family', on_delete=models.CASCADE, null=True)
 	patient_name = models.CharField(max_length=50)
-	DOB = models.DateTimeField()
+	DOB = models.DateField()
 	age = models.PositiveIntegerField()
 	sex = models.PositiveIntegerField()
 	address_line1 = models.CharField(max_length=40, null=True)
@@ -111,7 +111,7 @@ class Allergy_Medication(models.Model):
 
 class Reminder(models.Model):
 	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
-	rem_date = models.DateTimeField()
+	rem_date = models.DateField()
 	location = models.CharField(max_length=50, null=True)
 	message = models.CharField(max_length=150)
 

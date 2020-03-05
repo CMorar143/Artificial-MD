@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Patient Info</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/Navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Custom/Navbar2.css' %}">
   </head>
 	<body>
     <ul>
@@ -85,7 +85,7 @@
               <tbody>
                 {% for reminder in reminders %}
                   <tr>
-                    <td>
+                    <td class="align-middle">
                      {{ reminder.rem_date }}
                     </td>
                     <td class="align-middle">
