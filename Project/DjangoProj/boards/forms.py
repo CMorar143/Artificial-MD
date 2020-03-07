@@ -53,17 +53,17 @@ class FurtherActionsForm(forms.ModelForm):
 		fields = ('further_actions',)
 
 class CreatePatientForm(forms.ModelForm):
-	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'form-control'}))
+	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Patient Name'}))
 	DOB = forms.DateField(initial=datetime.date.today, widget=forms.SelectDateWidget(years=range(1900, 2020), attrs={'class': 'form-datefield'}))
-	age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
-	address_line1 = forms.CharField(label='Address line 1', widget=forms.TextInput(attrs={'class': 'form-control'}))
-	address_line2 = forms.CharField(label='Address line 2', widget=forms.TextInput(attrs={'class': 'form-control'}))
-	address_line3 = forms.CharField(label='Address line 3', widget=forms.TextInput(attrs={'class': 'form-control'}))
-	occupation = forms.CharField(label='Occupation', widget=forms.TextInput(attrs={'class': 'form-control'}))
-	marital_status = forms.ChoiceField(choices=MARITAL_STATUS, widget=forms.Select(attrs={'class': 'form-control'}))
-	tel_num = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-	home_num = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'})) 
+	age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'placeholder': 'Age'}))
+	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'input_field'}))
+	address_line1 = forms.CharField(label='Address line 1', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Address Line 1'}))
+	address_line2 = forms.CharField(label='Address line 2', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Address Line 2'}))
+	address_line3 = forms.CharField(label='Address line 3', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Address Line 3'}))
+	occupation = forms.CharField(label='Occupation', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Occupation'}))
+	marital_status = forms.ChoiceField(choices=MARITAL_STATUS, widget=forms.Select(attrs={'class': 'input_field'}))
+	tel_num = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'placeholder': 'Telephone'}))
+	home_num = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'placeholder': 'Home Phone Number'})) 
 
 	class Meta:
 		model = Patient

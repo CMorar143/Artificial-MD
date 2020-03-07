@@ -139,6 +139,7 @@ class patient(TemplateView):
 	def post(self, request):
 		if 'create_patient' in request.POST:
 			Createform = CreatePatientForm(request.POST)
+			Selectform = SelectPatientForm()
 			if Createform.is_valid():
 
 				# Save data to model
