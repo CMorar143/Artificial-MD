@@ -31,6 +31,17 @@ body
   background: #fff; 
 }
 
+.validation
+{
+  width: 100%;
+  /*max-width: 10em;*/
+  font-size: 0.75em;
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 0.8em;
+  border: none;
+}
+
 .login_input
 {
   width: 100%;
