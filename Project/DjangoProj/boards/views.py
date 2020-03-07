@@ -111,8 +111,9 @@ class patient(TemplateView):
 		if 'search' in request.GET:
 			searched_name = request.GET['search']
 			searched_patients = patients.filter(patient_name__icontains=searched_name)
-			args['searched_patients'] = searched_patients
-		
+			if searched_patients is not None:
+				args['searched_patients'] = searched_patients
+				print(searched_patients)
 		return render(request, self.template_name, args)
 
 	def post(self, request):

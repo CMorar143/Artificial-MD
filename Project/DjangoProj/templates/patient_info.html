@@ -36,6 +36,16 @@
                 {{ patient.occupation }}
               </div>            
             </div>
+            <div class="field">
+              Sex: 
+              <div class="field_value" >
+                {% if patient.sex == 1 %}
+                  Male
+                {% else %}
+                  Female
+                {% endif %}
+              </div>            
+            </div>
         </div>
         <div class="info">
           <h4>Contact Information</h4>
