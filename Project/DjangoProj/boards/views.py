@@ -73,18 +73,9 @@ class patient_info(TemplateView):
 	template_test = 'patient.html'
 
 	def get(self, request, id):
-		# Createform = CreatePatientForm()
-		# Selectform = SelectPatientForm()
-
-		# Get information for patient page
-		patient = Patient.objects.get(id=id)
-		reminders = Reminder.objects.filter(patient_id=id)						
 		
-		# allergy_ids = Patient_Allergy.objects.filter(patient_id=id).values('allergy_id')
-		# allergies = Allergy.objects.filter(id__in=allergy_ids)
-
-		# ailment_ids = Patient_Ailment.objects.filter(patient_id=id).values('ailment_id')
-		# ailments = Ailment.objects.filter(id__in=ailment_ids)
+		# Get information for patient page
+		patient = Patient.objects.get(id=id)					
 
 		# Pass the patient name to the patient page
 		p_arg = {}
@@ -93,21 +84,7 @@ class patient_info(TemplateView):
 		query_string = urlencode(p_arg)
 		url = '{}?{}'.format(base_url, query_string)
 		return redirect(url)
-		
-		# # medication = Medication.objects.filter()
-		# print(allergies)
-		# args = {'patient': patient, 'Createform': Createform, 'Selectform': Selectform}
 
-		# if reminders.exists():
-		# 	args['reminders'] = reminders
-
-		# if allergies.exists():
-		# 	args['allergies'] = allergies
-
-		# if ailments.exists():
-		# 	args['ailments'] = ailments
-
-		# return render(request, self.template_test, args)
 
 
 class patient(TemplateView):
