@@ -31,15 +31,27 @@ body
   background: #fff; 
 }
 
+.login_section form
+{
+  min-width: 220px;
+}
+
 .validation
 {
   width: 100%;
-  /*max-width: 10em;*/
   font-size: 0.75em;
   display: block;
   margin: 0 auto;
   margin-bottom: 0.8em;
   border: none;
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
 }
 
 .login_input
