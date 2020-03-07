@@ -59,26 +59,130 @@
         </table>
       {% endif %}
       <br>
-      <form method="post">
-        {% csrf_token %}
-        {{ Createform.as_p }}
-        <input class="btn btn-outline-dark" name="create_patient" type="submit" value="Create" />&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
-      </form>
-      <!-- <h2>{{ exam_input }}</h2> -->
+      {% if patient is None %}
+        <form method="post">
+          {% csrf_token %}
+          {{ Createform.as_p }}
+          <input class="btn btn-outline-dark" name="create_patient" type="submit" value="Create" />&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
+        </form>
+      {% else %}
+        <div class="main">
+          <div class="left_section">
+            <div class="info">
+               <h4>Patient Info</h4>
+                <div class="field">
+                  Name: 
+                  <div class="field_value" >
+                    {{ patient.patient_name }}
+                  </div>
+                </div>
+                <div class="field">
+                  Date of Birth:
+                  <div class="field_value" >
+                    {{ patient.DOB }}
+                  </div>
+                </div>
+                <div class="field">
+                  Occupation: 
+                  <div class="field_value" >
+                    {{ patient.occupation }}
+                  </div>            
+                </div>
+            </div>
+            <div class="info">
+              <h4>Contact Information</h4>
+              <div class="field">
+                Telephone Number: 
+                <div class="field_value" >
+                  {{ patient.tel_num }}
+                </div>
+              </div>
+              <div class="field">
+                Home Phone Number: 
+                <div class="field_value" >
+                  {{ patient.home_num }}
+                </div>
+              </div>
+              <div class="field">
+                Address Line 1: 
+                <div class="field_value" >
+                  {{ patient.address_line1 }}
+                </div>
+              </div>
+              <div class="field">
+                Address Line 2: 
+                <div class="field_value" >
+                  {{ patient.address_line2 }}
+                </div>
+              </div>
+              <div class="field">
+                Address Line 3: 
+                <div class="field_value" >
+                  {{ patient.address_line3 }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right_section">
+            <div class="info">
+              <h4>Medical Info</h4>
 
+                {% if reminders is not None %}
+                  Active Reminders:
+                  <table class="table">
+                    <thead class="thead-inverse">
+                      <tr class="bg-dark text-white">
+                        <th>Reminder Date</th>
+                        <th>Location</th>
+                        <th>Note</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for reminder in reminders %}
+                        <tr>
+                          <td class="align-middle">
+                           {{ reminder.rem_date }}
+                          </td>
+                          <td class="align-middle">
+                            {{ reminder.location }}
+                          </td>
+                          <td class="align-middle">
+                            {{ reminder.message }}
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                {% else %}
+                  this
+                {% endif %}
+                Ailments:
+                <input 
+                  class="form-control mr-sm-2" 
+                  name="ailments"
+                  value="
+                    {% for ail in ailments %}
+                      {{ ail.name }}
+                    {% endfor %}
+                  " >
+                Allergies:
+                <input 
+                  class="form-control mr-sm-2" 
+                  name="allergies"
+                  value="
+                    {% for all in allergies %}
+                      {{ all.name }}
+                    {% endfor %}
+                  " >
+            </div>
+          </div>
+        </div>
+      {% endif %}
     </div>
   </body>
 </html>
-
-
-
-<body>
-    <ul>
-      <li><a class="active" href="#">Patient</a></li>
-      <li><a href="#">Reminders</a></li>
-      <li><a href="#">Diary</a></li>
-      <li><a href="#">Till</a></li>
-    </ul>
+<!-- 
+  <body>
     <div class="main">
       <div class="left_section">
         <div class="info">
@@ -190,7 +294,7 @@
         </div>
       </div>
     </div>
-  </body>
+  </body> -->
 
 
 
