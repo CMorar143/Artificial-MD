@@ -53,17 +53,30 @@ class FurtherActionsForm(forms.ModelForm):
 		fields = ('further_actions',)
 
 class CreatePatientForm(forms.ModelForm):
-	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Patient Name'}))
-	DOB = forms.DateField(initial=datetime.date.today, widget=forms.SelectDateWidget(years=range(1900, 2020), attrs={'class': 'form-datefield'}))
-	age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'placeholder': 'Age'}))
-	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'input_field'}))
-	address_line1 = forms.CharField(label='Address line 1', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Address Line 1'}))
-	address_line2 = forms.CharField(label='Address line 2', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Address Line 2'}))
-	address_line3 = forms.CharField(label='Address line 3', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Address Line 3'}))
-	occupation = forms.CharField(label='Occupation', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Occupation'}))
+	# patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Patient Name'}))
+	# DOB = forms.CharField(initial=datetime.date.today, widget=forms.widgets.DateTimeInput(attrs={'type': 'date', 'class': 'input_field'}))
+	# age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'placeholder': 'Age'}))
+	# sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'input_field', }))
+	# address_line1 = forms.CharField(label='Address line 1', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Address Line 1'}))
+	# address_line2 = forms.CharField(label='Address line 2', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Address Line 2'}))
+	# address_line3 = forms.CharField(label='Address line 3', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Address Line 3'}))
+	# occupation = forms.CharField(label='Occupation', widget=forms.TextInput(attrs={'class': 'input_field', 'placeholder': 'Occupation'}))
+	# marital_status = forms.ChoiceField(choices=MARITAL_STATUS, widget=forms.Select(attrs={'class': 'input_field'}))
+	# tel_num = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'placeholder': 'Telephone'}))
+	# home_num = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'placeholder': 'Home Phone Number'})) 
+
+	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'input_field'}))
+	DOB = forms.CharField(initial=datetime.date.today, widget=forms.widgets.DateTimeInput(attrs={'type': 'date', 'class': 'input_field'}))
+	age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
+	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'input_field', }))
+	address_line1 = forms.CharField(label='Address line 1', widget=forms.TextInput(attrs={'class': 'input_field'}))
+	address_line2 = forms.CharField(label='Address line 2', widget=forms.TextInput(attrs={'class': 'input_field'}))
+	address_line3 = forms.CharField(label='Address line 3', widget=forms.TextInput(attrs={'class': 'input_field'}))
+	occupation = forms.CharField(label='Occupation', widget=forms.TextInput(attrs={'class': 'input_field'}))
 	marital_status = forms.ChoiceField(choices=MARITAL_STATUS, widget=forms.Select(attrs={'class': 'input_field'}))
-	tel_num = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'placeholder': 'Telephone'}))
-	home_num = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'placeholder': 'Home Phone Number'})) 
+	tel_num = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
+	home_num = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field'})) 
+
 
 	class Meta:
 		model = Patient
