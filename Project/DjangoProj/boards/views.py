@@ -73,7 +73,6 @@ class patient_info(TemplateView):
 	template_test = 'patient.html'
 
 	def get(self, request, id):
-		
 		# Get information for patient page
 		patient = Patient.objects.get(id=id)					
 
@@ -91,9 +90,7 @@ class patient(TemplateView):
 	template_name = 'patient.html'
 
 	def display_info(self, request):
-		Createform = CreatePatientForm()
 		Selectform = SelectPatientForm()
-
 		# Get information for patient page
 		p_name = request.GET.get('patient')
 		patient = Patient.objects.get(patient_name=p_name)
@@ -106,8 +103,8 @@ class patient(TemplateView):
 		ailments = Ailment.objects.filter(id__in=ailment_ids)
 		
 		# medication = Medication.objects.filter()
-		print(allergies)
-		args = {'patient': patient, 'Createform': Createform, 'Selectform': Selectform}
+
+		args = {'patient': patient, 'Selectform': Selectform}
 
 		if reminders.exists():
 			args['reminders'] = reminders

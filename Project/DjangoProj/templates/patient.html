@@ -62,66 +62,119 @@
       {% if patient is None %}
         <form method="post">
           {% csrf_token %}
-          {{ Createform.as_p }}
+          <!-- {{ Createform.as_p }} -->
+          <div class="left_section">
+            <div class="info">
+              <div class="field">
+                <input class="" id="{{ Createform.patient_name.id_for_label }}" name="{{ Createform.patient_name.html_name }}" placeholder="Patient Name" type="text" />
+              </div>
+              <div class="field">
+                <input class="field" id="{{ Createform.DOB.id_for_label }}" name="{{ Createform.DOB.html_name }}" placeholder="Date Of Birth" type="date" /> 
+              </div>
+              <div class="field">
+                <input class="field" id="{{ Createform.age.id_for_label }}" name="{{ Createform.age.html_name }}" placeholder="Age" type="number" /> 
+              </div>
+              <div class="field">
+                <input class="field" id="{{ Createform.sex.id_for_label }}" name="{{ Createform.sex.html_name }}" placeholder="Sex" type="text" /> 
+              </div>
+              <div class="field">
+                <input class="field" id="{{ Createform.occupation.id_for_label }}" name="{{ Createform.occupation.html_name }}" placeholder="Occupation" type="text" /> 
+              </div>
+              <div class="field">
+                <input class="field" id="{{ Createform.marital_status.id_for_label }}" name="{{ Createform.marital_status.html_name }}" placeholder="Marital Status" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="right_section">
+            <div class="info">
+              <div class="field">
+                <input class="field" id="{{ Createform.address_line1.id_for_label }}" name="{{ Createform.address_line1.html_name }}" placeholder="Address Line 1" type="text" /> 
+              </div>
+              <div class="field">
+                <input class="field" id="{{ Createform.address_line2.id_for_label }}" name="{{ Createform.address_line2.html_name }}" placeholder="Address Line 2" type="text" /> 
+              </div>
+              <div class="field">
+                <input class="field" id="{{ Createform.address_line3.id_for_label }}" name="{{ Createform.address_line3.html_name }}" placeholder="Address Line 3" type="text" /> 
+              </div>
+              <div class="field">
+                <input class="field" id="{{ Createform.tel_num.id_for_label }}" name="{{ Createform.tel_num.html_name }}" placeholder="Telephone" type="number" />
+              </div>
+              <div class="field">
+                <input class="field" id="{{ Createform.home_num.id_for_label }}" name="{{ Createform.home_num.html_name }}" placeholder="Home Number" type="number" />
+              </div>
+            </div>
+          </div>
+
+
           <input class="btn btn-outline-dark" name="create_patient" type="submit" value="Create" />&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
         </form>
       {% else %}
         <div class="left_section">
-          <div class="info">
-             <h4>Patient Info</h4>
-              <div class="field">
-                Name: 
-                <div class="field_value" >
-                  {{ patient.patient_name }}
-                </div>
-              </div>
-              <div class="field">
-                Date of Birth:
-                <div class="field_value" >
-                  {{ patient.DOB }}
-                </div>
-              </div>
-              <div class="field">
-                Occupation: 
-                <div class="field_value" >
-                  {{ patient.occupation }}
-                </div>            
-              </div>
+        <div class="info">
+          <h4>Patient Info</h4>
+          <div class="field">
+            Name: 
+            <div class="field_value" >
+              {{ patient.patient_name }}
+            </div>
           </div>
-          <div class="info">
-            <h4>Contact Information</h4>
-            <div class="field">
-              Telephone Number: 
-              <div class="field_value" >
-                {{ patient.tel_num }}
-              </div>
+          <div class="field">
+            Date of Birth:
+            <div class="field_value" >
+              {{ patient.DOB }}
             </div>
-            <div class="field">
-              Home Phone Number: 
-              <div class="field_value" >
-                {{ patient.home_num }}
-              </div>
-            </div>
-            <div class="field">
-              Address Line 1: 
-              <div class="field_value" >
-                {{ patient.address_line1 }}
-              </div>
-            </div>
-            <div class="field">
-              Address Line 2: 
-              <div class="field_value" >
-                {{ patient.address_line2 }}
-              </div>
-            </div>
-            <div class="field">
-              Address Line 3: 
-              <div class="field_value" >
-                {{ patient.address_line3 }}
-              </div>
+          </div>
+          <div class="field">
+            Occupation: 
+            <div class="field_value" >
+              {{ patient.occupation }}
+            </div>            
+          </div>
+          <div class="field">
+            Sex: 
+            <div class="field_value" >
+              {% if patient.sex == 1 %}
+                Male
+              {% else %}
+                Female
+              {% endif %}
             </div>
           </div>
         </div>
+        <div class="info">
+          <h4>Contact Information</h4>
+          <div class="field">
+            Telephone Number: 
+            <div class="field_value" >
+              {{ patient.tel_num }}
+            </div>
+          </div>
+          <div class="field">
+            Home Phone Number: 
+            <div class="field_value" >
+              {{ patient.home_num }}
+            </div>
+          </div>
+          <div class="field">
+            Address Line 1: 
+            <div class="field_value" >
+              {{ patient.address_line1 }}
+            </div>
+          </div>
+          <div class="field">
+            Address Line 2: 
+            <div class="field_value" >
+              {{ patient.address_line2 }}
+            </div>
+          </div>
+          <div class="field">
+            Address Line 3: 
+            <div class="field_value" >
+              {{ patient.address_line3 }}
+            </div>
+          </div>
+        </div>
+      </div>
         <div class="right_section">
           <div class="info">
               <h4>Medical Info</h4>

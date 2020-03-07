@@ -17,35 +17,35 @@
     <div class="main">
       <div class="left_section">
         <div class="info">
-           <h4>Patient Info</h4>
-            <div class="field">
-              Name: 
-              <div class="field_value" >
-                {{ patient.patient_name }}
-              </div>
+          <h4>Patient Info</h4>
+          <div class="field">
+            Name: 
+            <div class="field_value" >
+              {{ patient.patient_name }}
             </div>
-            <div class="field">
-              Date of Birth:
-              <div class="field_value" >
-                {{ patient.DOB }}
-              </div>
+          </div>
+          <div class="field">
+            Date of Birth:
+            <div class="field_value" >
+              {{ patient.DOB }}
             </div>
-            <div class="field">
-              Occupation: 
-              <div class="field_value" >
-                {{ patient.occupation }}
-              </div>            
+          </div>
+          <div class="field">
+            Occupation: 
+            <div class="field_value" >
+              {{ patient.occupation }}
+            </div>            
+          </div>
+          <div class="field">
+            Sex: 
+            <div class="field_value" >
+              {% if patient.sex == 1 %}
+                Male
+              {% else %}
+                Female
+              {% endif %}
             </div>
-            <div class="field">
-              Sex: 
-              <div class="field_value" >
-                {% if patient.sex == 1 %}
-                  Male
-                {% else %}
-                  Female
-                {% endif %}
-              </div>            
-            </div>
+          </div>
         </div>
         <div class="info">
           <h4>Contact Information</h4>
