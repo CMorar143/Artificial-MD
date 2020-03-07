@@ -33,9 +33,6 @@ urlpatterns = [
     path('exam/', exam.as_view(), name='exam'),
     path('patient/', patient.as_view(), name='patient'),
     path('patient_info/<int:id>/', patient_info.as_view(), name='patient_info'),
-    # url(r'^patient_info/(?P<id>\w+)/$', views.patient_info, name='patient_info'),
     # path('test/', test.as_view(), name='test'),
     path('results/', views.results.as_view(), name='results')
 ]
-
-# url += staticfiles_urlpatterns()

@@ -52,6 +52,20 @@ body
   padding-bottom: 3em;
 }
 
+.login_input
+{/*
+  width: 100%;
+  position: relative;
+  
+  border-bottom: 2px solid #d9d9d9;*/
+
+}
+
+#id_password
+{
+  display: none;
+}
+
 .login_title
 {
   text-decoration: underline;
