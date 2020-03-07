@@ -134,25 +134,6 @@ class patient(TemplateView):
 			args = {'Createform': Createform, 'Selectform': Selectform, 'exam_input': patient_input}
 			return render(request, self.template_name, args)
 
-		# elif 'select_patient' in request.POST:
-		# 	Selectform = SelectPatientForm(request.POST)
-		# 	if Selectform.is_valid():
-		# 		args = {}
-		# 		patient = Selectform.cleaned_data['patient_name']
-		# 		args['patient'] = patient
-		# 		p = Patient.objects.get(patient_name=patient)
-
-		# 		visit = Visit.objects.create(doctor=request.user, patient=p, reason="For examination")
-		# 		base_url = reverse('exam')
-		# 		query_string = urlencode(args)
-		# 		url = '{}?{}'.format(base_url, query_string)
-		# 		return redirect(url)
-
-			# elif 'create_reminder' in request.POST:
-					
-		# return render(request, 'test.html', {"patient" : patient})
-
-
 
 
 class results(TemplateView):
