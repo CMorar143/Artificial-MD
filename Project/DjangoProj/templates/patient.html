@@ -7,10 +7,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}">
     <link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
     <link rel="stylesheet" href="{% static 'css/Custom/Patient.css' %}">
-    <!-- <script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script> -->
+    <script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
   </head>
   <body>
-    <div id="navbar">
     <ul class="navbar">
       <span class="navbar_logo">
         <img src="{% static 'images/login_logo.jpg' %}" alt="logo">
@@ -20,7 +19,6 @@
       <li><a href="#">Diary</a></li>
       <li><a href="#">Till</a></li>
     </ul>
-  </div>
     <div class="main">
 
       <div class="search">
@@ -73,222 +71,227 @@
         </table>
       </div>
     {% endif %}
-      <br>
-      {% if patient is None %}
-        <form method="post">
-          {% csrf_token %}
-          <!-- {{ Createform.as_p }} -->
-          <div class="left_section">
-            <div class="info">
-            <h4>Patient Info</h4>
-              <div class="field">
-                <label>Patient name:</label>
-                {{ Createform.patient_name }}
-              </div>
-              <div class="field">
-                <label>Date of birth:</label>
-                {{ Createform.DOB }}
-              </div>
-              <div class="field">
-                <label>Age:</label>
-                {{ Createform.age }}
-              </div>
-              <div class="field">
-                <label>Sex:</label>
-                {{ Createform.sex }}
-              </div>
-              <div class="field">
-                <label>Occupation:</label>
-                {{ Createform.occupation }} 
-              </div>
-              <div class="field">
-                <label>Marital status:</label>
-                {{ Createform.marital_status }}
-              </div>
-            </div>
-          </div>
-          <div class="right_section">
-            <div class="info">
-            <h4>Contact Info</h4>
-              <div class="field">
-                <label>Address Line 1:</label>
-                {{ Createform.address_line1 }}
-              </div>
-              <div class="field">
-                <label>Address Line 2:</label>
-                {{ Createform.address_line2 }}
-              </div>
-              <div class="field">
-                <label>Address Line 3:</label>
-                {{ Createform.address_line3 }} 
-              </div>
-              <div class="field">
-                <label>Telephone:</label>
-                {{ Createform.tel_num }}
-              </div>
-              <div class="field">
-                <label>Home phone number:</label>
-                {{ Createform.home_num }}
-              </div>
-            </div>
-          </div>
-          
-          <input class="btn btn-outline-dark" name="create_patient" type="submit" value="Create" />
-        </form>
-      {% else %}
+    <br>
+    {% if patient is None %}
+      <form method="post">
+        {% csrf_token %}
         <div class="left_section">
           <div class="info">
-            <h4>Patient Info</h4>
+          <h4>Patient Info</h4>
             <div class="field">
-              Name: 
-              <div class="field_value" >
-                {{ patient.patient_name }}
-              </div>
+              <label>Patient name:</label>
+              {{ Createform.patient_name }}
             </div>
             <div class="field">
-              Date of Birth:
-              <div class="field_value" >
-                {{ patient.DOB }}
-              </div>
+              <label>Date of birth:</label>
+              {{ Createform.DOB }}
             </div>
             <div class="field">
-              Occupation: 
-              <div class="field_value" >
-                {{ patient.occupation }}
-              </div>            
+              <label>Age:</label>
+              {{ Createform.age }}
             </div>
             <div class="field">
-              Sex: 
-              <div class="field_value" >
-                {% if patient.sex == 1 %}
-                  Male
-                {% else %}
-                  Female
-                {% endif %}
-              </div>
-            </div>
-          </div>
-          <div class="info">
-            <h4>Contact Information</h4>
-            <div class="field">
-              Telephone Number: 
-              <div class="field_value" >
-                {{ patient.tel_num }}
-              </div>
+              <label>Sex:</label>
+              {{ Createform.sex }}
             </div>
             <div class="field">
-              Home Phone Number: 
-              <div class="field_value" >
-                {{ patient.home_num }}
-              </div>
+              <label>Occupation:</label>
+              {{ Createform.occupation }} 
             </div>
             <div class="field">
-              Address Line 1: 
-              <div class="field_value" >
-                {{ patient.address_line1 }}
-              </div>
-            </div>
-            <div class="field">
-              Address Line 2: 
-              <div class="field_value" >
-                {{ patient.address_line2 }}
-              </div>
-            </div>
-            <div class="field">
-              Address Line 3: 
-              <div class="field_value" >
-                {{ patient.address_line3 }}
-              </div>
+              <label>Marital status:</label>
+              {{ Createform.marital_status }}
             </div>
           </div>
         </div>
         <div class="right_section">
           <div class="info">
-            <h4>Medical Info</h4>
-            {% if medication is not None %}
-              <table class="table">
-                <thead class="thead-inverse">
-                  <tr class="bg-dark text-white">
-                    <th>Medication Name</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for med in medication %}
-                    <tr>
-                      <td class="align-middle">
-                       {{ med.name }}
-                      </td>
-                      <td class="align-middle">
-                        {{ med.description }}
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            {% endif %}
-
+          <h4>Contact Info</h4>
             <div class="field">
-              Ailments:
-              {% for ail in ailments %}
-                <div class="field_value" >
-                  {{ ail.name }}
-                </div>
-              {% endfor %}
+              <label>Address Line 1:</label>
+              {{ Createform.address_line1 }}
             </div>
             <div class="field">
-              Allergies:
-              {% for all in allergies %}
-                <div class="field_value" >
-                  {{ all.name }}
-                </div>
-              {% endfor %}
+              <label>Address Line 2:</label>
+              {{ Createform.address_line2 }}
+            </div>
+            <div class="field">
+              <label>Address Line 3:</label>
+              {{ Createform.address_line3 }} 
+            </div>
+            <div class="field">
+              <label>Telephone:</label>
+              {{ Createform.tel_num }}
+            </div>
+            <div class="field">
+              <label>Home phone number:</label>
+              {{ Createform.home_num }}
             </div>
           </div>
-
-
-
-          <div class="info">
-            <h4>Reminders</h4>
-
-            {% if reminders is not None %}
-              <table class="table">
-                <thead class="thead-inverse">
-                  <tr class="bg-dark text-white">
-                    <th>Reminder Date</th>
-                    <th>Location</th>
-                    <th>Note</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for reminder in reminders %}
-                    <tr>
-                      <td class="align-middle">
-                       {{ reminder.rem_date }}
-                      </td>
-                      <td class="align-middle">
-                        {{ reminder.location }}
-                      </td>
-                      <td class="align-middle">
-                        {{ reminder.message }}
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            {% endif %}
-          </div>
-
-
-
         </div>
-      {% endif %}
-    </div>
+        
+        <input class="btn btn-outline-dark" name="create_patient" type="submit" value="Create" />
+      </form>
+    {% else %}
+      <div class="left_section">
+        <div class="info">
+          <h4>Patient Info</h4>
+          <div class="field">
+            Name: 
+            <div class="field_value" >
+              {{ patient.patient_name }}
+            </div>
+          </div>
+          <div class="field">
+            Date of Birth:
+            <div class="field_value" >
+              {{ patient.DOB }}
+            </div>
+          </div>
+          <div class="field">
+            Occupation: 
+            <div class="field_value" >
+              {{ patient.occupation }}
+            </div>            
+          </div>
+          <div class="field">
+            Sex: 
+            <div class="field_value" >
+              {% if patient.sex == 1 %}
+                Male
+              {% else %}
+                Female
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="info">
+          <h4>Contact Information</h4>
+          <div class="field">
+            Telephone Number: 
+            <div class="field_value" >
+              {{ patient.tel_num }}
+            </div>
+          </div>
+          <div class="field">
+            Home Phone Number: 
+            <div class="field_value" >
+              {{ patient.home_num }}
+            </div>
+          </div>
+          <div class="field">
+            Address Line 1: 
+            <div class="field_value" >
+              {{ patient.address_line1 }}
+            </div>
+          </div>
+          <div class="field">
+            Address Line 2: 
+            <div class="field_value" >
+              {{ patient.address_line2 }}
+            </div>
+          </div>
+          <div class="field">
+            Address Line 3: 
+            <div class="field_value" >
+              {{ patient.address_line3 }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right_section">
+        <div class="info">
+          <h4>Medical Info</h4>
+          {% if medication is not None %}
+            <table class="table">
+              <thead class="thead-inverse">
+                <tr class="bg-dark text-white">
+                  <th>Medication Name</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for med in medication %}
+                  <tr>
+                    <td class="align-middle">
+                     {{ med.name }}
+                    </td>
+                    <td class="align-middle">
+                      {{ med.description }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
 
+          <div class="field">
+            Ailments:
+            {% for ail in ailments %}
+              <div class="field_value" >
+                {{ ail.name }}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="field">
+            Allergies:
+            {% for all in allergies %}
+              <div class="field_value" >
+                {{ all.name }}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="info">
+          <h4>Reminders</h4>
+          {% if reminders is not None %}
+            <table class="table">
+              <thead class="thead-inverse">
+                <tr class="bg-dark text-white">
+                  <th>Reminder Date</th>
+                  <th>Location</th>
+                  <th>Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for reminder in reminders %}
+                  <tr>
+                    <td class="align-middle">
+                     {{ reminder.rem_date }}
+                    </td>
+                    <td class="align-middle">
+                      {{ reminder.location }}
+                    </td>
+                    <td class="align-middle">
+                      {{ reminder.message }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endif %}
+        </div>
+        <div class="info">
+          <button class="btn btn-outline-dark" name="create_visit" onclick="popUpForm()">
+            Create Visit
+          </button>
+          <input class="btn btn-outline-dark" name="exam" type="submit" value="Start Examination" />
+          <div class="form-popup" id="myForm">
+            <form action="/action_page.php" class="form-container">
+              {{ Visitform.as_p }}
+              <button type="submit" class="create_visit_btn">Create Visit</button>
+              <button type="button" class="create_visit_btn cancel" onclick="closeForm()">Close</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    </div>
     <script>
       window.onscroll = function() {myFunction()};
 
-      var navbar = document.getElementById("navbar");
+      var navbar = document.getElementsByClassName("navbar")[0];
       var sticky = navbar.offsetTop;
 
       function myFunction() {
@@ -298,7 +301,15 @@
           navbar.classList.remove("sticky");
         }
       }
-</script>
+
+      function popUpForm() {
+        document.getElementById("myForm").style.display = "block";
+      }
+
+      function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+      }
+    </script>
   </body>
 </html>
 

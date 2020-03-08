@@ -3,7 +3,7 @@ from django.urls import reverse
 from urllib.parse import urlencode
 from django.conf import settings
 from django.views.generic import TemplateView
-from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm
+from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm, CreateVisitForm
 from boards.models import Examination, Patient, Patient_Ailment, Patient_Allergy, Patient_Medication, Visit, Medical_history, Investigation, Reminder, User, Ailment, Allergy, Medication
 
 # For Machine learning model
@@ -69,8 +69,6 @@ class exam(TemplateView):
 
 
 class patient_info(TemplateView):
-	template_name = 'patient_info.html'
-	template_test = 'patient.html'
 
 	def get(self, request, id):
 		# Get information for patient page
@@ -101,6 +99,8 @@ class patient(TemplateView):
 
 	def display_info(self, request):
 		Selectform = SelectPatientForm()
+		Visitform = CreateVisitForm()
+
 		# Get information for patient page
 		p_name = request.GET.get('patient')
 		patient = Patient.objects.get(patient_name=p_name)
@@ -115,7 +115,7 @@ class patient(TemplateView):
 		med_ids = Patient_Medication.objects.filter(patient_id=patient.id).values('medication_id')
 		medication = Medication.objects.filter(id__in=med_ids)
 
-		args = {'patient': patient, 'Selectform': Selectform}
+		args = {'patient': patient, 'Visitform': Visitform, 'Selectform': Selectform}
 		args = self.search_patients(request, args)
 
 		if reminders.exists():
@@ -136,6 +136,7 @@ class patient(TemplateView):
 		if request.GET.get('patient') is None:
 			Createform = CreatePatientForm()
 			Selectform = SelectPatientForm()
+
 			searched_name = ''
 			args = {'Createform': Createform, 'Selectform': Selectform}			
 			args = self.search_patients(request, args)
@@ -163,6 +164,12 @@ class patient(TemplateView):
 
 			args = {'Createform': Createform, 'Selectform': Selectform, 'exam_input': patient_input}
 			return render(request, self.template_name, args)
+
+		# elif 'create_visit' in request.POST:
+			
+
+		# elif 'exam' in request.POST:
+			
 
 
 
