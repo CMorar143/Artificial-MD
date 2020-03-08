@@ -5,11 +5,12 @@
     <title>Patients</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}">
-    <link rel="stylesheet" href="{% static 'css/Custom/Navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
     <link rel="stylesheet" href="{% static 'css/Custom/Patient.css' %}">
-
+    <!-- <script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script> -->
   </head>
   <body>
+    <div id="navbar">
     <ul class="navbar">
       <span class="navbar_logo">
         <img src="{% static 'images/login_logo.jpg' %}" alt="logo">
@@ -19,6 +20,7 @@
       <li><a href="#">Diary</a></li>
       <li><a href="#">Till</a></li>
     </ul>
+  </div>
     <div class="main">
 
       <div class="search">
@@ -282,6 +284,21 @@
         </div>
       {% endif %}
     </div>
+
+    <script>
+      window.onscroll = function() {myFunction()};
+
+      var navbar = document.getElementById("navbar");
+      var sticky = navbar.offsetTop;
+
+      function myFunction() {
+        if (window.pageYOffset >= sticky) {
+          navbar.classList.add("sticky")
+        } else {
+          navbar.classList.remove("sticky");
+        }
+      }
+</script>
   </body>
 </html>
 

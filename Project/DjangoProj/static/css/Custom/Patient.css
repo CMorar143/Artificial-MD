@@ -107,9 +107,7 @@ body
 }
 
 .field_value
-{/*
-  border: 1px solid black;
-  border-radius: 5px;*/
+{
   padding: 0.25em;
   max-width: 70%;
   border-left: 4px solid black;
