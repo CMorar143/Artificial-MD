@@ -162,11 +162,25 @@ class patient(TemplateView):
 				# To remove the value from the input box after submitting
 				# form = CreatePatientForm()
 
-			args = {'Createform': Createform, 'Selectform': Selectform, 'exam_input': patient_input}
+			args = {'Createform': Createform, 'Selectform': Selectform}
 			return render(request, self.template_name, args)
 
-		# elif 'create_visit' in request.POST:
+		elif 'create_visit' in request.POST:
+			Visitform = CreateVisitForm(request.POST)
+			Selectform = SelectPatientForm()
+			p_name = request.GET.get('patient')
+			patient = Patient.objects.get(patient_name=p_name)
+				
+			if Visitform.is_valid():
+				
+				# Save data to model
+				visit = Visitform.save(commit=False)
+				visit.doctor = request.user
+				visit.patient = patient
+				visit.save()
 			
+			args = {'patient': patient, 'Visitform': Visitform, 'Selectform': Selectform}
+			return render(request, self.template_name, args)
 
 		# elif 'exam' in request.POST:
 			

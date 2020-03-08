@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Patients</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
     <link rel="stylesheet" href="{% static 'css/Custom/Patient.css' %}">
     <script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
@@ -273,14 +273,15 @@
           {% endif %}
         </div>
         <div class="info">
-          <button class="btn btn-outline-dark" name="create_visit" onclick="popUpForm()">
+          <button class="btn btn-outline-dark" onclick="popUpForm()">
             Create Visit
           </button>
           <input class="btn btn-outline-dark" name="exam" type="submit" value="Start Examination" />
           <div class="form-popup" id="myForm">
-            <form action="/action_page.php" class="form-container">
+            <form method="post" class="form-container">
+              {% csrf_token %}
               {{ Visitform.as_p }}
-              <button type="submit" class="create_visit_btn">Create Visit</button>
+              <button type="submit" name="create_visit" class="create_visit_btn">Create Visit</button>
               <button type="button" class="create_visit_btn cancel" onclick="closeForm()">Close</button>
             </form>
           </div>
