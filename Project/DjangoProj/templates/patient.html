@@ -5,40 +5,45 @@
     <title>Patients</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}">
-    <link rel="stylesheet" href="{% static 'css/Custom/Navbar2.css' %}">
-    <link rel="stylesheet" href="{% static 'css/Custom/Patient_info.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Custom/Navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Custom/Patient.css' %}">
 
   </head>
   <body>
-    <ul>
-      <li><a class="active" href="#">Patient</a></li>
+    <ul class="navbar">
+      <span class="navbar_logo">
+        <img src="{% static 'images/login_logo.jpg' %}" alt="logo">
+      </span>
+      <li><a class="active" href="{% url 'patient' %}">Patient</a></li>
       <li><a href="#">Reminders</a></li>
       <li><a href="#">Diary</a></li>
       <li><a href="#">Till</a></li>
     </ul>
     <div class="main">
-      <h2>Patients</h2>
 
-      <form class="form-inline my-2 my-lg-0">
-        <input 
-          class="form-control mr-sm-2" 
-          type="search" 
-          placeholder="Search" 
-          aria-label="Search"
-          name="search"
-        >
-        {% if patient is not None %}
-          <input  
-            style="display: none;"
-            name="patient"
-            value="{{ patient.patient_name }}" 
+      <div class="search">
+        <form class="form-inline my-2 my-lg-0 search_form">
+          <input 
+            class="search_input mr-sm-2" 
+            type="search" 
+            placeholder="Patient Name" 
+            aria-label="Search"
+            name="search"
           >
-        {% endif %}
-        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
+          {% if patient is not None %}
+            <input  
+              style="display: none;"
+              name="patient"
+              value="{{ patient.patient_name }}" 
+            >
+          {% endif %}
+          <button class="btn search_button" type="submit">Search</button>
       </form>
+    </div>
 
     {% if searched_patients is not None %}
-      <table class="table">
+      <div class="search_table">
+        <table class="table">
           <thead class="thead-inverse">
             <tr class="bg-dark text-white">
               <th>Patient Name</th>
@@ -64,7 +69,8 @@
             {% endfor %}
           </tbody>
         </table>
-      {% endif %}
+      </div>
+    {% endif %}
       <br>
       {% if patient is None %}
         <form method="post">
