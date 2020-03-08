@@ -4,7 +4,7 @@ from urllib.parse import urlencode
 from django.conf import settings
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm
-from boards.models import Examination, Patient, Patient_Ailment, Patient_Allergy, Visit, Medical_history, Investigation, Reminder, User, Ailment, Allergy, Medication
+from boards.models import Examination, Patient, Patient_Ailment, Patient_Allergy, Patient_Medication, Visit, Medical_history, Investigation, Reminder, User, Ailment, Allergy, Medication
 
 # For Machine learning model
 import pandas as pd
@@ -112,10 +112,10 @@ class patient(TemplateView):
 		ailment_ids = Patient_Ailment.objects.filter(patient_id=patient.id).values('ailment_id')
 		ailments = Ailment.objects.filter(id__in=ailment_ids)
 		
-		# medication = Medication.objects.filter()
+		med_ids = Patient_Medication.objects.filter(patient_id=patient.id).values('medication_id')
+		medication = Medication.objects.filter(id__in=med_ids)
 
 		args = {'patient': patient, 'Selectform': Selectform}
-
 		args = self.search_patients(request, args)
 
 		if reminders.exists():
@@ -127,6 +127,9 @@ class patient(TemplateView):
 		if ailments.exists():
 			args['ailments'] = ailments
 
+		if medication.exists():
+			args['medication'] = medication
+
 		return args
 
 	def get(self, request):
@@ -134,17 +137,9 @@ class patient(TemplateView):
 			Createform = CreatePatientForm()
 			Selectform = SelectPatientForm()
 			searched_name = ''
-			args = {'Createform': Createform, 'Selectform': Selectform}
-			
+			args = {'Createform': Createform, 'Selectform': Selectform}			
 			args = self.search_patients(request, args)
 
-			# if 'search' in request.GET:
-			# 	searched_name = request.GET['search']
-			# 	searched_patients = Patient.objects.filter(patient_name__icontains=searched_name)
-			# 	if searched_patients is not None:
-			# 		args['searched_patients'] = searched_patients
-			# 		print(searched_patients)
-			
 		else:
 			args = self.display_info(request)
 

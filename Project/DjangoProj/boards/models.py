@@ -90,7 +90,6 @@ class Patient_Allergy(models.Model):
 	allergy = models.ForeignKey('Allergy', on_delete=models.CASCADE)
 
 
-
 class Medication(models.Model):
 	name = models.CharField(max_length=50)
 	description = models.CharField(max_length=150)
@@ -99,14 +98,19 @@ class Medication(models.Model):
 		return self.name
 
 
-class Ailment_Medication(models.Model):
+class Patient_Medication(models.Model):
+	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
 	medication = models.ForeignKey('Medication', on_delete=models.CASCADE)
-	ailment = models.ForeignKey('Ailment', on_delete=models.CASCADE)
 
 
-class Allergy_Medication(models.Model):
-	medication = models.ForeignKey('Medication', on_delete=models.CASCADE)
-	allergy = models.ForeignKey('Allergy', on_delete=models.CASCADE)
+# class Ailment_Medication(models.Model):
+# 	medication = models.ForeignKey('Medication', on_delete=models.CASCADE)
+# 	ailment = models.ForeignKey('Ailment', on_delete=models.CASCADE)
+
+
+# class Allergy_Medication(models.Model):
+# 	medication = models.ForeignKey('Medication', on_delete=models.CASCADE)
+# 	allergy = models.ForeignKey('Allergy', on_delete=models.CASCADE)
 
 
 class Reminder(models.Model):

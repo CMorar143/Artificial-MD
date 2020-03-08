@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Patient, Patient_Ailment, Patient_Allergy, Family, Visit, Ailment, Ailment_Medication, Reminder, Allergy, Allergy_Medication, Medical_history, Investigation, Medication, Examination
+from .models import Patient, Patient_Ailment, Patient_Allergy, Family, Visit, Ailment, Reminder, Allergy, Medical_history, Investigation, Medication, Patient_Medication, Examination #, Ailment_Medication, Allergy_Medication
 
 admin.site.register(Patient)
 admin.site.register(Patient_Ailment)
@@ -7,13 +7,14 @@ admin.site.register(Patient_Allergy)
 admin.site.register(Family)
 admin.site.register(Visit)
 admin.site.register(Ailment)
-admin.site.register(Ailment_Medication)
+# admin.site.register(Ailment_Medication)
 admin.site.register(Reminder)
 admin.site.register(Allergy)
-admin.site.register(Allergy_Medication)
+# admin.site.register(Allergy_Medication)
 admin.site.register(Medical_history)
 admin.site.register(Investigation)
 admin.site.register(Medication)
+admin.site.register(Patient_Medication)
 admin.site.register(Examination)
 
 # Register your models here.
