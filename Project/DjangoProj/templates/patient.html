@@ -27,6 +27,12 @@
           aria-label="Search"
           name="search"
         >
+        {% if patient is not None %}
+          <input  
+            style="display: none;"
+            name="patient_exists"
+          >
+        {% endif %}
         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
       </form>
 
@@ -220,7 +226,23 @@
               {% else %}
                 this
               {% endif %}
-              Ailments:
+              <div class="field">
+                Ailments:
+                {% for ail in ailments %}
+                  <div class="field_value" >
+                    {{ ail.name }}
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="field">
+                Allergies:
+                {% for all in allergies %}
+                  <div class="field_value" >
+                    {{ all.name }}
+                  </div>
+                {% endfor %}
+              </div>
+              <!-- Ailments:
               <input 
                 class="form-control mr-sm-2" 
                 name="ailments"
@@ -228,8 +250,8 @@
                   {% for ail in ailments %}
                     {{ ail.name }}
                   {% endfor %}
-                " >
-              Allergies:
+                " > -->
+              <!-- Allergies:
               <input 
                 class="form-control mr-sm-2" 
                 name="allergies"
@@ -237,7 +259,7 @@
                   {% for all in allergies %}
                     {{ all.name }}
                   {% endfor %}
-                " >
+                " > -->
           </div>
         </div>
       {% endif %}

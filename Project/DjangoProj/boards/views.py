@@ -124,13 +124,16 @@ class patient(TemplateView):
 			searched_name = ''
 			args = {'Createform': Createform, 'Selectform': Selectform}
 			
+			if 'patient_exists' in request.GET:
+				print("ITS WORRRRRRKING")
+
 			if 'search' in request.GET:
 				searched_name = request.GET['search']
 				searched_patients = Patient.objects.filter(patient_name__icontains=searched_name)
 				if searched_patients is not None:
 					args['searched_patients'] = searched_patients
 					print(searched_patients)
-		
+			
 		else:
 			args = self.display_info(request)
 
