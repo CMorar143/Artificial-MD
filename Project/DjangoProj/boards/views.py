@@ -89,6 +89,16 @@ class patient_info(TemplateView):
 class patient(TemplateView):
 	template_name = 'patient.html'
 
+	def search_patients(self, request, args):
+		if 'search' in request.GET:
+			searched_name = request.GET['search']
+			searched_patients = Patient.objects.filter(patient_name__icontains=searched_name)
+			if searched_patients is not None:
+				args['searched_patients'] = searched_patients
+		
+		return args
+
+
 	def display_info(self, request):
 		Selectform = SelectPatientForm()
 		# Get information for patient page
@@ -105,6 +115,8 @@ class patient(TemplateView):
 		# medication = Medication.objects.filter()
 
 		args = {'patient': patient, 'Selectform': Selectform}
+
+		args = self.search_patients(request, args)
 
 		if reminders.exists():
 			args['reminders'] = reminders
@@ -124,15 +136,14 @@ class patient(TemplateView):
 			searched_name = ''
 			args = {'Createform': Createform, 'Selectform': Selectform}
 			
-			if 'patient_exists' in request.GET:
-				print("ITS WORRRRRRKING")
+			args = self.search_patients(request, args)
 
-			if 'search' in request.GET:
-				searched_name = request.GET['search']
-				searched_patients = Patient.objects.filter(patient_name__icontains=searched_name)
-				if searched_patients is not None:
-					args['searched_patients'] = searched_patients
-					print(searched_patients)
+			# if 'search' in request.GET:
+			# 	searched_name = request.GET['search']
+			# 	searched_patients = Patient.objects.filter(patient_name__icontains=searched_name)
+			# 	if searched_patients is not None:
+			# 		args['searched_patients'] = searched_patients
+			# 		print(searched_patients)
 			
 		else:
 			args = self.display_info(request)

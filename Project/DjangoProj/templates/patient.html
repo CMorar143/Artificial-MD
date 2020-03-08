@@ -30,7 +30,8 @@
         {% if patient is not None %}
           <input  
             style="display: none;"
-            name="patient_exists"
+            name="patient"
+            value="{{ patient.patient_name }}" 
           >
         {% endif %}
         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
@@ -223,8 +224,6 @@
                   {% endfor %}
                 </tbody>
               </table>
-            {% else %}
-              this
             {% endif %}
             <div class="field">
               Ailments:
