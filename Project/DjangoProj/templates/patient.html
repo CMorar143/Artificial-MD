@@ -276,7 +276,9 @@
           <button class="btn btn-outline-dark" onclick="popUpForm()">
             Create Visit
           </button>
-          <input class="btn btn-outline-dark" name="exam" type="submit" value="Start Examination" />
+          <form class="start_exam_form" method="post">
+            <input class="btn btn-outline-dark" name="start_exam" type="submit" value="Start Examination" />
+          </form>
           <div class="form-popup" id="myForm">
             <form method="post" class="form-container">
               {% csrf_token %}

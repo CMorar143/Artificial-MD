@@ -157,8 +157,7 @@ class patient(TemplateView):
 				patient.user = request.user
 				patient.save()
 				patient_input = Createform.cleaned_data
-				return redirect('exam')
-				
+				print(patient)
 				# To remove the value from the input box after submitting
 				# form = CreatePatientForm()
 
@@ -180,10 +179,11 @@ class patient(TemplateView):
 				visit.save()
 			
 			args = {'patient': patient, 'Visitform': Visitform, 'Selectform': Selectform}
+			args = self.display_info(request)
 			return render(request, self.template_name, args)
 
-		# elif 'exam' in request.POST:
-			
+		elif 'start_exam' in request.POST:
+			# If they dont have a visit for today, create one
 
 
 

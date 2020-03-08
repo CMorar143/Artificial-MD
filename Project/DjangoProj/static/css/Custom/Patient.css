@@ -181,6 +181,12 @@ body
   color: white;
 }
 
+/* Start Exam Button */
+.start_exam_form
+{
+  display: inline-block;
+}
+
 .main:after
 {
   content: "";
