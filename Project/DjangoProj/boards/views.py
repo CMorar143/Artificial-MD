@@ -5,6 +5,7 @@ from django.conf import settings
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm, CreateVisitForm
 from boards.models import Examination, Patient, Patient_Ailment, Patient_Allergy, Patient_Medication, Visit, Medical_history, Investigation, Reminder, User, Ailment, Allergy, Medication
+from datetime import date
 
 # For Machine learning model
 import pandas as pd
@@ -183,7 +184,16 @@ class patient(TemplateView):
 			return render(request, self.template_name, args)
 
 		elif 'start_exam' in request.POST:
+			p_name = request.GET.get('patient')
+			patient = Patient.objects.get(patient_name=p_name)
+			visit = Visit.objects.filter(patient=patient).latest('date')
+			
 			# If they dont have a visit for today, create one
+			if visit.date.date() == date.today():
+				
+			else:
+
+
 
 
 
