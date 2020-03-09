@@ -189,10 +189,16 @@ class patient(TemplateView):
 			visit = Visit.objects.filter(patient=patient).latest('date')
 			
 			# If they dont have a visit for today, create one
-			if visit.date.date() == date.today():
+			if visit.date.date() != date.today():
+				v = Visit(reason="Examination", doctor=request.user, patient=patient)
+				v.save()
 				
-			else:
-
+			p_arg = {}
+			p_arg['patient'] = p_name
+			base_url = reverse('exam')
+			query_string = urlencode(p_arg)
+			url = '{}?{}'.format(base_url, query_string)
+			return redirect(url)
 
 
 
