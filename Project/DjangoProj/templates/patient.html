@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
-    <link rel="stylesheet" href="{% static 'css/Custom/Patient.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Custom/Patient_1.css' %}">
     <script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
   </head>
   <body>
@@ -128,9 +128,11 @@
               {{ Createform.home_num }}
             </div>
           </div>
+          <div class="info">
+            <input class="btn btn-primary btn-lg btn-block" name="create_patient" type="submit" value="Create" />
+          </div>
         </div>
         
-        <input class="btn btn-outline-dark" name="create_patient" type="submit" value="Create" />
       </form>
     {% else %}
       <div class="left_section">
@@ -293,12 +295,19 @@
           {% endif %}
         </div>
         <div class="info">
-          <button class="btn btn-outline-dark" onclick="popUpForm()">
+          <h4>Additional Options</h4>
+          
+          <!-- btn btn-primary btn-lg btn-block -->
+          <!-- <button class="btn btn-outline-dark visit_btn" onclick="popUpForm()">
+            Create Visit
+          </button> -->
+          <button class="btn btn-primary btn-lg btn-block" onclick="popUpForm()">
             Create Visit
           </button>
           <form class="start_exam_form" method="post">
             {% csrf_token %}
-            <input class="btn btn-outline-dark" name="start_exam" type="submit" value="Start Examination" />
+            <input class="btn btn-primary btn-lg btn-block" name="start_exam" type="submit" value="Start Examination" />
+            <!-- <input class="btn btn-outline-dark" name="start_exam" type="submit" value="Start Examination" /> -->
           </form>
           <div class="form-popup" id="myForm">
             <form method="post" class="form-container">
