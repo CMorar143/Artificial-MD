@@ -223,23 +223,39 @@
                 {% endfor %}
               </tbody>
             </table>
+          {% else %}
+            <div class="empty_message alert alert-info">
+              This patient is not on any medication
+            </div>
           {% endif %}
 
           <div class="field">
-            Ailments:
-            {% for ail in ailments %}
-              <div class="field_value" >
-                {{ ail.name }}
+            {% if ailments is not None %}
+              Ailments:
+              {% for ail in ailments %}
+                <div class="field_value" >
+                  {{ ail.name }}
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="empty_message alert alert-info">
+                This patient does not have any ailments
               </div>
-            {% endfor %}
+            {% endif %}
           </div>
           <div class="field">
-            Allergies:
-            {% for all in allergies %}
-              <div class="field_value" >
-                {{ all.name }}
+            {% if allergies is not None %}
+              Allergies:
+              {% for all in allergies %}
+                <div class="field_value" >
+                  {{ all.name }}
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="empty_message alert alert-info">
+                This patient does not have any ailments
               </div>
-            {% endfor %}
+            {% endif %}
           </div>
         </div>
 
@@ -270,6 +286,10 @@
                 {% endfor %}
               </tbody>
             </table>
+          {% else %}
+            <div class="empty_message alert alert-info">
+              No upcoming reminders
+            </div>
           {% endif %}
         </div>
         <div class="info">
