@@ -33,35 +33,19 @@ def Create_DataFrame(Features, Columns, Listofvals):
     return dataF
 
 def process_dir():
-	path = "../../FYP_Data/Health_Survey/"
+	path = "../../FYP_Data/heart-disease-uci/"
 	flist = os.listdir(path)
 
-	# demographic = pd.read_csv(path + 'demographic.csv')
-	diet = pd.read_csv(path + 'diet.csv')
-	examination = pd.read_csv(path + 'examination.csv')
-	labs = pd.read_csv(path + 'labs.csv')
-	questionnaire = pd.read_csv(path + 'questionnaire.csv')
-	glucose = pd.read_csv(path + 'GLU_H.csv')
-
-	df_list = [
-		diet,
-		examination,
-		labs,
-		glucose,
-		questionnaire
-	]
+	df_input_params = pd.read_csv(path + 'new_cleveland.csv')
 
 	Cont_Features = [
-		'BMI',
-		'Sys_BP',
-		'Dias_BP',
-		'Protein',
-		'HDL_Chol',
-		'LDL_Chol',
-		'Total_Chol',
-		'Fast_Glucose',
-		'Triglyceride',
-		'Uric_Acid',
+		'age',
+		'trestbps',
+		'trestbpd',
+		'chol',
+		'cigs',
+		'years',
+		'thalrest'
 	]
 
 	Cont_Columns = [
@@ -78,12 +62,13 @@ def process_dir():
 	]
 
 	Cat_Features = [
-		'Short_Breath',
-		'Chest_Pains',
-		'High_Chol_Hist',
-		'High_BP_Hist',
-		'Reg_Pulse',
-		'Diabetes'
+		'sex',
+		'cp',
+		'fbs',
+		'dm',
+		'famhist',
+		'exang',
+		'target'
 	]
 
 	Cat_Columns = [
@@ -99,22 +84,20 @@ def process_dir():
 	]
 
 	Features = [
-		'Short_Breath',
-		'Chest_Pains',
-		'High_Chol_Hist',
-		'High_BP_Hist',
-		'BMI',
-		'Reg_Pulse',
-		'Sys_BP',
-		'Dias_BP',
-		'Protein',
-		'HDL_Chol',
-		'LDL_Chol',
-		'Total_Chol',
-		'Fast_Glucose',
-		'Triglyceride',
-		'Uric_Acid',
-		'Diabetes'
+		'age',
+		'sex',
+		'cp',
+		'trestbps',
+		'trestbpd',
+		'chol',
+		'cigs',
+		'years',
+		'fbs',
+		'dm',
+		'famhist',
+		'thalrest',
+		'exang',
+		'target'
 	]
 
 	Bool_Features = [
@@ -122,75 +105,8 @@ def process_dir():
 		'Chest_Pains',
 		'High_Chol_Hist',
 		'High_BP_Hist',
-		'Reg_Pulse',
 		'Diabetes'
 	]
-
-	input_params = [
-		'CDQ010',
-		'CDQ001',
-		'BPQ080',
-		'BPQ020',
-		'BMXBMI',
-		'BPXPULS',
-		'BPXSY1',
-		'BPXDI1',
-		'LBXSTP',
-		'LBDHDD',
-		'LBDLDL',
-		'LBXTC',
-		'LBXGLU',
-		'LBXTR',
-		'LBXSUA',
-		'DIQ010'
-	]
-
-	df_combined = pd.DataFrame.copy(diet)
-
-	for f in df_list[1:]:
-		df_combined = pd.merge(df_combined, f, on='SEQN', sort=False)
-	
-	df_combined.set_index('SEQN', inplace=True)
-	df_input_params = df_combined[input_params]
-
-	df_input_params.columns = Features
-
-	for col in Bool_Features:
-		df_input_params[col].replace(to_replace=1.0, value=0, inplace=True)
-		df_input_params[col].replace(to_replace=2.0, value=1, inplace=True)
-		df_input_params[col].replace(to_replace=9.0, value=np.NaN, inplace=True)
-
-	df_input_params['Diabetes'].replace(to_replace=3.0, value=1.0, inplace=True)
-
-	dropna_features = []
-	# for col in range(2, len(Features)):
-	for col in range(2):
-		dropna_features.append(Features[col])
-
-	df_input_params[Cat_Features].hist()
-	plt.show()
-	# print(dropna_features)
-	# df_input_params.dropna(subset=dropna_features, inplace=True)
-	# df_input_params.dropna(thresh=15, inplace=True)
-	
-	# Impute the remaining missing values
-	# imputer = KNNImputer(n_neighbors=3)
-	# df_input_params = impute_dataset(df_input_params, imputer)
-
-	# round the imputed values for dichotomous features
-	# print(df_input_params['High_BP_Hist'].value_counts())
-	# df_input_params['High_BP_Hist'] = df_input_params['High_BP_Hist'].round()
-	# print(df_input_params['High_BP_Hist'].value_counts())
-
-	# print(df_input_params['High_Chol_Hist'].value_counts())
-	# df_input_params['High_Chol_Hist'] = df_input_params['High_Chol_Hist'].round()
-	# print(df_input_params['High_Chol_Hist'].value_counts())
-
-	# print(df_input_params['Reg_Pulse'].value_counts())
-	# df_input_params['Reg_Pulse'] = df_input_params['Reg_Pulse'].round()
-	# print(df_input_params['Reg_Pulse'].value_counts())
-	
-	# df_input_params.to_csv(path + "Diabetes.csv", index=False)
 
 	# Next we instantiate lists to contain each of the columns values
 	# For Categorical features
@@ -288,7 +204,6 @@ def process_dir():
 	Lcard.clear()
 
 	for i in Cont_Features:
-		df_input_params[i].max()
 		# Create a ndarray for this column
 		feature_values = df_input_params[i]
 
@@ -345,8 +260,8 @@ def process_dir():
 	Cont_df = Create_DataFrame(Cont_Features, Cont_Columns, All_Cont_vals)
 
 	# Write the DatFrames to csv files
-	Cont_df.to_csv('Diabetes_CONT.csv', index_label = 'FEATURENAME')
-	Cat_df.to_csv('Diabetes_CAT.csv', index_label = 'FEATURENAME')
+	Cont_df.to_csv('Heart_CONT.csv', index_label = 'FEATURENAME')
+	Cat_df.to_csv('Heart_CAT.csv', index_label = 'FEATURENAME')
 
 
 

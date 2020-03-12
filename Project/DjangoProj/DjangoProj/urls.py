@@ -21,7 +21,7 @@ from django.views.generic.base import TemplateView
 # from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from boards import views
-from boards.views import exam, patient, patient_info, home
+from boards.views import exam, patient, patient_info, home, reminders
 
 urlpatterns = [
 	# url(r'^$', views.login, name='login'),
@@ -32,6 +32,7 @@ urlpatterns = [
     path('', home.as_view(), name='home'),
     path('exam/', exam.as_view(), name='exam'),
     path('patient/', patient.as_view(), name='patient'),
+    path('reminders/', reminders.as_view(), name='reminders'),
     path('patient_info/<int:id>/', patient_info.as_view(), name='patient_info'),
     # path('test/', test.as_view(), name='test'),
     path('results/', views.results.as_view(), name='results')

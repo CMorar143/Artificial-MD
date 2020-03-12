@@ -280,7 +280,11 @@
                      {{ reminder.rem_date }}
                     </td>
                     <td class="align-middle">
-                      {{ reminder.location }}
+                      {% if reminder.location is None %}
+                        In this practice
+                      {% else %}
+                        {{ reminder.location }}
+                      {% endif %}
                     </td>
                     <td class="align-middle">
                       {{ reminder.message }}

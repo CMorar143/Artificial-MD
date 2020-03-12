@@ -202,6 +202,16 @@ class patient(TemplateView):
 
 
 
+class reminders(TemplateView):
+	template_name = 'reminders.html'
+
+	def get_data(self, request):
+
+		args = {}
+
+		return render(request, self.template_name, args)
+
+
 
 class results(TemplateView):
 	template_name = 'results.html'
