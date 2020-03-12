@@ -205,9 +205,11 @@ class patient(TemplateView):
 class reminders(TemplateView):
 	template_name = 'reminders.html'
 
-	def get_data(self, request):
-
+	def get(self, request):
 		args = {}
+		reminders = Reminder.objects.all().order_by('rem_date')
+		args['reminders'] = reminders
+		print(reminders)
 
 		return render(request, self.template_name, args)
 
