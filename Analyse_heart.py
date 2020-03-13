@@ -108,6 +108,9 @@ def process_dir():
 		'Diabetes'
 	]
 
+	df_input_params[Cont_Features].hist()
+	plt.show()
+
 	# Next we instantiate lists to contain each of the columns values
 	# For Categorical features
 	All_Cat_vals = []

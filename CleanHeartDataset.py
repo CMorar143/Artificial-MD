@@ -54,7 +54,7 @@ def write_new_file(final_list, dataset):
 
 # Write the data to a new csv file
 def write_csv_file(df, dataset):
-	df['dm'] = df['dm'].replace(to_replace=-9, value=0)
+	# df['dm'] = df['dm'].replace(to_replace=-9, value=0)
 	df = df.replace(to_replace=-9, value=np.NaN)
 	df.to_csv(path_heart + 'new_' + dataset + '.csv', encoding='utf-8', index=False)
 

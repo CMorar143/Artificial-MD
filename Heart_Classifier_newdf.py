@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 from sklearn import preprocessing, metrics
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from sklearn.impute import KNNImputer
 
 # For building models
 from sklearn.neighbors import KNeighborsClassifier
@@ -21,7 +22,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 def load_dataframe():
 	# Load heart disease dataset into pandas dataframe
 	pathHeart = "../../FYP_Data/heart-disease-uci/"
-	heart = pd.read_csv(pathHeart + 'heart.csv')
+	heart = pd.read_csv(pathHeart + 'new_cleveland.csv')
 
 	return heart
 
@@ -47,8 +48,8 @@ def plot_diagrams(heart):
 
 
 def scale_values(heart):
-	heart = pd.get_dummies(heart, columns = ['cp', 'slope', 'ca', 'thal'])
-	columns_to_scale = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
+	heart = pd.get_dummies(heart, columns = ['cp'])
+	columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
 	# min_max_scaler = preprocessing.MinMaxScaler()
 	# heart[columns_to_scale] = min_max_scaler.fit_transform(heart[columns_to_scale])
 	# return heart, min_max_scaler, columns_to_scale
@@ -56,6 +57,21 @@ def scale_values(heart):
 	standardScaler = StandardScaler()
 	heart[columns_to_scale] = standardScaler.fit_transform(heart[columns_to_scale])
 	return heart, standardScaler, columns_to_scale
+
+
+def impute_dataset(df, imputer):
+	X = df.drop(['target'], axis = 1)
+	Y = df['target']
+	columns = X.columns
+	X = imputer.fit_transform(X)
+	df = pd.DataFrame(X, columns=columns)
+	df2 = pd.DataFrame(Y, columns=['target'])
+	df = df.reset_index(drop=True)
+	df2 = df2.reset_index(drop=True)
+	
+	df = df.join(df2)
+
+	return df
 
 
 def scale_values_NN(X_train, X_test):
@@ -189,7 +205,11 @@ def build_NN():
 def train_heart_models():
 	# Load dataframe
 	heart = load_dataframe()
-	# plot_diagrams(heart)
+	plot_diagrams(heart)
+
+	# Impute the remaining missing values
+	imputer = KNNImputer(n_neighbors=3)
+	heart = impute_dataset(heart, imputer)
 
 	# Use dummy columns for the categorical features
 	heart, scaler, columns_to_scale = scale_values(heart)
@@ -234,3 +254,10 @@ def train_heart_models():
 
 train_heart_models()
 # build_NN()
+
+
+
+
+
+
+
