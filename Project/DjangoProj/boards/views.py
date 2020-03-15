@@ -218,6 +218,8 @@ class results(TemplateView):
 	template_name = 'results.html'
 	
 	def get_data(self, request):
+		has_chest_pain = False
+
 		p_name = request.GET.get('patient')
 		patient = Patient.objects.filter(patient_name=p_name)
 		# print(patient)
@@ -238,6 +240,10 @@ class results(TemplateView):
 			'chest_pain', 'high_chol', 'high_bp',
 			'diabetes'
 			)[0]
+
+		if med_hist_vals['chest_pain'] != 0:
+			has_chest_pain = True
+
 		# print(med_hist_vals)
 
 		# Check if glucose is above 120 for heart dataset
@@ -248,7 +254,9 @@ class results(TemplateView):
 		# Extract heart data
 		heart_vals = []
 		heart_vals.extend(patient_vals)
-		heart_vals.append(med_hist_vals['chest_pain'])
+
+		if has_chest_pain:
+			heart_vals.append(med_hist_vals['chest_pain'])
 		heart_vals.append(exam_vals['blood_systolic'])
 		heart_vals.append(exam_vals['blood_diastolic'])
 		heart_vals.append(exam_vals['chol_overall'])
@@ -265,7 +273,7 @@ class results(TemplateView):
 		# Extract diabetes data
 		diabetes_vals = []
 		diabetes_vals.append(0 if med_hist_vals['breathlessness']==False else 1)
-		diabetes_vals.append(med_hist_vals['chest_pain'])
+		diabetes_vals.append(0 if med_hist_vals['chest_pain']==0 else 1)
 		diabetes_vals.append(0 if med_hist_vals['high_chol']==False else 1)
 		diabetes_vals.append(0 if med_hist_vals['high_bp']==False else 1)
 		
@@ -286,7 +294,7 @@ class results(TemplateView):
 		diabetes_vals.append(exam_vals['triglyceride'])
 		diabetes_vals.append(exam_vals['uric_acid'])
 
-		return heart_vals, diabetes_vals
+		return heart_vals, diabetes_vals, has_chest_pain
 
 
 	def load_heart(self):
@@ -308,8 +316,9 @@ class results(TemplateView):
 		return diabetes
 
 
-	def scale_heart(self, heart):
-		heart = pd.get_dummies(heart, columns = ['cp'])
+	def scale_heart(self, heart, has_chest_pain):
+		if has_chest_pain:
+			heart = pd.get_dummies(heart, columns = ['cp'])
 		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
 		min_max_scaler = preprocessing.MinMaxScaler()
 		heart[columns_to_scale] = min_max_scaler.fit_transform(heart[columns_to_scale])
@@ -357,8 +366,7 @@ class results(TemplateView):
 
 
 	def get(self, request):
-		heart_vals, diabetes_vals = self.get_data(request)
-		print(diabetes_vals)
+		heart_vals, diabetes_vals, has_chest_pain = self.get_data(request)
 
 		# Load dataframes
 		heart = self.load_heart()
@@ -368,7 +376,10 @@ class results(TemplateView):
 		heart_vals.columns = heart.drop(['target'], axis=1).columns
 
 		# Use dummy columns for the categorical features
-		heart, min_max_scaler, columns_to_scale = self.scale_heart(heart)
+		heart, min_max_scaler, columns_to_scale = self.scale_heart(heart, has_chest_pain)
+
+		if has_chest_pain == False:
+			heart = heart.drop(['cp'], axis = 1)
 
 		# Split dataset
 		H = heart['target']
@@ -388,13 +399,13 @@ class results(TemplateView):
 		lsv_classifier = self.linear_support_vector(X_train, H_train)
 		
 		# Scaling the new instance and getting dummies for cp col
-		heart_vals = pd.get_dummies(heart_vals, columns = ['cp'])
+		if has_chest_pain:
+			heart_vals = pd.get_dummies(heart_vals, columns = ['cp'])
 		heart_vals[columns_to_scale] = min_max_scaler.transform(heart_vals[columns_to_scale])
 		heart_vals = heart_vals.reindex(columns=X.columns, fill_value=0)
 
 		# Making prediction
 		heart_pred = knn_classifier.predict(heart_vals)
-
 
 		# Diabetes
 		# Load dataframes

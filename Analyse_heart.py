@@ -65,7 +65,7 @@ def process_dir():
 		'sex',
 		'cp',
 		'fbs',
-		'dm',
+		# 'dm',
 		'famhist',
 		'exang',
 		'target'
@@ -93,7 +93,7 @@ def process_dir():
 		'cigs',
 		'years',
 		'fbs',
-		'dm',
+		# 'dm',
 		'famhist',
 		'thalrest',
 		'exang',
@@ -108,7 +108,9 @@ def process_dir():
 		'Diabetes'
 	]
 
-	df_input_params[Cont_Features].hist()
+	df_input_params.head()
+	df_input_params = df_input_params.drop(['dm'], axis=1)
+	df_input_params[Cat_Features].hist()
 	plt.show()
 
 	# Next we instantiate lists to contain each of the columns values
@@ -178,7 +180,7 @@ def process_dir():
 		mode_perc = (mode_freq / count) * 100
 		Lmode_perc.append(mode_perc)
 
-		# 2nd Mode
+		# 2nd Mode	
 		mode2 = list(d2)[1]
 		Lmode2.append(mode2)
 
