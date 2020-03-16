@@ -59,6 +59,7 @@ class exam(TemplateView):
 			exam.save()
 			exam_input = form.cleaned_data
 			
+			# Check if their hist is changed, if it has, insert that into the medical_history model
 			if int(exam_input.get('cp')) != med_hist.chest_pain and bool(exam_input.get('breathlessness')) != med_hist.breathlessness:
 				m_hist = Medical_history(patient=patient, chest_pain=int(exam_input.get('cp')), breathlessness=bool(exam_input.get('breathlessness')))
 				m_hist.save()
