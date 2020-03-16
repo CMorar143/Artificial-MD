@@ -50,21 +50,15 @@ class exam(TemplateView):
 			patient = Patient.objects.get(patient_name=p_name)
 			visit = Visit.objects.filter(patient=patient).latest('date')
 
-			med_hist = Medical_history.objects.filter(patient__in=patient).latest('date')
-			med_hist_vals = med_hist.values(
-			'heart_attack', 'angina', 'breathlessness',
-			'chest_pain', 'high_chol', 'high_bp',
-			'diabetes'
-			)[0]
-
+			med_hist = Medical_history.objects.filter(patient=patient).latest('date')
+			print(med_hist.heart_attack)
+			
 			# Save data to  model
 			exam = form.save(commit=False)
 			exam.user = request.user
 			exam.visit = visit
 			exam.save()
 			exam_input = form.cleaned_data
-
-
 
 			# Pass the patient name to the results page
 			p_arg = {}
@@ -168,9 +162,7 @@ class patient(TemplateView):
 				patient.user = request.user
 				patient.save()
 				patient_input = Createform.cleaned_data
-				print(patient)
-				# To remove the value from the input box after submitting
-				# form = CreatePatientForm()
+
 				# Pass the patient name to the patient page
 				p_arg = {}
 				p_arg['patient'] = patient.patient_name
@@ -203,13 +195,16 @@ class patient(TemplateView):
 		elif 'start_exam' in request.POST:
 			p_name = request.GET.get('patient')
 			patient = Patient.objects.get(patient_name=p_name)
-			visit = Visit.objects.filter(patient=patient).latest('date')
+			visit = Visit.objects.filter(patient=patient)
 			
-			# If they dont have a visit for today, create one
-			if visit.date.date() != date.today():
+			if visit:
+				visit = visit.latest('date')
+				# If they dont have a visit for today, create one
+			
+			if not visit or visit.date.date() != date.today():
 				v = Visit(reason="Examination", doctor=request.user, patient=patient)
 				v.save()
-				
+			
 			p_arg = {}
 			p_arg['patient'] = p_name
 			base_url = reverse('exam')
@@ -245,20 +240,14 @@ class results(TemplateView):
 		# print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 		exams = Examination.objects.filter(visit=visit)
 		# print(exams)
-		med_hist = Medical_history.objects.filter(patient__in=patient).latest('date')
-		# print(med_hist)
+		med_hist_vals = Medical_history.objects.filter(patient__in=patient).latest('date')
+		# print(med_hist['chest_pain'])
 
 		exam_vals = exams.values()[0]
 		# print(exam_vals)
 		patient_vals = patient.values_list('age', 'sex')[0]
-		# print(patient_vals)
-		med_hist_vals = med_hist.values(
-			'heart_attack', 'angina', 'breathlessness',
-			'chest_pain', 'high_chol', 'high_bp',
-			'diabetes'
-			)[0]
 
-		if med_hist_vals['chest_pain'] != 0:
+		if med_hist_vals.chest_pain != 0:
 			has_chest_pain = True
 
 		# print(med_hist_vals)
@@ -273,26 +262,27 @@ class results(TemplateView):
 		heart_vals.extend(patient_vals)
 
 		if has_chest_pain:
-			heart_vals.append(med_hist_vals['chest_pain'])
+			print("entered has_chest_pain")
+			heart_vals.append(med_hist_vals.chest_pain)
 		heart_vals.append(exam_vals['blood_systolic'])
 		heart_vals.append(exam_vals['blood_diastolic'])
 		heart_vals.append(exam_vals['chol_overall'])
 		heart_vals.append(exam_vals['smoke_per_day'])
 		heart_vals.append(exam_vals['smoker_years'])
 		heart_vals.append(fbs)
-		heart_vals.append(0 if med_hist_vals['diabetes']==False else 1)
-		heart_vals.append(0 if med_hist_vals['heart_attack']==False else 1)
+		heart_vals.append(0 if med_hist_vals.diabetes==False else 1)
+		heart_vals.append(0 if med_hist_vals.heart_attack==False else 1)
 		heart_vals.append(exam_vals['heart_rate'])
-		heart_vals.append(0 if med_hist_vals['angina']==False else 1)
+		heart_vals.append(0 if med_hist_vals.angina==False else 1)
 		print(heart_vals)
 
 
 		# Extract diabetes data
 		diabetes_vals = []
-		diabetes_vals.append(0 if med_hist_vals['breathlessness']==False else 1)
-		diabetes_vals.append(0 if med_hist_vals['chest_pain']==0 else 1)
-		diabetes_vals.append(0 if med_hist_vals['high_chol']==False else 1)
-		diabetes_vals.append(0 if med_hist_vals['high_bp']==False else 1)
+		diabetes_vals.append(0 if med_hist_vals.breathlessness==False else 1)
+		diabetes_vals.append(0 if med_hist_vals.chest_pain==0 else 1)
+		diabetes_vals.append(0 if med_hist_vals.high_chol==False else 1)
+		diabetes_vals.append(0 if med_hist_vals.high_bp==False else 1)
 		
 		# Calculate BMI
 		height = exam_vals['height']
@@ -390,7 +380,11 @@ class results(TemplateView):
 
 		# Put new data into dataframe
 		heart_vals = pd.DataFrame(heart_vals).transpose()
-		heart_vals.columns = heart.drop(['target'], axis=1).columns
+
+		if has_chest_pain == False:
+			heart_vals.columns = heart.drop(['target', 'cp'], axis=1).columns
+		else:
+			heart_vals.columns = heart.drop(['target'], axis=1).columns
 
 		# Use dummy columns for the categorical features
 		heart, min_max_scaler, columns_to_scale = self.scale_heart(heart, has_chest_pain)

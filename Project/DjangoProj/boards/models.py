@@ -130,7 +130,7 @@ class Reminder(models.Model):
 class Medical_history(models.Model):
 	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
 	exam = models.ForeignKey('Examination', on_delete=models.CASCADE, null=True)
-	date = models.DateTimeField(auto_now_add=True) 
+	date = models.DateTimeField(auto_now_add=True)
 	heart_attack = models.BooleanField()
 	angina = models.BooleanField()
 	breathlessness = models.BooleanField()
@@ -200,10 +200,10 @@ class Examination(models.Model):
 	def __str__(self):
 		fields = (
 			self.height, self.weight, self.reg_pulse, self.cp,
-			self.protein, self.hdl_chol, self.ldl_chol, 
-			self.triglyceride, self.uric_acid, self.heart_rate, 
+			self.protein, self.hdl_chol, self.ldl_chol,
+			self.triglyceride, self.uric_acid, self.heart_rate,
 			self.smoke_per_day, self.smoker_years,
-			self.blood_systolic, self.blood_diastolic, 
+			self.blood_systolic, self.blood_diastolic,
 			self.chol_overall, self.fasting_glucose
 		)
 		return str(fields)

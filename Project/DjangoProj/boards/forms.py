@@ -86,7 +86,7 @@ class ExamForm(forms.ModelForm):
 	height = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	weight = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	reg_pulse = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
-	chest_pain = forms.ChoiceField(choices=CHEST_PAIN_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+	cp = forms.ChoiceField(choices=CHEST_PAIN_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
 	protein = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	hdl_chol = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	ldl_chol = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
@@ -105,7 +105,7 @@ class ExamForm(forms.ModelForm):
 		model = Examination
 		fields = (
 			'height', 'weight',
-			'reg_pulse', 'chest_pain', 'protein', 'hdl_chol',
+			'reg_pulse', 'cp', 'protein', 'hdl_chol',
 			'ldl_chol', 'triglyceride', 'uric_acid', 'blood_systolic',
 			'blood_diastolic', 'chol_overall','heart_rate',
 			'smoke_per_day', 'smoker_years', 'fasting_glucose', 
