@@ -50,12 +50,21 @@ class exam(TemplateView):
 			patient = Patient.objects.get(patient_name=p_name)
 			visit = Visit.objects.filter(patient=patient).latest('date')
 
+			med_hist = Medical_history.objects.filter(patient__in=patient).latest('date')
+			med_hist_vals = med_hist.values(
+			'heart_attack', 'angina', 'breathlessness',
+			'chest_pain', 'high_chol', 'high_bp',
+			'diabetes'
+			)[0]
+
 			# Save data to  model
 			exam = form.save(commit=False)
 			exam.user = request.user
 			exam.visit = visit
 			exam.save()
 			exam_input = form.cleaned_data
+
+
 
 			# Pass the patient name to the results page
 			p_arg = {}
@@ -87,6 +96,7 @@ class patient_info(TemplateView):
 
 class patient(TemplateView):
 	template_name = 'patient.html'
+	patient_info = 'patient_info.html'
 
 	def search_patients(self, request, args):
 		if 'search' in request.GET:
@@ -161,6 +171,13 @@ class patient(TemplateView):
 				print(patient)
 				# To remove the value from the input box after submitting
 				# form = CreatePatientForm()
+				# Pass the patient name to the patient page
+				p_arg = {}
+				p_arg['patient'] = patient.patient_name
+				base_url = reverse('patient')
+				query_string = urlencode(p_arg)
+				url = '{}?{}'.format(base_url, query_string)
+				return redirect(url)
 
 			args = {'Createform': Createform, 'Selectform': Selectform}
 			return render(request, self.template_name, args)
@@ -228,7 +245,7 @@ class results(TemplateView):
 		# print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 		exams = Examination.objects.filter(visit=visit)
 		# print(exams)
-		med_hist = Medical_history.objects.filter(patient__in=patient)
+		med_hist = Medical_history.objects.filter(patient__in=patient).latest('date')
 		# print(med_hist)
 
 		exam_vals = exams.values()[0]

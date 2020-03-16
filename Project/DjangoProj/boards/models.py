@@ -128,8 +128,9 @@ class Reminder(models.Model):
 
 
 class Medical_history(models.Model):
-	patient = models.ForeignKey('Patient', primary_key=True, on_delete=models.CASCADE)
-	# exam = models.ForeignKey('Examination', on_delete=models.CASCADE)
+	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
+	exam = models.ForeignKey('Examination', on_delete=models.CASCADE, null=True)
+	date = models.DateTimeField(auto_now_add=True) 
 	heart_attack = models.BooleanField()
 	angina = models.BooleanField()
 	breathlessness = models.BooleanField()
@@ -145,7 +146,7 @@ class Medical_history(models.Model):
 
 	def __str__(self):
 		fields = (
-			self.heart_attack, self.angina, self.breathlessness,
+			self.date, self.heart_attack, self.angina, self.breathlessness,
 			self.chest_pain, self.high_chol, self.high_bp,
 			self.hoarseness, self.wheezing, self.sweating,
 			self.diabetes, self.stressed, self.childhood_illness
@@ -177,6 +178,7 @@ class Examination(models.Model):
 	height = models.FloatField()
 	weight = models.FloatField()
 	reg_pulse = models.BooleanField()
+	cp = models.PositiveIntegerField()
 	protein = models.FloatField()
 	hdl_chol = models.FloatField(null=True)
 	ldl_chol = models.FloatField(null=True)
@@ -197,7 +199,7 @@ class Examination(models.Model):
 
 	def __str__(self):
 		fields = (
-			self.height, self.weight, self.reg_pulse,
+			self.height, self.weight, self.reg_pulse, self.cp,
 			self.protein, self.hdl_chol, self.ldl_chol, 
 			self.triglyceride, self.uric_acid, self.heart_rate, 
 			self.smoke_per_day, self.smoker_years,
