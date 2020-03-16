@@ -51,7 +51,6 @@ class exam(TemplateView):
 			visit = Visit.objects.filter(patient=patient).latest('date')
 
 			med_hist = Medical_history.objects.filter(patient=patient).latest('date')
-			print(med_hist.heart_attack)
 			
 			# Save data to  model
 			exam = form.save(commit=False)
@@ -59,6 +58,16 @@ class exam(TemplateView):
 			exam.visit = visit
 			exam.save()
 			exam_input = form.cleaned_data
+			
+			if int(exam_input.get('cp')) != med_hist.chest_pain and bool(exam_input.get('breathlessness')) != med_hist.breathlessness:
+				m_hist = Medical_history(patient=patient, chest_pain=int(exam_input.get('cp')), breathlessness=bool(exam_input.get('breathlessness')))
+				m_hist.save()
+			elif int(exam_input.get('cp')) != med_hist.chest_pain:
+				m_hist = Medical_history(patient=patient, chest_pain=int(exam_input.get('cp')))
+				m_hist.save()
+			elif bool(exam_input.get('breathlessness')) != med_hist.breathlessness:
+				m_hist = Medical_history(patient=patient, breathlessness=bool(exam_input.get('breathlessness')))
+				m_hist.save()
 
 			# Pass the patient name to the results page
 			p_arg = {}
@@ -68,7 +77,7 @@ class exam(TemplateView):
 			url = '{}?{}'.format(base_url, query_string)
 			return redirect(url)
 
-		args = {'form': form, 'exam_input': exam_input}
+		args = {'form': form}
 		return render(request, self.template_name, args)
 
 

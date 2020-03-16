@@ -87,6 +87,7 @@ class ExamForm(forms.ModelForm):
 	weight = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	reg_pulse = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
 	cp = forms.ChoiceField(choices=CHEST_PAIN_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+	breathlessness = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
 	protein = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	hdl_chol = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
 	ldl_chol = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'form-control'}))

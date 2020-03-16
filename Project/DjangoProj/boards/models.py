@@ -131,17 +131,17 @@ class Medical_history(models.Model):
 	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
 	exam = models.ForeignKey('Examination', on_delete=models.CASCADE, null=True)
 	date = models.DateTimeField(auto_now_add=True)
-	heart_attack = models.BooleanField()
-	angina = models.BooleanField()
-	breathlessness = models.BooleanField()
-	chest_pain = models.PositiveIntegerField()
-	high_chol = models.BooleanField()
-	high_bp = models.BooleanField()
-	hoarseness = models.BooleanField()
-	wheezing = models.BooleanField()
-	sweating = models.BooleanField()
-	diabetes = models.BooleanField()
-	stressed = models.BooleanField()
+	heart_attack = models.BooleanField(default=False)
+	angina = models.BooleanField(default=False)
+	breathlessness = models.BooleanField(default=False)
+	chest_pain = models.PositiveIntegerField(default=0)
+	high_chol = models.BooleanField(default=False)
+	high_bp = models.BooleanField(default=False)
+	hoarseness = models.BooleanField(default=False)
+	wheezing = models.BooleanField(default=False)
+	sweating = models.BooleanField(default=False)
+	diabetes = models.BooleanField(default=False)
+	stressed = models.BooleanField(default=False)
 	childhood_illness = models.CharField(max_length=20, null=True)
 
 	def __str__(self):
@@ -178,7 +178,7 @@ class Examination(models.Model):
 	height = models.FloatField()
 	weight = models.FloatField()
 	reg_pulse = models.BooleanField()
-	cp = models.PositiveIntegerField()
+	# cp = models.PositiveIntegerField()
 	protein = models.FloatField()
 	hdl_chol = models.FloatField(null=True)
 	ldl_chol = models.FloatField(null=True)
@@ -199,7 +199,7 @@ class Examination(models.Model):
 
 	def __str__(self):
 		fields = (
-			self.height, self.weight, self.reg_pulse, self.cp,
+			self.height, self.weight, self.reg_pulse, #self.cp,
 			self.protein, self.hdl_chol, self.ldl_chol,
 			self.triglyceride, self.uric_acid, self.heart_rate,
 			self.smoke_per_day, self.smoker_years,
