@@ -6,6 +6,7 @@ from matplotlib import pyplot as plt
 from sklearn import preprocessing, metrics
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from imblearn.over_sampling import SMOTE
 from sklearn.impute import KNNImputer
 
 # For building models
@@ -23,7 +24,8 @@ def load_dataframe():
 	# Load heart disease dataset into pandas dataframe
 	pathHeart = "../../FYP_Data/heart-disease-uci/"
 	heart = pd.read_csv(pathHeart + 'new_cleveland.csv')
-
+	heart = heart.drop(['dm'], axis=1)
+	print(heart.head())
 	return heart
 
 
@@ -205,7 +207,6 @@ def build_NN():
 def train_heart_models():
 	# Load dataframe
 	heart = load_dataframe()
-	plot_diagrams(heart)
 
 	# Impute the remaining missing values
 	imputer = KNNImputer(n_neighbors=3)
@@ -217,7 +218,16 @@ def train_heart_models():
 	# Split dataset
 	H = heart['target']
 	X = heart.drop(['target'], axis = 1)
+
+	# With oversampling
+	# sm = SMOTE(random_state=52)
+	# x_sm, h_sm = sm.fit_sample(X, H)
+	# X_train, X_test, H_train, H_test = split_dataset(x_sm, h_sm)
+	
+	# Without Oversampling
 	X_train, X_test, H_train, H_test = split_dataset(X, H)
+
+	plot_diagrams(heart)
 
 	# KNN
 	knn_acc, knn_val = KNN(X_train, H_train, X_test, H_test)
