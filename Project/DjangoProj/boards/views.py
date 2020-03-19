@@ -197,30 +197,38 @@ class patient(TemplateView):
 				visit.doctor = request.user
 				visit.patient = patient
 				visit.save()
+
+				if visit.reason in 'Examination':
+					p_arg = {}
+					p_arg['patient'] = p_name
+					base_url = reverse('exam')
+					query_string = urlencode(p_arg)
+					url = '{}?{}'.format(base_url, query_string)
+					return redirect(url)
 			
 			args = {'patient': patient, 'Visitform': Visitform, 'Selectform': Selectform}
 			args = self.display_info(request)
 			return render(request, self.template_name, args)
 
-		elif 'start_exam' in request.POST:
-			p_name = request.GET.get('patient')
-			patient = Patient.objects.get(patient_name=p_name)
-			visit = Visit.objects.filter(patient=patient)
+		# elif 'start_exam' in request.POST:
+		# 	p_name = request.GET.get('patient')
+		# 	patient = Patient.objects.get(patient_name=p_name)
+		# 	visit = Visit.objects.filter(patient=patient)
 			
-			if visit:
-				visit = visit.latest('date')
-				# If they dont have a visit for today, create one
+		# 	if visit:
+		# 		visit = visit.latest('date')
+		# 		# If they dont have a visit for today, create one
 			
-			if not visit or visit.date.date() != date.today():
-				v = Visit(reason="Examination", doctor=request.user, patient=patient)
-				v.save()
+		# 	if not visit or visit.date.date() != date.today():
+		# 		v = Visit(reason="Examination", doctor=request.user, patient=patient)
+		# 		v.save()
 			
-			p_arg = {}
-			p_arg['patient'] = p_name
-			base_url = reverse('exam')
-			query_string = urlencode(p_arg)
-			url = '{}?{}'.format(base_url, query_string)
-			return redirect(url)
+		# 	p_arg = {}
+		# 	p_arg['patient'] = p_name
+		# 	base_url = reverse('exam')
+		# 	query_string = urlencode(p_arg)
+		# 	url = '{}?{}'.format(base_url, query_string)
+		# 	return redirect(url)
 
 
 
