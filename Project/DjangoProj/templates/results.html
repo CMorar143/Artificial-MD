@@ -1,13 +1,28 @@
 {% load static %}<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+     <meta charset="utf-8" >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Results</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Results.css' %}"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
+    <script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
   </head>
 	<body>
-    <div class="container">
+		<ul class="navbar">
+			<span class="navbar_logo">
+				<img src="{% static 'images/login_logo.jpg' %}" alt="logo">
+			</span>
+			<li><a href="{% url 'patient' %}">Patient</a></li>
+			<li><a href="{% url 'reminders' %}">Reminders</a></li>
+			<li><a href="#">Diary</a></li>
+			<li><a href="#">Till</a></li>
+		</ul>
+		<div class="main">
+			<div class="section">
+				{% if reminders is not None %}
+					<div class="info">
+						    <div class="container">
       <ol class="breadcrumb my-4">
         <li class="breadcrumb-item active">The Results of the Exam are as Follows</li>
       </ol>
@@ -66,6 +81,10 @@
 			</form>
 		</div>	
 	</div>
+					</div>
+				{% endif %}
+			</div>
+		</div>
 	<script>
 		
 	</script>
