@@ -14,10 +14,10 @@ class Patient(models.Model):
 	address_line3 = models.CharField(max_length=40, null=True)
 	occupation = models.CharField(max_length=30)
 	marital_status = models.PositiveIntegerField()
-	acc_balance = models.PositiveIntegerField(default=0)
-	tel_num = models.PositiveIntegerField(null=True)
-	home_num = models.PositiveIntegerField(null=True)
-	next_app = models.DateTimeField(null=True)
+	acc_balance = models.FloatField(default=0)
+	tel_num = models.CharField(max_length=15, null=True)
+	home_num = models.CharField(max_length=15, null=True)
+	# next_app = models.DateTimeField(null=True)
 	recall_period = models.PositiveIntegerField(null=True)
 
 	def __str__(self):
@@ -75,7 +75,6 @@ class Ailment(models.Model):
 class Patient_Ailment(models.Model):
 	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
 	ailment = models.ForeignKey('Ailment', on_delete=models.CASCADE)
-
 
 
 class Allergy(models.Model):

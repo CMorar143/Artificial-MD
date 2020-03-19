@@ -350,10 +350,6 @@ class results(TemplateView):
 		return diabetes, min_max_scaler, columns_to_scale
 
 
-	def split_dataset(self, X, D):
-		return train_test_split(X, D, test_size = 0.01, random_state = 0)
-
-
 	def KNN(self, X_train, H_train):
 		knn_classifier = KNeighborsClassifier(n_neighbors = 9)
 		knn_classifier.fit(X_train, H_train)
@@ -409,8 +405,7 @@ class results(TemplateView):
 		# With oversampling
 		sm = SMOTE(random_state=52)
 		X_train, H_train = sm.fit_sample(X, H)
-		# X_train, X_test, H_train, H_test = split_dataset(x_sm, h_sm)
-
+		
 		# KNN
 		knn_classifier = self.KNN(X_train, H_train)
 
@@ -446,13 +441,11 @@ class results(TemplateView):
 		# Split dataset
 		D = diabetes['Diabetes']
 		X = diabetes.drop(['Diabetes'], axis = 1)
-		# X_train, X_test, D_train, D_test = self.split_dataset(X, D)
-
+		
 		# With oversampling
 		sm = SMOTE(random_state=52)
 		X_train, D_train = sm.fit_sample(X, D)
-		# X_train, X_test, D_train, D_test = self.split_dataset(x_sm, d_sm)
-
+		
 		# KNN
 		knn_classifier = self.KNN(X_train, D_train)
 

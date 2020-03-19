@@ -52,11 +52,23 @@
       <div class="container">
 	      	<form method="post">
 				{% csrf_token %}
-				{{ further_action_form.as_p }}
+				<!-- {{ further_action_form.as_p }} -->
+				<div class="form-control">
+					<label>Further Action:<label>
+					{{ further_action_form.further_actions }}
+				</div>
+				{% if further_action_form.further_actions == Referral %}
+					if this
+				{% else %}
+					else this
+				{% endif %}
 				<button class="btn btn-outline-dark" type="submit">Proceed</button>
 			</form>
 		</div>	
 	</div>
+	<script>
+		
+	</script>
 	</body>
 </html>
 

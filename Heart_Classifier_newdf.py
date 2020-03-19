@@ -31,12 +31,12 @@ def load_dataframe():
 
 def plot_diagrams(heart):
 	# Show correlation between features
-	plt.matshow(heart.corr())
-	plt.xticks(np.arange(heart.shape[1]), heart.columns)
-	plt.yticks(np.arange(heart.shape[1]), heart.columns)
-	plt.colorbar()
-	plt.show()
-	plt.close()
+	# plt.matshow(heart.corr())
+	# plt.xticks(np.arange(heart.shape[1]), heart.columns)
+	# plt.yticks(np.arange(heart.shape[1]), heart.columns)
+	# plt.colorbar()
+	# plt.show()
+	# plt.close()
 
 	# Show a histogram of all the columns
 	heart.hist()
@@ -179,13 +179,17 @@ def display_accuracies(knn_acc, knn_val, dt_acc, nb_acc, lsv_acc):
 	plt.bar(index, accuracies)
 	# plt.xlabel('ML Model', fontsize=9)
 	# plt.ylabel('Accuracy', fontsize=9)
-	plt.xticks(index, labels, fontsize=9)#, rotation=30)
+	plt.xticks(index, labels, fontsize=9)
 	plt.title('Accuracy for the different types of ML models')
 	plt.show()
 
 
 def build_NN():
 	heart = load_dataframe()
+	
+	# Impute the remaining missing values
+	imputer = KNNImputer(n_neighbors=3)
+	heart = impute_dataset(heart, imputer)
 
 	# Split dataset
 	y = heart['target']
@@ -201,6 +205,13 @@ def build_NN():
 	# Evaluate NN
 	print(confusion_matrix(y_test,predictions))
 	print(classification_report(y_test,predictions))
+	print(mlp.n_iter_)
+	print(mlp.classes_)
+	print(mlp.loss)
+	print(mlp.n_layers_)
+	print(mlp.n_outputs_)
+	print(mlp.out_activation_)
+
 	
 
 
@@ -213,21 +224,21 @@ def train_heart_models():
 	heart = impute_dataset(heart, imputer)
 
 	# Use dummy columns for the categorical features
-	heart, scaler, columns_to_scale = scale_values(heart)
+	# heart, scaler, columns_to_scale = scale_values(heart)
 
 	# Split dataset
 	H = heart['target']
 	X = heart.drop(['target'], axis = 1)
-
+	
 	# With oversampling
-	# sm = SMOTE(random_state=52)
-	# x_sm, h_sm = sm.fit_sample(X, H)
-	# X_train, X_test, H_train, H_test = split_dataset(x_sm, h_sm)
+	sm = SMOTE(random_state=52)
+	x_sm, h_sm = sm.fit_sample(X, H)
+	X_train, X_test, H_train, H_test = split_dataset(x_sm, h_sm)
 	
 	# Without Oversampling
-	X_train, X_test, H_train, H_test = split_dataset(X, H)
-
-	plot_diagrams(heart)
+	# X_train, X_test, H_train, H_test = split_dataset(X, H)
+	X_train = X_train.round()
+	# plot_diagrams(X_train)
 
 	# KNN
 	knn_acc, knn_val = KNN(X_train, H_train, X_test, H_test)
