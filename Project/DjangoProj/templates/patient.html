@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
-    <link rel="stylesheet" href="{% static 'css/Custom/Patient_1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Custom/Patient_2.css' %}">
     <script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
   </head>
   <body>
@@ -309,11 +309,11 @@
           <button class="btn btn-primary btn-lg btn-block" onclick="popUpForm()">
             Create Visit
           </button>
-          <form class="start_exam_form" method="post">
+          <!-- <form class="start_exam_form" method="post">
             {% csrf_token %}
             <input class="btn btn-primary btn-lg btn-block" name="start_exam" type="submit" value="Start Examination" />
-            <!-- <input class="btn btn-outline-dark" name="start_exam" type="submit" value="Start Examination" /> -->
-          </form>
+            <input class="btn btn-outline-dark" name="start_exam" type="submit" value="Start Examination" />
+          </form> -->
           <div class="form-popup" id="myForm">
             <form method="post" class="form-container">
               {% csrf_token %}

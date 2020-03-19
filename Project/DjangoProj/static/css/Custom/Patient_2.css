@@ -146,6 +146,12 @@ body
   transition: 0.5s;
 }
 
+#myForm form
+{
+  margin: 0 auto;
+  margin-top: 1em;
+}
+
 .form-container 
 {
   max-width: 300px;
