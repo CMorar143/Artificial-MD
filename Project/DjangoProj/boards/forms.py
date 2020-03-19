@@ -16,6 +16,13 @@ CHEST_PAIN_CHOICES = (
 	(4, 'Asymptomatic')
 )
 
+VISIT_REASONS = (
+	('Examination', 'Examination'),
+	('Renew prescription', 'Renew prescription'),
+	('Collect prescription', 'Collect prescription')
+	# ('', ''),
+)
+
 FURTHER_ACTIONS = (
 	('None', 'None'),
 	('Referral', 'Referral'),
@@ -47,7 +54,7 @@ class SelectPatientForm(forms.Form):
 
 
 class CreateVisitForm(forms.ModelForm):
-	reason = forms.CharField(label='Reason', widget=forms.TextInput(attrs={'class': 'input_field'}))
+	reason = forms.ChoiceField(choices=VISIT_REASONS, widget=forms.Select(attrs={'class': 'input_field'}))
 
 	class Meta:
 		model = Visit
