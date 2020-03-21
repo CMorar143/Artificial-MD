@@ -1,19 +1,24 @@
-# Start by importing libraries
 import pandas as pd
-from matplotlib import pyplot as plt
-from sklearn import preprocessing, metrics
-from sklearn.metrics import classification_report, confusion_matrix
 import numpy as np
-from imblearn.over_sampling import SMOTE
+from matplotlib import pyplot as plt
+
+# For data preparation
+from sklearn import preprocessing, metrics
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from imblearn.over_sampling import SMOTE
+from sklearn.impute import KNNImputer
 
-# For each model
+# For building models
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
+
+# For evaluation
+from yellowbrick.classifier import ClassificationReport
+from sklearn.metrics import classification_report, confusion_matrix
 
 data_path = "../../FYP_Data/Health_Survey/"
 
@@ -72,15 +77,16 @@ def split_dataset(X, D):
 
 def KNN(X_train, D_train, X_test, D_test):
 	knn_scores = []
-	for k in range(1,30):
+	k_max = 21
+	for k in range(1, k_max):
 		knn_classifier = KNeighborsClassifier(n_neighbors = k)
 		knn_classifier.fit(X_train, D_train)
 		knn_scores.append(knn_classifier.score(X_test, D_test))
 
-	plt.plot([k for k in range(1, 30)], knn_scores, color = 'red')
-	for i in range(1,30):
+	plt.plot([k for k in range(1, k_max)], knn_scores, color = 'red')
+	for i in range(1, k_max):
 		plt.text(i, knn_scores[i-1], (i, round(knn_scores[i-1], 2)))
-	plt.xticks([i for i in range(1, 30)])
+	plt.xticks([i for i in range(1, k_max)])
 	plt.xlabel('Number of Neighbors (K)')
 	plt.ylabel('Scores')
 	plt.title('K Neighbors Classifier scores for different K values')
@@ -110,12 +116,23 @@ def naive_bayes(X_train, D_train, X_test, D_test):
 	test_pred = model.predict(X_test)
 	print(f'Accuracy of NB: {metrics.accuracy_score(D_test, test_pred)}\n')
 
+	visualizer = ClassificationReport(model, classes=['Negative','Positive'])
+	visualizer.fit(X_train, D_train)
+	visualizer.score(X_test, D_test)
+	visualizer.poof()
+
+
 
 def linear_support_vector(X_train, D_train, X_test, D_test):
 	svm_model = LinearSVC(random_state=0, max_iter=10000)
 	svm_model.fit(X_train, D_train)
 	test_pred = svm_model.predict(X_test)
 	print(f'Accuracy of LVM: {metrics.accuracy_score(D_test, test_pred)}\n')
+
+	visualizer = ClassificationReport(svm_model, classes=['Negative','Positive'])
+	visualizer.fit(X_train, D_train)
+	visualizer.score(X_test, D_test)
+	visualizer.poof()
 
 
 def build_NN():
@@ -136,6 +153,7 @@ def build_NN():
 	print(confusion_matrix(y_test,predictions))
 	print(classification_report(y_test,predictions))
 	
+
 def train_diabetes_models():
 	# Load dataframe
 	diabetes = load_dataframe()

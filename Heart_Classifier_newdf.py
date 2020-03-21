@@ -138,7 +138,7 @@ def naive_bayes(X_train, H_train, X_test, H_test):
 	model.fit(X_train, H_train)
 	test_pred = model.predict(X_test)
 	
-	visualizer = ClassificationReport(model, classes=['Won','Loss'])
+	visualizer = ClassificationReport(model, classes=['Negative','Positive'])
 	visualizer.fit(X_train, H_train)
 	visualizer.score(X_test, H_test)
 	visualizer.poof()
@@ -151,7 +151,7 @@ def linear_support_vector(X_train, H_train, X_test, H_test):
 	svm_model.fit(X_train, H_train)
 	test_pred = svm_model.predict(X_test)
 
-	visualizer = ClassificationReport(svm_model, classes=['Won','Loss'])
+	visualizer = ClassificationReport(svm_model, classes=['Negative','Positive'])
 	visualizer.fit(X_train, H_train)
 	visualizer.score(X_test, H_test)
 	visualizer.poof()

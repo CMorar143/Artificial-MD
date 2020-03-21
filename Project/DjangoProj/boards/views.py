@@ -412,19 +412,19 @@ class results(TemplateView):
 
 		# With oversampling
 		sm = SMOTE(random_state=52)
-		X_train, H_train = sm.fit_sample(X, H)
+		X, H = sm.fit_sample(X, H)
 		
 		# KNN
-		knn_classifier = self.KNN(X_train, H_train)
+		knn_classifier = self.KNN(X, H)
 
 		# Decision Tree
-		dt_classifier = self.decision_tree(X_train, H_train)
+		dt_classifier = self.decision_tree(X, H)
 
 		# Naive Bayes
-		nb_classifier = self.naive_bayes(X_train, H_train)
+		nb_classifier = self.naive_bayes(X, H)
 
 		# Linear Support Vector
-		lsv_classifier = self.linear_support_vector(X_train, H_train)
+		lsv_classifier = self.linear_support_vector(X, H)
 		
 		# Scaling the new instance and getting dummies for cp col
 		if has_chest_pain:
@@ -434,6 +434,11 @@ class results(TemplateView):
 
 		# Making prediction
 		heart_pred = knn_classifier.predict(heart_vals)
+		print(knn_classifier.predict(heart_vals))
+		print(dt_classifier.predict(heart_vals))
+		print(nb_classifier.predict(heart_vals))
+		print(lsv_classifier.predict(heart_vals))
+		print("\n\n\n")
 
 		# Diabetes
 		# Load dataframes
@@ -451,26 +456,30 @@ class results(TemplateView):
 		X = diabetes.drop(['Diabetes'], axis = 1)
 		
 		# With oversampling
-		sm = SMOTE(random_state=52)
-		X_train, D_train = sm.fit_sample(X, D)
+		# sm = SMOTE(random_state=52)
+		# X, D = sm.fit_sample(X, D)
 		
 		# KNN
-		knn_classifier = self.KNN(X_train, D_train)
+		knn_classifier = self.KNN(X, D)
 
 		# Decision Tree
-		dt_classifier = self.decision_tree(X_train, D_train)
+		dt_classifier = self.decision_tree(X, D)
 
 		# Naive Bayes
-		nb_classifier = self.naive_bayes(X_train, D_train)
+		nb_classifier = self.naive_bayes(X, D)
 
 		# Linear Support Vector
-		lsv_classifier = self.linear_support_vector(X_train, D_train)
+		lsv_classifier = self.linear_support_vector(X, D)
 		
 		# Scaling the new instance
 		diabetes_vals[columns_to_scale] = min_max_scaler.transform(diabetes_vals[columns_to_scale])
 
 		# Making prediction
 		diabetes_pred = knn_classifier.predict(diabetes_vals)
+		print(knn_classifier.predict(diabetes_vals))
+		print(dt_classifier.predict(diabetes_vals))
+		print(nb_classifier.predict(diabetes_vals))
+		print(lsv_classifier.predict(diabetes_vals))
 
 		# Allow physician to choose further action
 		further_action_form = FurtherActionsForm()
