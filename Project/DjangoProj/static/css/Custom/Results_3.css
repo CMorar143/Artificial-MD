@@ -32,11 +32,21 @@ body
   padding: 0 2em 0 2em;
 }
 
+.referral_field
+{
+  display: none;
+}
+
 .proceed_form form
 {
   margin: 0 auto;
   padding: 2em 2em 0 2em;
   max-width: 500px;
+}
+
+.field
+{
+  margin-bottom: 0.5em;
 }
 
 .info

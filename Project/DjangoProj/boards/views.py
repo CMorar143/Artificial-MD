@@ -493,14 +493,22 @@ class results(TemplateView):
 		patient = Patient.objects.filter(patient_name=p_name)
 		
 		further_action_form = FurtherActionsForm(request.POST)
-		if further_action_form.is_valid():
+		if further_action_form.is_valid():	
 			# Save data to model
-			visit = Visit.objects.filter(patient__in=patient).latest('date')
 			further_action = further_action_form.save(commit=False)
-			further_action.visit = visit
-			further_action.save()
-			patient_input = further_action_form.cleaned_data
 
+			if further_action.further_actions != 'None':
+				visit = Visit.objects.filter(patient__in=patient).latest('date')
+				further_action.visit = visit
+				
+				if further_action.further_actions != 'Referral':
+					further_action.ref_to = None;
+					further_action.ref_reason = None;
+				else:
+					reminder = Reminder(location=further_action.ref_to, message=further_action.ref_reason, patient=patient)
+					reminder.save()
+				further_action.save()
+				patient_input = further_action_form.cleaned_data
 			# Send notification to the secretary
 			# user = User.objects.get(username='PMorar')
 			# print(user.first_name)
@@ -508,4 +516,10 @@ class results(TemplateView):
 			# notify.send(request.user, recipient=user, actor=request.user,
 			# verb='followed you.', nf_type='followed_by_one_user')
 
-			return redirect('patient')
+			p_arg = {}
+			p_arg['patient'] = p_name
+			base_url = reverse('patient')
+			query_string = urlencode(p_arg)
+			url = '{}?{}'.format(base_url, query_string)
+			return redirect(url)
+

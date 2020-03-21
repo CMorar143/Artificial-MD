@@ -61,11 +61,13 @@ class CreateVisitForm(forms.ModelForm):
 		fields = ('reason',)
 
 class FurtherActionsForm(forms.ModelForm):
-	further_actions = forms.ChoiceField(choices=FURTHER_ACTIONS, widget=forms.Select(attrs={'class': 'form-control'}))
+	further_actions = forms.ChoiceField(choices=FURTHER_ACTIONS, widget=forms.Select(attrs={'class': 'form-control', 'onchange': 'changeOption()'}))
+	ref_to = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'value': None, 'placeholder': 'Refer To..'}))
+	ref_reason = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'value': None, 'placeholder': 'Referral Reason'}))
 
 	class Meta:
 		model = Investigation
-		fields = ('further_actions',)
+		fields = ('further_actions', 'ref_to', 'ref_reason',)
 
 class CreatePatientForm(forms.ModelForm):
 	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'input_field'}))
