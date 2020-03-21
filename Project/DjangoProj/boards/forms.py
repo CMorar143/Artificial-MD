@@ -55,9 +55,8 @@ class SelectPatientForm(forms.Form):
 
 class CreateVisitForm(forms.ModelForm):
 	reason = forms.ChoiceField(choices=VISIT_REASONS, widget=forms.Select(attrs={'class': 'input_field'}))
-	date = forms.DateTimeField(widget=forms.widgets.DateTimeInput(attrs={'value': '2018-06-12T19:30', 'type': 'datetime-local', 'class': 'input_field'}))
-	# initial=datetime.datetime.today().strftime("%d/%m/%Y %H:%M"), 
-	# datetime.datetime.today().strftime("%d-%m-%YT%H:%M"), 
+	date = forms.CharField(widget=forms.widgets.DateTimeInput(attrs={'value': datetime.datetime.today().strftime("%Y-%m-%dT%H:%M"), 'type': 'datetime-local', 'class': 'input_field'}))
+
 	class Meta:
 		model = Visit
 		fields = ('reason', 'date',)
