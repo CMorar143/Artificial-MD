@@ -97,7 +97,6 @@ class patient_info(TemplateView):
 		return redirect(url)
 
 
-
 class patient(TemplateView):
 	template_name = 'patient.html'
 	patient_info = 'patient_info.html'
@@ -511,15 +510,19 @@ class results(TemplateView):
 			further_action = further_action_form.save(commit=False)
 
 			if further_action.further_actions != 'None':
+				# Update the outcome of the visit
 				visit = Visit.objects.filter(patient__in=patient).latest('date')
+				visit.outcome = further_action.further_actions
+				visit.save()
+				
 				further_action.visit = visit
 				
 				if further_action.further_actions != 'Referral':
 					further_action.ref_to = None;
 					further_action.ref_reason = None;
-				else:
-					reminder = Reminder(location=further_action.ref_to, message=further_action.ref_reason, patient=patient)
-					reminder.save()
+				# else:
+					# reminder = Reminder(location=further_action.ref_to, message=further_action.ref_reason, patient=patient)
+					# reminder.save()
 				further_action.save()
 				patient_input = further_action_form.cleaned_data
 			# Send notification to the secretary
