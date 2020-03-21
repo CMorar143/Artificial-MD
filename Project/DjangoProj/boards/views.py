@@ -206,6 +206,8 @@ class patient(TemplateView):
 					url = '{}?{}'.format(base_url, query_string)
 					return redirect(url)
 			
+			else:
+				print("not valid :(")
 			args = {'patient': patient, 'Visitform': Visitform, 'Selectform': Selectform}
 			args = self.display_info(request)
 			return render(request, self.template_name, args)
@@ -241,6 +243,17 @@ class reminders(TemplateView):
 		args['reminders'] = reminders
 
 		return render(request, self.template_name, args)
+
+
+# class dairy(TemplateView):
+# 	template_name = 'diary.html'
+
+# 	def get(self, request):
+# 		args = {}
+# 		visits = Visit.objects.all().order_by('date')
+# 		args['visits'] = visits
+
+# 		return render(request, self.template_name, args)
 
 
 
