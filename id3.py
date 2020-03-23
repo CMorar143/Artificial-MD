@@ -38,8 +38,12 @@ def get_feature_entropy(heart, feature):
 			numerator = len(num_of_each_val[heart['target']==val])
 			denominator = len(num_of_each_val)
 			
-			val_split = numerator/denominator
-			val_entropy = val_entropy + -val_split*np.log2(val_split)
+			# if denominator != 0:
+			val_split = numerator/(denominator+smallest_num)
+			# else:
+			# 	val_split = 0
+
+			val_entropy = val_entropy + -val_split*np.log2(val_split+smallest_num)
 		val_ratio = denominator/len(heart)
 		feature_entropy = feature_entropy + val_ratio*val_entropy
 	
@@ -52,6 +56,8 @@ heart = load_dataframe()
 target_entropy = get_target_entropy(heart)
 
 features = heart.drop(['target'], axis=1)
+
+smallest_num = np.finfo(float).tiny
 
 for f in features:
 	entropy = get_feature_entropy(heart, f)
