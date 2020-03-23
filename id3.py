@@ -23,7 +23,7 @@ def get_df_entropy(heart):
 	for value in values:
 		val_split = heart[target].value_counts()[value]/len(heart[target])
 		print(val_split)
-		entropy = entropy + val_split*np.log2(val_split)
+		entropy = entropy + -val_split*np.log2(val_split)
 		print(entropy)
 	return entropy
 
