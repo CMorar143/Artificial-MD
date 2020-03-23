@@ -31,7 +31,13 @@ def get_feature_entropy(heart, feature):
 
 	for value in feature_vals:
 		for val in values:
-			val_split = heart['target'].value_counts()[val]/len(heart['target'])
+			# Get the number of possible values within the feature
+			num_of_each_val = heart[feature][heart[feature]==value]
+			
+			numerator = len(num_of_each_val[heart['target']==val])
+			denominator = len(num_of_each_val)
+			
+			val_split = numerator/denominator
 			entropy = entropy + -val_split*np.log2(val_split)
 
 	return entropy
@@ -42,9 +48,9 @@ heart = load_dataframe()
 # Get entropy of target feature
 target_entropy = get_target_entropy(heart)
 
-feature = 'sex'
-print(heart[feature].value_counts())
-num = len(heart[feature][heart[feature]==0.0][heart['target'] ==1.0])
-print(num)
-print(heart[feature][heart[feature]==0.0])
+features = heart.drop(['target'], axis=1)
+
+for f in features:
+	entropy = get_feature_entropy(heart, f)
+
 # Next we find the entropy of every other feature
