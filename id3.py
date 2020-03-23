@@ -30,6 +30,7 @@ def get_feature_entropy(heart, feature):
 	feature_vals = heart[feature].unique()
 
 	for value in feature_vals:
+		val_entropy = 0
 		for val in values:
 			# Get the number of possible values within the feature
 			num_of_each_val = heart[feature][heart[feature]==value]
@@ -38,9 +39,11 @@ def get_feature_entropy(heart, feature):
 			denominator = len(num_of_each_val)
 			
 			val_split = numerator/denominator
-			entropy = entropy + -val_split*np.log2(val_split)
-
-	return entropy
+			val_entropy = val_entropy + -val_split*np.log2(val_split)
+		val_ratio = denominator/len(heart)
+		feature_entropy = feature_entropy + val_ratio*val_entropy
+	
+	return feature_entropy
 
 # Load dataset
 heart = load_dataframe()
@@ -52,5 +55,6 @@ features = heart.drop(['target'], axis=1)
 
 for f in features:
 	entropy = get_feature_entropy(heart, f)
+	print(entropy)
 
 # Next we find the entropy of every other feature
