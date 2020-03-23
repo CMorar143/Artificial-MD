@@ -31,12 +31,12 @@ path_heart = "../../FYP_Data/heart-disease-uci/"
 
 # Take in a list of lists and convert it to one single list
 def flatten(lst):
-    for elem in lst:
-        if type(elem) in (tuple, list):
-            for i in flatten(elem):
+    for element in lst:
+        if type(element) in (tuple, list):
+            for i in flatten(element):
                 yield i
         else:
-            yield elem
+            yield element
 
 # Write the data to a new txt file
 def write_new_file(final_list, dataset):
