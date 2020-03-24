@@ -78,15 +78,21 @@ def find_feature(heart, info_gains):
 
 	return feat[vals.index(max(vals))]
 
-def main():
-	# Load dataset
-	heart = load_dataframe()
-
+def main(heart, dt = 0):
 	# Find the feature to split on i.e. the node feature
 	info_gains = {}
 	node_feature = find_feature(heart, info_gains)
 
-	print(node_feature)
-	# Next we find the entropy of every other feature
+	if dt == 0:
+		dt = {}
+		dt[node_feature] = {}
 
-main()
+	all_node_vals = np.unique(heart[node_feature])
+
+	# for val in all_node_vals:
+		
+
+# Load dataset
+heart = load_dataframe()
+
+main(heart)
