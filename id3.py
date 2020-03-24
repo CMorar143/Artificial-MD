@@ -78,22 +78,38 @@ def find_feature(heart, info_gains):
 
 	return feat[vals.index(max(vals))]
 
-def main(heart, dt = 0):
+def main(heart, dec_tree = 0):
 	# Find the feature to split on i.e. the node feature
 	info_gains = {}
 	node_feature = find_feature(heart, info_gains)
 
-	if dt == 0:
-		dt = {}
-		dt[node_feature] = {}
+	# Initialise decision tree
+	if dec_tree == 0:
+		dec_tree = {}
+		dec_tree[node_feature] = {}
 
+	# Get all values for the root node
 	all_node_vals = np.unique(heart[node_feature])
 
-	for val in all_node_vals[1:2]:
-		print(val)
-		print(heart[heart[node_feature] == val].reset_index(drop=True))
+	# Build the tree with recursion
+	for val in all_node_vals:
+		sub_tree = heart[heart[node_feature] == val].reset_index(drop=True)
+
+		values, size = np.unique(sub_tree['target'],return_counts=True)
+		
+		# More of the tree needs to be built
+		if len(size) > 1:
+			dec_tree[node_feature][val] = main(sub_tree) 
+		
+		# This is the leaf node
+		else:
+			dec_tree[node_feature][val] = values[0]
+			
+	return dec_tree
+
 
 # Load dataset
 heart = load_dataframe()
 
-main(heart)
+# Build tree
+decision_tree = main(heart)
