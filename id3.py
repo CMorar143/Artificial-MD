@@ -1,12 +1,12 @@
-import numpy as np
 import pandas as pd
+import numpy as np
 
 def load_dataframe():
 	# Load heart disease dataset into pandas dataframe
 	pathHeart = "../../FYP_Data/heart-disease-uci/"
 	heart = pd.read_csv(pathHeart + 'new_cleveland.csv')
 	heart = heart.drop(['dm'], axis=1)
-	print(heart.head())
+
 	return heart
 
 def get_target_entropy(heart):
@@ -58,6 +58,7 @@ def get_feature_entropy(heart, feature):
 	return feature_entropy
 
 def calc_info_gains(heart, info_gains):
+	# Calculate the info_gain for non-target features only
 	features = heart.drop(['target'], axis=1)
 
 	# Get entropy of target feature
@@ -78,28 +79,29 @@ def find_feature(heart, info_gains):
 
 	return feat[vals.index(max(vals))]
 
-def main(heart, dec_tree = 0):
+def create_tree(heart, dec_tree = 0):
 	# Find the feature to split on i.e. the node feature
 	info_gains = {}
 	node_feature = find_feature(heart, info_gains)
+	node_feat_vals = heart[node_feature]
 
 	# Initialise decision tree
 	if dec_tree == 0:
 		dec_tree = {}
 		dec_tree[node_feature] = {}
 
-	# Get all values for the root node
-	all_node_vals = np.unique(heart[node_feature])
+	# Get all values for the node
+	all_node_vals = np.unique(node_feat_vals)
 
 	# Build the tree with recursion
 	for val in all_node_vals:
-		sub_tree = heart[heart[node_feature] == val].reset_index(drop=True)
+		sub_tree = heart[node_feat_vals == val].reset_index(drop=True)
 
-		values, size = np.unique(sub_tree['target'],return_counts=True)
+		values, size = np.unique(sub_tree['target'], return_counts=True)
 		
 		# More of the tree needs to be built
 		if len(size) > 1:
-			dec_tree[node_feature][val] = main(sub_tree) 
+			dec_tree[node_feature][val] = create_tree(sub_tree) 
 		
 		# This is the leaf node
 		else:
@@ -107,9 +109,44 @@ def main(heart, dec_tree = 0):
 			
 	return dec_tree
 
+def make_prediction(new_data, decision_tree):
+	# Start at the root node
+	root = list(decision_tree.keys())
 
-# Load dataset
-heart = load_dataframe()
+	# Loop through all possible sub nodes
+	for sub_node in root:
+		
+		# Getting the value of the root node for the new data point
+		val = new_data[sub_node]
+		
+		# Getting the subtree at that value
+		decision_tree = decision_tree[sub_node][val]
+		pred = 0
 
-# Build tree
-decision_tree = main(heart)
+		# If the subtree has its own subtree then make the recursive call
+		if type(decision_tree) == type({}):
+			pred = make_prediction(new_data, decision_tree)
+		
+		# The subtree just contains the prediction
+		else:
+			pred = decision_tree
+
+	return pred
+
+
+def main():
+	# Load dataset
+	heart = load_dataframe()
+
+	# Build tree
+	decision_tree = create_tree(heart)
+
+	# Test (should return 1.0)
+	new_data = heart.drop(['target'], axis=1).iloc[6]
+
+	# Make predictions
+	pred = make_prediction(new_data, decision_tree)
+
+	print(pred)
+
+main()
