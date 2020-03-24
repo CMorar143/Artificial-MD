@@ -89,8 +89,9 @@ def main(heart, dt = 0):
 
 	all_node_vals = np.unique(heart[node_feature])
 
-	# for val in all_node_vals:
-		
+	for val in all_node_vals[1:2]:
+		print(val)
+		print(heart[heart[node_feature] == val].reset_index(drop=True))
 
 # Load dataset
 heart = load_dataframe()
