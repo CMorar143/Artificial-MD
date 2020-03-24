@@ -25,7 +25,7 @@ def get_target_entropy(heart):
 def get_feature_entropy(heart, feature):
 	feature_entropy = 0
 
-	# Values are they have heart disease or they don't (1 or 0 respectively)
+	# Get the unique values for the target and the feature
 	values = heart['target'].unique()
 	feature_vals = heart[feature].unique()
 
@@ -35,18 +35,40 @@ def get_feature_entropy(heart, feature):
 			# Get the number of possible values within the feature
 			num_of_each_val = heart[feature][heart[feature]==value]
 			
+			# For getting the ratio
 			numerator = len(num_of_each_val[heart['target']==val])
 			denominator = len(num_of_each_val)
 			
 			# Add the smallest number so its not dividing by 0
 			val_split = numerator/(denominator+smallest_num)
 			
+			""" Get the entropy for both target feature 
+				values with respect to this feature value
+			"""
 			# Add the smallest number so its not log2(0)
 			val_entropy = val_entropy + -val_split*np.log2(val_split+smallest_num)
+
+		# Get the entropy for all values in this feature
 		val_ratio = denominator/len(heart)
 		feature_entropy = feature_entropy + val_ratio*val_entropy
 	
 	return feature_entropy
+
+def find_feature(heart, info_gains):
+	features = heart.drop(['target'], axis=1)
+
+	info_gains = calc_info_gains(features, info_gains)
+
+	vals=list(info_gains.values())
+	feat=list(info_gains.keys())
+
+	return feat[vals.index(max(vals))]
+
+def calc_info_gains(features, info_gains):
+	for f in features:
+		feature_entropy = get_feature_entropy(heart, f)
+		information_gain = target_entropy - feature_entropy
+		info_gains[f] = information_gain
 
 # Load dataset
 heart = load_dataframe()
@@ -54,14 +76,11 @@ heart = load_dataframe()
 # Get entropy of target feature
 target_entropy = get_target_entropy(heart)
 
-features = heart.drop(['target'], axis=1)
-
 # To prevent the feature entropies from being null
 smallest_num = np.finfo(float).tiny
 
-# Print all entropies
-for f in features:
-	entropy = get_feature_entropy(heart, f)
-	print(entropy)
+# Find the feature to split on
+info_gains = {}
+split_feat = find_feature(heart, info_gains)
 
 # Next we find the entropy of every other feature
