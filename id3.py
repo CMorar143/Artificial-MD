@@ -25,6 +25,9 @@ def get_target_entropy(heart):
 def get_feature_entropy(heart, feature):
 	feature_entropy = 0
 
+	# To prevent the feature entropies from being null
+	smallest_num = np.finfo(float).tiny
+
 	# Get the unique values for the target and the feature
 	values = heart['target'].unique()
 	feature_vals = heart[feature].unique()
@@ -54,7 +57,12 @@ def get_feature_entropy(heart, feature):
 	
 	return feature_entropy
 
-def calc_info_gains(features, info_gains):
+def calc_info_gains(heart, info_gains):
+	features = heart.drop(['target'], axis=1)
+
+	# Get entropy of target feature
+	target_entropy = get_target_entropy(heart)
+
 	for f in features:
 		feature_entropy = get_feature_entropy(heart, f)
 		information_gain = target_entropy - feature_entropy
@@ -63,27 +71,22 @@ def calc_info_gains(features, info_gains):
 	return info_gains
 
 def find_feature(heart, info_gains):
-	features = heart.drop(['target'], axis=1)
-
-	info_gains = calc_info_gains(features, info_gains)
+	info_gains = calc_info_gains(heart, info_gains)
 
 	vals = list(info_gains.values())
 	feat = list(info_gains.keys())
 
 	return feat[vals.index(max(vals))]
 
+def main():
+	# Load dataset
+	heart = load_dataframe()
 
-# Load dataset
-heart = load_dataframe()
+	# Find the feature to split on i.e. the node feature
+	info_gains = {}
+	node_feature = find_feature(heart, info_gains)
 
-# Get entropy of target feature
-target_entropy = get_target_entropy(heart)
+	print(node_feature)
+	# Next we find the entropy of every other feature
 
-# To prevent the feature entropies from being null
-smallest_num = np.finfo(float).tiny
-
-# Find the feature to split on i.e. the node feature
-info_gains = {}
-node_feature = find_feature(heart, info_gains)
-
-# Next we find the entropy of every other feature
+main()
