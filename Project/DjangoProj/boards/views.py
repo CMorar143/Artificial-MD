@@ -244,15 +244,16 @@ class reminders(TemplateView):
 		return render(request, self.template_name, args)
 
 
-# class dairy(TemplateView):
-# 	template_name = 'diary.html'
 
-# 	def get(self, request):
-# 		args = {}
-# 		visits = Visit.objects.all().order_by('date')
-# 		args['visits'] = visits
+class diary(TemplateView):
+	template_name = 'diary.html'
 
-# 		return render(request, self.template_name, args)
+	def get(self, request):
+		args = {}
+		visits = Visit.objects.all().order_by('date')
+		args['visits'] = visits
+
+		return render(request, self.template_name, args)
 
 
 

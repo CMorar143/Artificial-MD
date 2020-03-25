@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Reminders</title>
+    <title>Diary</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
@@ -16,15 +16,15 @@
         <img src="{% static 'images/login_logo.jpg' %}" alt="logo">
       </span>
       <li><a href="{% url 'patient' %}">Patient</a></li>
-      <li><a class="active" href="{% url 'reminders' %}">Reminders</a></li>
-      <li><a href="{% url 'diary' %}">Diary</a></li>
+      <li><a href="{% url 'reminders' %}">Reminders</a></li>
+      <li><a class="active" href="{% url 'diary' %}">Diary</a></li>
       <li><a href="#">Till</a></li>
     </ul>
     <div class="main">
       <div class="section">
-        {% if reminders is not None %}
+        {% if visits is not None %}
           <div class="info">
-            <h4>Upcoming Reminders</h4>
+            <h4>Appointments</h4>
             <div class="reminders_table">
               <table class="table">
                 <thead class="thead-inverse">
@@ -36,21 +36,21 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for rem in reminders %}
+                  {% for app in visits %}
                     <tr>
                       <td>
-                       <a href="{% url 'patient_info' id=rem.patient.id %}">
-                        {{ rem.patient.patient_name }}
+                       <a href="{% url 'patient_info' id=app.patient.id %}">
+                        {{ app.patient.patient_name }}
                        </a>
                       </td>
                       <td class="align-middle">
-                        {{ rem.rem_date }}
+                        {{ app.date }}
                       </td>
                       <td class="align-middle">
-                        {{ rem.location }}
+                        {{ app.reason }}
                       </td>
                       <td class="align-middle">
-                        {{ rem.message }}
+                        Dr. {{ app.doctor.first_name }} {{ app.doctor.last_name }}
                       </td>
                     </tr>
                   {% endfor %}
