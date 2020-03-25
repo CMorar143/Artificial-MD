@@ -118,7 +118,7 @@ class patient(TemplateView):
 		# Get information for patient page
 		p_name = request.GET.get('patient')
 		patient = Patient.objects.get(patient_name=p_name)
-		reminders = Reminder.objects.filter(patient_id=patient.id)						
+		reminders = Reminder.objects.filter(patient_id=patient.id).order_by('rem_date')				
 		
 		allergy_ids = Patient_Allergy.objects.filter(patient_id=patient.id).values('allergy_id')
 		allergies = Allergy.objects.filter(id__in=allergy_ids)
