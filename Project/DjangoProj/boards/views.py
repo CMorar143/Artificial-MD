@@ -119,6 +119,10 @@ class patient(TemplateView):
 		# Get information for patient page
 		p_name = request.GET.get('patient')
 		patient = Patient.objects.get(patient_name=p_name)
+		
+		# Check if patients age needs to be updated
+		print(patient.age)
+
 		reminders = Reminder.objects.filter(patient_id=patient.id).order_by('rem_date')				
 		
 		allergy_ids = Patient_Allergy.objects.filter(patient_id=patient.id).values('allergy_id')

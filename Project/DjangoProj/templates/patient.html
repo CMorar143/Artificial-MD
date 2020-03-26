@@ -48,8 +48,8 @@
           <thead class="thead-inverse">
             <tr class="bg-dark text-white">
               <th>Patient Name</th>
-              <th>DOB</th>
-              <th>age</th>
+              <th>Date of Birth</th>
+              <th>Address</th>
             </tr>
           </thead>
           <tbody>
@@ -64,7 +64,7 @@
                   {{ p.DOB }}
                 </td>
                 <td class="align-middle">
-                  {{ p.age }}
+                  {{ p.address_line1 }} {{ p.address_line2 }} {{ p.address_line3 }}
                 </td>
               </tr>
             {% endfor %}
