@@ -49,8 +49,8 @@ class exam(TemplateView):
 			# Get patient and visit object linked to this exam
 			p_name = request.GET.get('patient')
 			patient = Patient.objects.get(patient_name=p_name)
-			visit = Visit.objects.filter(patient=patient).latest('date')
-
+			# visit = Visit.objects.filter(patient=patient).latest('date')
+			visit = Visit.objects.filter(patient=patient).filter(date__lt=datetime.datetime.now()).latest('date')
 			med_hist = Medical_history.objects.filter(patient=patient).latest('date')
 			
 			# Save data to  model
@@ -198,7 +198,7 @@ class patient(TemplateView):
 				visit.patient = patient
 				visit.save()
 
-				if visit.reason in 'Examination':
+				if visit.reason in 'Examination' and str(visit.date) in datetime.datetime.now().strftime("%Y-%m-%d %H:%M:00"):
 					p_arg = {}
 					p_arg['patient'] = p_name
 					base_url = reverse('exam')
@@ -206,8 +206,6 @@ class patient(TemplateView):
 					url = '{}?{}'.format(base_url, query_string)
 					return redirect(url)
 			
-			else:
-				print("not valid :(")
 			args = {'patient': patient, 'Visitform': Visitform, 'Selectform': Selectform}
 			args = self.display_info(request)
 			return render(request, self.template_name, args)
@@ -270,11 +268,12 @@ class results(TemplateView):
 		p_name = request.GET.get('patient')
 		patient = Patient.objects.filter(patient_name=p_name)
 		# print(patient)
-		visit = Visit.objects.filter(patient__in=patient).latest('date')
-		# print(visit)
+		visit = Visit.objects.filter(date__lt=datetime.datetime.now()).latest('date')
+		# visit = Visit.objects.filter(patient__in=patient).latest('date')
+		print(visit)
 		# print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 		exams = Examination.objects.filter(visit=visit)
-		# print(exams)
+		print(exams)
 		med_hist_vals = Medical_history.objects.filter(patient__in=patient).latest('date')
 		# print(med_hist['chest_pain'])
 

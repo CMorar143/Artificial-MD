@@ -52,6 +52,7 @@ class Visit(models.Model):
 	doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
 	date = models.DateTimeField()
+	app_length = models.PositiveIntegerField(default=15)
 	reason = models.CharField(max_length=300, null=True)
 	doctor_notes = models.CharField(max_length=100, null=True)
 	outcome = models.CharField(max_length=50, null=True)
