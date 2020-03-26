@@ -5,7 +5,8 @@ from django.conf import settings
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm, CreateVisitForm
 from boards.models import Examination, Patient, Patient_Ailment, Patient_Allergy, Patient_Medication, Visit, Medical_history, Investigation, Reminder, User, Ailment, Allergy, Medication
-from datetime import date
+# from datetime import date
+import datetime
 
 # For Machine learning model
 import pandas as pd
@@ -250,7 +251,10 @@ class diary(TemplateView):
 
 	def get(self, request):
 		args = {}
-		visits = Visit.objects.all().order_by('date')
+		
+		# Get only visits in the future to display
+		visits = Visit.objects.filter(date__gt=datetime.datetime.now()).order_by('date')
+
 		args['visits'] = visits
 
 		return render(request, self.template_name, args)

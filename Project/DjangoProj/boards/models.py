@@ -42,6 +42,11 @@ class Family(models.Model):
 		return str(fields)
 
 
+class Patient_Family(models.Model):
+	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
+	family = models.ForeignKey('Family', on_delete=models.CASCADE)
+
+
 
 class Visit(models.Model):
 	doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

@@ -1,9 +1,10 @@
 from django.contrib import admin
-from .models import Patient, Patient_Ailment, Patient_Allergy, Family, Visit, Ailment, Reminder, Allergy, Medical_history, Investigation, Medication, Patient_Medication, Examination #, Ailment_Medication, Allergy_Medication
+from .models import Patient, Patient_Ailment, Patient_Allergy, Patient_Family, Family, Visit, Ailment, Reminder, Allergy, Medical_history, Investigation, Medication, Patient_Medication, Examination #, Ailment_Medication, Allergy_Medication
 
 admin.site.register(Patient)
 admin.site.register(Patient_Ailment)
 admin.site.register(Patient_Allergy)
+admin.site.register(Patient_Family)
 admin.site.register(Family)
 admin.site.register(Visit)
 admin.site.register(Ailment)

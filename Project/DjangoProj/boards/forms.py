@@ -61,6 +61,7 @@ class CreateVisitForm(forms.ModelForm):
 		model = Visit
 		fields = ('reason', 'date',)
 
+
 class FurtherActionsForm(forms.ModelForm):
 	further_actions = forms.ChoiceField(choices=FURTHER_ACTIONS, widget=forms.Select(attrs={'class': 'form-control', 'onchange': 'changeOption()'}))
 	ref_to = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'value': None, 'placeholder': 'Refer To..'}))
@@ -70,9 +71,10 @@ class FurtherActionsForm(forms.ModelForm):
 		model = Investigation
 		fields = ('further_actions', 'ref_to', 'ref_reason',)
 
+
 class CreatePatientForm(forms.ModelForm):
 	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'input_field'}))
-	DOB = forms.CharField(initial=datetime.date.today, widget=forms.widgets.DateTimeInput(attrs={'type': 'date', 'class': 'input_field'}))
+	DOB = forms.CharField(initial=datetime.date.today, widget=forms.widgets.DateTimeInput(attrs={'type': 'date', 'class': 'input_field', 'min': datetime.datetime.today().strftime("%Y-%m-%dT%H:%M")}))
 	age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
 	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'input_field', }))
 	address_line1 = forms.CharField(label='Address line 1', widget=forms.TextInput(attrs={'class': 'input_field'}))
