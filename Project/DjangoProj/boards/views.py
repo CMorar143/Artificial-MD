@@ -5,8 +5,7 @@ from django.conf import settings
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm, CreateVisitForm
 from boards.models import Examination, Patient, Patient_Ailment, Patient_Allergy, Patient_Medication, Visit, Medical_history, Investigation, Reminder, User, Ailment, Allergy, Medication
-# from datetime import date
-import datetime
+from datetime import datetime
 
 # For Machine learning model
 import pandas as pd
@@ -50,7 +49,7 @@ class exam(TemplateView):
 			p_name = request.GET.get('patient')
 			patient = Patient.objects.get(patient_name=p_name)
 			# visit = Visit.objects.filter(patient=patient).latest('date')
-			visit = Visit.objects.filter(patient=patient).filter(date__lt=datetime.datetime.now()).latest('date')
+			visit = Visit.objects.filter(patient=patient).filter(date__lt=datetime.now()).latest('date')
 			med_hist = Medical_history.objects.filter(patient=patient).latest('date')
 			
 			# Save data to  model
@@ -202,7 +201,7 @@ class patient(TemplateView):
 				visit.patient = patient
 				visit.save()
 
-				if visit.reason in 'Examination' and str(visit.date) in datetime.datetime.now().strftime("%Y-%m-%d %H:%M:00"):
+				if visit.reason in 'Examination' and str(visit.date) in datetime.now().strftime("%Y-%m-%d %H:%M:00"):
 					p_arg = {}
 					p_arg['patient'] = p_name
 					base_url = reverse('exam')
@@ -255,7 +254,7 @@ class diary(TemplateView):
 		args = {}
 		
 		# Get only visits in the future to display
-		visits = Visit.objects.filter(date__gt=datetime.datetime.now()).order_by('date')
+		visits = Visit.objects.filter(date__gt=datetime.now()).order_by('date')
 
 		args['visits'] = visits
 
@@ -272,7 +271,7 @@ class results(TemplateView):
 		p_name = request.GET.get('patient')
 		patient = Patient.objects.filter(patient_name=p_name)
 		# print(patient)
-		visit = Visit.objects.filter(date__lt=datetime.datetime.now()).latest('date')
+		visit = Visit.objects.filter(date__lt=datetime.now()).latest('date')
 		# visit = Visit.objects.filter(patient__in=patient).latest('date')
 		# print(visit)
 		# print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')

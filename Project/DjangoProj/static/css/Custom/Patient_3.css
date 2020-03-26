@@ -23,6 +23,11 @@ body
   width: 40%;
 }
 
+.left_section .field
+{
+  margin-top: 1.65em;
+}
+
 .right_section
 {
   float: left;

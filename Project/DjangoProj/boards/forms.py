@@ -75,7 +75,7 @@ class FurtherActionsForm(forms.ModelForm):
 class CreatePatientForm(forms.ModelForm):
 	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'input_field'}))
 	DOB = forms.CharField(initial=datetime.date.today, widget=forms.widgets.DateTimeInput(attrs={'type': 'date', 'class': 'input_field', 'min': datetime.datetime.today().strftime("%Y-%m-%dT%H:%M")}))
-	age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
+	# age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
 	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'input_field', }))
 	address_line1 = forms.CharField(label='Address line 1', widget=forms.TextInput(attrs={'class': 'input_field'}))
 	address_line2 = forms.CharField(label='Address line 2', widget=forms.TextInput(attrs={'class': 'input_field'}))
