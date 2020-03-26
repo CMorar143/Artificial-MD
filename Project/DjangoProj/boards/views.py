@@ -274,10 +274,10 @@ class results(TemplateView):
 		# print(patient)
 		visit = Visit.objects.filter(date__lt=datetime.datetime.now()).latest('date')
 		# visit = Visit.objects.filter(patient__in=patient).latest('date')
-		print(visit)
+		# print(visit)
 		# print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 		exams = Examination.objects.filter(visit=visit)
-		print(exams)
+		# print(exams)
 		med_hist_vals = Medical_history.objects.filter(patient__in=patient).latest('date')
 		# print(med_hist['chest_pain'])
 
