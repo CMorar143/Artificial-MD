@@ -1,99 +1,99 @@
 {% load static %}<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" >
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Diary</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}"> -->
-    <link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
-    <link rel="stylesheet" href="{% static 'css/Custom/Reminders2.css' %}">
-    <script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
-  </head>
-  <body>
-    <ul class="navbar">
-      <span class="navbar_logo">
-        <img src="{% static 'images/login_logo.jpg' %}" alt="logo">
-      </span>
-      <li><a href="{% url 'patient' %}">Patient</a></li>
-      <li><a href="{% url 'reminders' %}">Reminders</a></li>
-      <li><a class="active" href="{% url 'diary' %}">Diary</a></li>
-      <li><a href="#">Till</a></li>
-    </ul>
-    <div class="main">
-      <div class="section">
-        {% if visits is not None %}
-          <div class="info">
-            <h4>Appointments</h4>
-            <div class="reminders_table">
-              <table class="table">
-                <thead class="thead-inverse">
-                  <tr class="bg-dark text-white">
-                    <th>Patient Name</th>
-                    <th>Date</th>
-                    <th>Length</th>
-                    <th>Reason</th>
-                    <th>Doctor</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for app in visits %}
-                    <tr>
-                      <td>
-                       <a href="{% url 'patient_info' id=app.patient.id %}">
-                        {{ app.patient.patient_name }}
-                       </a>
-                      </td>
-                      <td class="align-middle">
-                        {{ app.date }}
-                      </td>
-                      <td class="align-middle">
-                        {{ app.app_length }} Minutes
-                      </td>
-                      <td class="align-middle">
-                        {{ app.reason }}
-                      </td>
-                      <td class="align-middle">
-                        Dr. {{ app.doctor.first_name }} {{ app.doctor.last_name }}
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        {% endif %}
-      </div>
-    </div>
-    <script>
-      window.onscroll = function() {myFunction()};
+	<head>
+		<meta charset="utf-8" >
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Diary</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+		<!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}"> -->
+		<link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
+		<link rel="stylesheet" href="{% static 'css/Custom/Reminders2.css' %}">
+		<script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
+	</head>
+	<body>
+	<ul class="navbar">
+	  <span class="navbar_logo">
+		<img src="{% static 'images/login_logo.jpg' %}" alt="logo">
+	  </span>
+	  <li><a href="{% url 'patient' %}">Patient</a></li>
+	  <li><a href="{% url 'reminders' %}">Reminders</a></li>
+	  <li><a class="active" href="{% url 'diary' %}">Diary</a></li>
+	  <li><a href="#">Till</a></li>
+	</ul>
+	<div class="main">
+	  <div class="section">
+		{% if visits is not None %}
+		  <div class="info">
+			<h4>Appointments</h4>
+			<div class="reminders_table">
+			  <table class="table">
+				<thead class="thead-inverse">
+				  <tr class="bg-dark text-white">
+					<th>Patient Name</th>
+					<th>Date</th>
+					<th>Length</th>
+					<th>Reason</th>
+					<th>Doctor</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  {% for app in visits %}
+					<tr>
+					  <td>
+					   <a href="{% url 'patient_info' id=app.patient.id %}">
+						{{ app.patient.patient_name }}
+					   </a>
+					  </td>
+					  <td class="align-middle">
+						{{ app.date }}
+					  </td>
+					  <td class="align-middle">
+						{{ app.app_length }} Minutes
+					  </td>
+					  <td class="align-middle">
+						{{ app.reason }}
+					  </td>
+					  <td class="align-middle">
+						Dr. {{ app.doctor.first_name }} {{ app.doctor.last_name }}
+					  </td>
+					</tr>
+				  {% endfor %}
+				</tbody>
+			  </table>
+			</div>
+		  </div>
+		{% endif %}
+	  </div>
+	</div>
+	<script>
+	  window.onscroll = function() {myFunction()};
 
-      var navbar = document.getElementsByClassName("navbar")[0];
-      var sticky = navbar.offsetTop;
+	  var navbar = document.getElementsByClassName("navbar")[0];
+	  var sticky = navbar.offsetTop;
 
-      function myFunction() {
-        if (window.pageYOffset >= sticky) {
-          navbar.classList.add("sticky")
-        } else {
-          navbar.classList.remove("sticky");
-        }
-      }
+	  function myFunction() {
+		if (window.pageYOffset >= sticky) {
+		  navbar.classList.add("sticky")
+		} else {
+		  navbar.classList.remove("sticky");
+		}
+	  }
 
-      function popUpForm() {
-        document.getElementById("myForm").style.display = "block";
-      }
+	  function popUpForm() {
+		document.getElementById("myForm").style.display = "block";
+	  }
 
-      function closeForm() {
-        document.getElementById("myForm").style.display = "none";
-      }
-    </script>
+	  function closeForm() {
+		document.getElementById("myForm").style.display = "none";
+	  }
+	</script>
   </body>
 </html>
 
 <!-- Original form with dropdown -->
-    <!-- <form method="post" class="form-inline my-2 my-lg-0">
-      {% csrf_token %}
-      {{ Selectform.as_p }}
-      <input class="btn btn-outline-dark my-2 my-sm-1" name="select_patient" type="submit" value="Create visit" />
-      <input class="btn btn-outline-dark" name="create_reminder" type="submit" value="Create Reminder" />
-    </form> -->
+	<!-- <form method="post" class="form-inline my-2 my-lg-0">
+	  {% csrf_token %}
+	  {{ Selectform.as_p }}
+	  <input class="btn btn-outline-dark my-2 my-sm-1" name="select_patient" type="submit" value="Create visit" />
+	  <input class="btn btn-outline-dark" name="create_reminder" type="submit" value="Create Reminder" />
+	</form> -->
