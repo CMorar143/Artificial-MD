@@ -240,9 +240,15 @@ class reminders(TemplateView):
 
 	def get(self, request):
 		args = {}
-		reminders = Reminder.objects.all().order_by('rem_date')
-		args['reminders'] = reminders
+		upcoming_rem = Reminder.objects.filter(rem_date__gt=datetime.now()).order_by('rem_date')
+		
+		# Change to less than OR equal to today
+		overdue_rem = Reminder.objects.filter(rem_date__lt=datetime.now()).order_by('rem_date')
 
+		args['upcoming_rem'] = upcoming_rem
+		args['overdue_rem'] = overdue_rem
+		print(upcoming_rem)
+		print(overdue_rem)
 		return render(request, self.template_name, args)
 
 
@@ -518,12 +524,15 @@ class results(TemplateView):
 
 			if further_action.further_actions != 'None':
 				# Update the outcome of the visit
-				visit = Visit.objects.filter(patient__in=patient).latest('date')
+				visit = Visit.objects.filter(patient=patient).filter(date__lt=datetime.now()).latest('date')
 				visit.outcome = further_action.further_actions
 				visit.save()
 				
 				further_action.visit = visit
 				
+				# if further_action.further_actions in 'Follow up appointment':
+					
+
 				if further_action.further_actions != 'Referral':
 					further_action.ref_to = None;
 					further_action.ref_reason = None;

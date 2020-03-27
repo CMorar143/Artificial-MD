@@ -108,6 +108,11 @@
 				}
 			}
 
+			else if (option[0].value == 'Follow up appointment')
+			{
+				
+			}
+
 			else
 			{
 				for (i = 0; i < extra_fields.length; i++)
@@ -116,6 +121,16 @@
 					option[i+1].value = 'None';
 				}
 			}
+		}
+
+		function popUpForm()
+		{
+			document.getElementById("myForm").style.display = "block";
+		}
+
+		function closeForm()
+		{
+			document.getElementById("myForm").style.display = "none";
 		}
 	</script>
 	</body>

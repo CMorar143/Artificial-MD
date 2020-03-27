@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Reminders</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Form.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
     <link rel="stylesheet" href="{% static 'css/Custom/Reminders2.css' %}">
     <script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
@@ -22,7 +21,7 @@
     </ul>
     <div class="main">
       <div class="section">
-        {% if reminders is not None %}
+        {% if upcoming_rem is not None or overdue_rem is not None %}
           <div class="info">
             <h4>Upcoming Reminders</h4>
             <div class="reminders_table">
@@ -36,7 +35,25 @@
                   </tr>
                 </thead>
                 <tbody>
-                  {% for rem in reminders %}
+                   {% for rem in overdue_rem %}
+                    <tr>
+                      <td>
+                       <a href="{% url 'patient_info' id=rem.patient.id %}">
+                        {{ rem.patient.patient_name }}
+                       </a>
+                      </td>
+                      <td class="align-middle">
+                        {{ rem.rem_date }}
+                      </td>
+                      <td class="align-middle">
+                        {{ rem.location }}
+                      </td>
+                      <td class="align-middle">
+                        {{ rem.message }}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  {% for rem in upcoming_rem %}
                     <tr>
                       <td>
                        <a href="{% url 'patient_info' id=rem.patient.id %}">
