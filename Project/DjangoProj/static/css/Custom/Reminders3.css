@@ -27,6 +27,23 @@ body
   padding: 2em 0 5em 0;
 }
 
+.left_section
+{
+  float: left;
+  width: 50%;
+}
+
+.left_section .field
+{
+  margin-top: 1.65em;
+}
+
+.right_section
+{
+  float: left;
+  width: 50%;
+}
+
 .reminders_table
 {
   /*max-width: 80%;*/
