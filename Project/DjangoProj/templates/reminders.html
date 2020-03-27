@@ -6,7 +6,7 @@
     <title>Reminders</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
-    <link rel="stylesheet" href="{% static 'css/Custom/Reminders2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Custom/Reminders3.css' %}">
     <script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
   </head>
   <body>
@@ -36,7 +36,7 @@
                 </thead>
                 <tbody>
                    {% for rem in overdue_rem %}
-                    <tr>
+                    <tr class="overdue">
                       <td>
                        <a href="{% url 'patient_info' id=rem.patient.id %}">
                         {{ rem.patient.patient_name }}
