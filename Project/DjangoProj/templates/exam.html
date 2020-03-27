@@ -1,22 +1,109 @@
 {% load static %}<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>Exam</title>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Form.css' %}">
-</head>
-<body>
-  <main>
-    <h2>Examination</h2>
+	<head>
+		<meta charset="utf-8">
+		<title>Exam</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+		<!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Form.css' %}"> -->
+		<link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Exam1.css' %}">
+		<link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
+	</head>
+	<body>
+		<ul class="navbar">
+			<span class="navbar_logo">
+				<img src="{% static 'images/login_logo.jpg' %}" alt="logo">
+			</span>
+			<li><a class="active" href="{% url 'patient' %}">Patient</a></li>
+			<li><a href="{% url 'reminders' %}">Reminders</a></li>
+			<li><a href="{% url 'diary' %}">Diary</a></li>
+			<li><a href="#">Till</a></li>
+		</ul>
+		<div class="main">			
+			<form method="post">
+				{% csrf_token %}
+				<div class="left_section">
+					<div class="info">
+						<h4>Patient Info</h4>
+						<div class="field">
+							<label>Height:</label>
+							{{ Examform.height }}
+						</div>
+						<div class="field">
+							<label>Weight:</label>
+							{{ Examform.weight }}
+						</div>
+						<div class="field">
+							<label>Regular Pulse:</label>
+							{{ Examform.reg_pulse }}
+						</div>
+						<div class="field">
+							<label>Chest Pain:</label>
+							{{ Examform.cp }} 
+						</div>
+						<div class="field">
+							<label>Breathlessness:</label>
+							{{ Examform.breathlessness }}
+						</div>
+						<div class="field">
+							<label>Protein:</label>
+							{{ Examform.protein }}
+						</div>
+						<div class="field">
+							<label>HDL Cholesterol:</label>
+							{{ Examform.hdl_chol }}
+						</div>
+						<div class="field">
+							<label>LDL Cholesterol:</label>
+							{{ Examform.ldl_chol }}
+						</div>
+						<div class="field">
+							<label>Triglyceride:</label>
+							{{ Examform.triglyceride }}
+						</div>
+						<div class="field">
+							<label>Uric acid:</label>
+							{{ Examform.uric_acid }}
+						</div>
+					</div>
+				</div>
+				<div class="right_section">
+					<div class="info">
+						<h4>Contact Info</h4>
+						<div class="field">
+							<label>Heart rate:</label>
+							{{ Examform.heart_rate }}
+						</div>
+						<div class="field">
+							<label>Cigarrettes per day:</label>
+							{{ Examform.smoke_per_day }}
+						</div>
+						<div class="field">
+							<label>How many years the patient has been smoking:</label>
+							{{ Examform.smoker_years }} 
+						</div>
+						<div class="field">
+							<label>Systolic blood pressure:</label>
+							{{ Examform.blood_systolic }}
+						</div>
+						<div class="field">
+							<label>Diastolic blood pressure:</label>
+							{{ Examform.blood_diastolic }}
+						</div>
+						<div class="field">
+							<label>Overall cholesterol:</label>
+							{{ Examform.chol_overall }}
+						</div>
+						<div class="field">
+							<label>Glucose:</label>
+							{{ Examform.fasting_glucose }}
+						</div>
+					</div>
+					<div class="info">
+						<input class="btn btn-primary btn-lg btn-block" name="process_exam" type="submit" value="Process Exam" />
+					</div>
+				</div>
+			</form>
 
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">Process Exam</button>&nbsp;&nbsp;<a href="{% url 'logout' %}">Logout</a>
-    </form>
-    <!-- <h2>{{ exam_input }}</h2> -->
-
-  </main>
-</body>
+		</div>
+	</body>
 </html>

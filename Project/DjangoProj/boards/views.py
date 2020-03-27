@@ -38,12 +38,12 @@ class exam(TemplateView):
 	template_name = 'exam.html'
 
 	def get(self, request):
-		form = ExamForm()
-		return render(request, self.template_name, {'form': form})
+		Examform = ExamForm()
+		return render(request, self.template_name, {'Examform': Examform})
 
 	def post(self, request):
-		form = ExamForm(request.POST)
-		if form.is_valid():
+		Examform = ExamForm(request.POST)
+		if Examform.is_valid():
 
 			# Get patient and visit object linked to this exam
 			p_name = request.GET.get('patient')
@@ -53,11 +53,11 @@ class exam(TemplateView):
 			med_hist = Medical_history.objects.filter(patient=patient).latest('date')
 			
 			# Save data to  model
-			exam = form.save(commit=False)
+			exam = Examform.save(commit=False)
 			exam.user = request.user
 			exam.visit = visit
 			exam.save()
-			exam_input = form.cleaned_data
+			exam_input = Examform.cleaned_data
 			
 			# Check if their hist is changed, if it has, insert that into the medical_history model
 			if int(exam_input.get('cp')) != med_hist.chest_pain and bool(exam_input.get('breathlessness')) != med_hist.breathlessness:
@@ -78,7 +78,7 @@ class exam(TemplateView):
 			url = '{}?{}'.format(base_url, query_string)
 			return redirect(url)
 
-		args = {'form': form}
+		args = {'Examform': Examform}
 		return render(request, self.template_name, args)
 
 

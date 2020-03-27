@@ -48,7 +48,7 @@ body
 
 .reminders_table table
 {
-	margin: 2em 2em 0 2em;
+	margin: 0 auto;
 	max-width: 95%;
 	background-color: white;
 }
