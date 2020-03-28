@@ -127,7 +127,6 @@
 							<input class="btn btn-primary btn-lg btn-block" name="create_patient" type="submit" value="Create" />
 						</div>
 					</div>
-
 				</form>
 			{% else %}
 				<div class="left_section">
@@ -294,19 +293,9 @@
 						{% endif %}
 					</div>
 					<div class="info">
-						<h4>Additional Options</h4>
-						<!-- btn btn-primary btn-lg btn-block -->
-						<!-- <button class="btn btn-outline-dark visit_btn" onclick="popUpForm()">
-						Create Visit
-						</button> -->
 						<button class="btn btn-primary btn-lg btn-block" onclick="popUpForm()">
 						Create Appointment
 						</button>
-						<!-- <form class="start_exam_form" method="post">
-						{% csrf_token %}
-						<input class="btn btn-primary btn-lg btn-block" name="start_exam" type="submit" value="Start Examination" />
-						<input class="btn btn-outline-dark" name="start_exam" type="submit" value="Start Examination" />
-						</form> -->
 						<div class="form-popup" id="myForm">
 							<form method="post" class="form-container">
 								{% csrf_token %}

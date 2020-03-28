@@ -5,7 +5,7 @@
 		<title>Exam</title>
 		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 		<!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Form.css' %}"> -->
-		<link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Exam1.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Exam2.css' %}">
 		<link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
 	</head>
 	<body>
@@ -23,7 +23,7 @@
 				{% csrf_token %}
 				<div class="left_section">
 					<div class="info">
-						<h4>Patient Info</h4>
+						<h4>General Examination</h4>
 						<div class="field">
 							<label>Height:</label>
 							{{ Examform.height }}
@@ -31,6 +31,18 @@
 						<div class="field">
 							<label>Weight:</label>
 							{{ Examform.weight }}
+						</div>
+						<div class="field">
+							<label>Cigarrettes per day:</label>
+							{{ Examform.smoke_per_day }}
+						</div>
+						<div class="field">
+							<label>How many years the patient has been smoking:</label>
+							{{ Examform.smoker_years }} 
+						</div>
+						<div class="field">
+							<label>Heart rate:</label>
+							{{ Examform.heart_rate }}
 						</div>
 						<div class="field">
 							<label>Regular Pulse:</label>
@@ -44,9 +56,22 @@
 							<label>Breathlessness:</label>
 							{{ Examform.breathlessness }}
 						</div>
+					</div>
+				</div>
+				<div class="right_section">
+					<div class="info">
+						<h4>Blood Tests</h4>
 						<div class="field">
-							<label>Protein:</label>
-							{{ Examform.protein }}
+							<label>Systolic blood pressure:</label>
+							{{ Examform.blood_systolic }}
+						</div>
+						<div class="field">
+							<label>Diastolic blood pressure:</label>
+							{{ Examform.blood_diastolic }}
+						</div>
+						<div class="field">
+							<label>Glucose:</label>
+							{{ Examform.fasting_glucose }}
 						</div>
 						<div class="field">
 							<label>HDL Cholesterol:</label>
@@ -55,6 +80,10 @@
 						<div class="field">
 							<label>LDL Cholesterol:</label>
 							{{ Examform.ldl_chol }}
+						</div>
+						<div class="field">
+							<label>Total cholesterol:</label>
+							{{ Examform.chol_total }}
 						</div>
 						<div class="field">
 							<label>Triglyceride:</label>
@@ -66,44 +95,24 @@
 						</div>
 					</div>
 				</div>
-				<div class="right_section">
-					<div class="info">
-						<h4>Contact Info</h4>
-						<div class="field">
-							<label>Heart rate:</label>
-							{{ Examform.heart_rate }}
-						</div>
-						<div class="field">
-							<label>Cigarrettes per day:</label>
-							{{ Examform.smoke_per_day }}
-						</div>
-						<div class="field">
-							<label>How many years the patient has been smoking:</label>
-							{{ Examform.smoker_years }} 
-						</div>
-						<div class="field">
-							<label>Systolic blood pressure:</label>
-							{{ Examform.blood_systolic }}
-						</div>
-						<div class="field">
-							<label>Diastolic blood pressure:</label>
-							{{ Examform.blood_diastolic }}
-						</div>
-						<div class="field">
-							<label>Overall cholesterol:</label>
-							{{ Examform.chol_overall }}
-						</div>
-						<div class="field">
-							<label>Glucose:</label>
-							{{ Examform.fasting_glucose }}
-						</div>
-					</div>
-					<div class="info">
+				<div class="submit_btn">
 						<input class="btn btn-primary btn-lg btn-block" name="process_exam" type="submit" value="Process Exam" />
 					</div>
-				</div>
 			</form>
-
 		</div>
+		<script>
+			window.onscroll = function() {myFunction()};
+
+			var navbar = document.getElementsByClassName("navbar")[0];
+			var sticky = navbar.offsetTop;
+
+			function myFunction() {
+				if (window.pageYOffset >= sticky) {
+					navbar.classList.add("sticky");
+				} else {
+					navbar.classList.remove("sticky");
+				}
+			}
+		</script>
 	</body>
 </html>

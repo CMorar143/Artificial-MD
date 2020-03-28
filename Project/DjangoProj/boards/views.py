@@ -6,6 +6,7 @@ from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm, CreateVisitForm
 from boards.models import Examination, Patient, Patient_Ailment, Patient_Allergy, Patient_Medication, Visit, Medical_history, Investigation, Reminder, User, Ailment, Allergy, Medication
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 # For Machine learning model
 import pandas as pd
@@ -118,9 +119,6 @@ class patient(TemplateView):
 		# Get information for patient page
 		p_name = request.GET.get('patient')
 		patient = Patient.objects.get(patient_name=p_name)
-		
-		# Check if patients age needs to be updated
-		print(patient.age)
 
 		reminders = Reminder.objects.filter(patient_id=patient.id).order_by('rem_date')				
 		
@@ -270,6 +268,19 @@ class diary(TemplateView):
 
 class results(TemplateView):
 	template_name = 'results.html'
+
+	def get_age(self, patient):
+		# Get current time
+		current_date = datetime.date(datetime.now())
+		
+		# Get birthdate
+		birth_date = patient.values_list('DOB')[0][0]
+		
+		# Get difference in years
+		time_difference = relativedelta(current_date, birth_date)
+		age = time_difference.years
+		
+		return age
 	
 	def get_data(self, request):
 		has_chest_pain = False
@@ -288,7 +299,11 @@ class results(TemplateView):
 
 		exam_vals = exams.values()[0]
 		# print(exam_vals)
-		patient_vals = patient.values_list('age', 'sex')[0]
+		
+		# Get age and sex
+		patient_vals = patient.values_list('sex')[0]
+		age = self.get_age(patient)
+		patient_vals = (age,) + patient_vals
 
 		if med_hist_vals.chest_pain != 0:
 			has_chest_pain = True
@@ -309,7 +324,7 @@ class results(TemplateView):
 			heart_vals.append(med_hist_vals.chest_pain)
 		heart_vals.append(exam_vals['blood_systolic'])
 		heart_vals.append(exam_vals['blood_diastolic'])
-		heart_vals.append(exam_vals['chol_overall'])
+		heart_vals.append(exam_vals['chol_total'])
 		heart_vals.append(exam_vals['smoke_per_day'])
 		heart_vals.append(exam_vals['smoker_years'])
 		heart_vals.append(fbs)
@@ -339,7 +354,7 @@ class results(TemplateView):
 		diabetes_vals.append(exam_vals['protein'])
 		diabetes_vals.append(exam_vals['hdl_chol'])
 		diabetes_vals.append(exam_vals['ldl_chol'])
-		diabetes_vals.append(exam_vals['chol_overall'])
+		diabetes_vals.append(exam_vals['chol_total'])
 		diabetes_vals.append(exam_vals['fasting_glucose'])
 		diabetes_vals.append(exam_vals['triglyceride'])
 		diabetes_vals.append(exam_vals['uric_acid'])

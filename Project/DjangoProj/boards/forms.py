@@ -5,7 +5,7 @@ from dal import autocomplete
 
 GENDER_CHOICES = (
 	(1, 'Male'),
-	(2, 'Female')
+	(0, 'Female')
 )
 
 CHEST_PAIN_CHOICES = (
@@ -75,7 +75,6 @@ class FurtherActionsForm(forms.ModelForm):
 class CreatePatientForm(forms.ModelForm):
 	patient_name = forms.CharField(label='Patient name', widget=forms.TextInput(attrs={'class': 'input_field'}))
 	DOB = forms.CharField(initial=datetime.date.today, widget=forms.widgets.DateTimeInput(attrs={'type': 'date', 'class': 'input_field', 'min': datetime.datetime.today().strftime("%Y-%m-%dT%H:%M")}))
-	# age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
 	sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'input_field', }))
 	address_line1 = forms.CharField(label='Address line 1', widget=forms.TextInput(attrs={'class': 'input_field'}))
 	address_line2 = forms.CharField(label='Address line 2', widget=forms.TextInput(attrs={'class': 'input_field'}))
@@ -89,58 +88,37 @@ class CreatePatientForm(forms.ModelForm):
 	class Meta:
 		model = Patient
 		fields = (
-			'patient_name', 'DOB', 'age', 'sex',
+			'patient_name', 'DOB', 'sex',
 			'address_line1', 'address_line2', 'address_line3',
 			'occupation', 'marital_status',	'tel_num', 'home_num',
 		)
 
 class ExamForm(forms.ModelForm):
-	height = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
-	weight = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
+	height = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
+	weight = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
 	reg_pulse = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'input_field'}))
 	cp = forms.ChoiceField(choices=CHEST_PAIN_CHOICES, widget=forms.Select(attrs={'class': 'input_field'}))
 	breathlessness = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'input_field'}))
-	protein = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
-	hdl_chol = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
-	ldl_chol = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
-	triglyceride = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
-	uric_acid = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
+	hdl_chol = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
+	ldl_chol = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
+	triglyceride = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
+	uric_acid = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
 	
-	heart_rate = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
-	smoke_per_day = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
-	smoker_years = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
-	blood_systolic = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
-	blood_diastolic = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
-	chol_overall = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
-	fasting_glucose = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field'}))
+	heart_rate = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
+	smoke_per_day = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
+	smoker_years = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
+	blood_systolic = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
+	blood_diastolic = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
+	chol_total = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
+	fasting_glucose = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
 
 	
 	class Meta:
 		model = Examination
 		fields = (
 			'height', 'weight',
-			'reg_pulse', 'cp', 'protein', 'hdl_chol',
-			'ldl_chol', 'triglyceride', 'uric_acid', 'blood_systolic',
-			'blood_diastolic', 'chol_overall','heart_rate',
+			'reg_pulse', 'cp', 'hdl_chol', 'ldl_chol', 
+			'triglyceride', 'uric_acid', 'blood_systolic',
+			'blood_diastolic', 'chol_total','heart_rate',
 			'smoke_per_day', 'smoker_years', 'fasting_glucose', 
 		)
-
-
-
-
-# age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
-# sex = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
-# chest_pain = forms.ChoiceField(choices=CHEST_PAIN_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
-# hist_diabetes = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
-# hist_heart_disease = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
-# exerc_angina = forms.ChoiceField(choices=TRUE_OR_FALSE, widget=forms.Select(attrs={'class': 'form-control'}))
-# fields = (
-# # 'age', 'sex', 'chest_pain', 
-# 'height', 'weight',
-# 'reg_pulse', 'pulse_type', 'protein', 'hdl_chol',
-# 'ldl_chol', 'triglyceride', 'uric_acid', 'blood_systolic',
-# 'blood_diastolic', 'chol_overall','heart_rate',
-# 'smoke_per_day', 'smoker_years', 'fasting_glucose', 
-# # 'hist_diabetes', 'hist_heart_disease', 
-# #, 'exerc_angina'
-# )

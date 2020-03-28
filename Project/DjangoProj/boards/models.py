@@ -7,22 +7,21 @@ class Patient(models.Model):
 	family = models.ForeignKey('Family', on_delete=models.CASCADE, null=True)
 	patient_name = models.CharField(max_length=50)
 	DOB = models.DateField()
-	age = models.PositiveIntegerField()
-	sex = models.PositiveIntegerField()
+	sex = models.PositiveSmallIntegerField()
 	address_line1 = models.CharField(max_length=40, null=True)
 	address_line2 = models.CharField(max_length=40, null=True)
 	address_line3 = models.CharField(max_length=40, null=True)
 	occupation = models.CharField(max_length=30)
-	marital_status = models.PositiveIntegerField()
+	marital_status = models.PositiveSmallIntegerField()
 	acc_balance = models.FloatField(default=0)
 	tel_num = models.CharField(max_length=15, null=True)
 	home_num = models.CharField(max_length=15, null=True)
 	# next_app = models.DateTimeField(null=True)
-	recall_period = models.PositiveIntegerField(null=True)
+	recall_period = models.PositiveSmallIntegerField(null=True)
 
 	def __str__(self):
 		fields = (
-			self.patient_name, self.DOB, self.age, self.address_line1,
+			self.patient_name, self.DOB, self.address_line1,
 			self.address_line2, self.address_line3,	self.occupation, 
 			self.marital_status, self.acc_balance, self.tel_num, 
 			self.home_num, self.next_app, self.recall_period 
@@ -52,7 +51,7 @@ class Visit(models.Model):
 	doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 	patient = models.ForeignKey('Patient', on_delete=models.CASCADE)
 	date = models.DateTimeField()
-	app_length = models.PositiveIntegerField(default=15)
+	app_length = models.PositiveSmallIntegerField(default=15)
 	reason = models.CharField(max_length=300, null=True)
 	doctor_notes = models.CharField(max_length=100, null=True)
 	outcome = models.CharField(max_length=50, null=True)
@@ -139,7 +138,7 @@ class Medical_history(models.Model):
 	heart_attack = models.BooleanField(default=False)
 	angina = models.BooleanField(default=False)
 	breathlessness = models.BooleanField(default=False)
-	chest_pain = models.PositiveIntegerField(default=0)
+	chest_pain = models.PositiveSmallIntegerField(default=0)
 	high_chol = models.BooleanField(default=False)
 	high_bp = models.BooleanField(default=False)
 	hoarseness = models.BooleanField(default=False)
@@ -184,31 +183,30 @@ class Examination(models.Model):
 	weight = models.FloatField()
 	reg_pulse = models.BooleanField()
 	# cp = models.PositiveIntegerField()
-	protein = models.FloatField()
 	hdl_chol = models.FloatField(null=True)
 	ldl_chol = models.FloatField(null=True)
 	triglyceride = models.FloatField()
 	uric_acid = models.FloatField()
 
 	# Heart disease 
-	heart_rate = models.PositiveIntegerField()
-	smoke_per_day = models.PositiveIntegerField() 
-	smoker_years = models.PositiveIntegerField()
+	heart_rate = models.PositiveSmallIntegerField()
+	smoke_per_day = models.PositiveSmallIntegerField() 
+	smoker_years = models.PositiveSmallIntegerField()
 
 	# Both
 	blood_systolic = models.FloatField()
 	blood_diastolic = models.FloatField()
-	chol_overall = models.FloatField()
+	chol_total = models.FloatField()
 	fasting_glucose = models.FloatField()
 	
 
 	def __str__(self):
 		fields = (
 			self.height, self.weight, self.reg_pulse, #self.cp,
-			self.protein, self.hdl_chol, self.ldl_chol,
-			self.triglyceride, self.uric_acid, self.heart_rate,
+			self.hdl_chol, self.ldl_chol, self.triglyceride, 
+			self.uric_acid, self.heart_rate,
 			self.smoke_per_day, self.smoker_years,
 			self.blood_systolic, self.blood_diastolic,
-			self.chol_overall, self.fasting_glucose
+			self.chol_total, self.fasting_glucose
 		)
 		return str(fields)
