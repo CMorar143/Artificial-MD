@@ -5,9 +5,12 @@ from urllib.parse import urlencode
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm, CreateVisitForm
 from boards.models import Examination, Patient, Patient_Ailment, Patient_Allergy, Patient_Medication, Visit, Medical_history, Investigation, Reminder, User, Ailment, Allergy, Medication
+from django.contrib.auth.models import User, Group
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Q
+
+import django.contrib.auth
 
 # For Machine learning model
 import pandas as pd
@@ -147,6 +150,10 @@ class patient(TemplateView):
 		return args
 
 	def get(self, request):
+		# Check if this is a receptionist or dooctor
+		print(request.user.groups.all())
+		print("\n\n\n")
+		s
 		if request.GET.get('patient') is None:
 			Createform = CreatePatientForm()
 			Selectform = SelectPatientForm()
