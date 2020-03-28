@@ -103,7 +103,6 @@ class ExamForm(forms.ModelForm):
 	ldl_chol = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
 	triglyceride = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
 	uric_acid = forms.FloatField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
-	
 	heart_rate = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
 	smoke_per_day = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))
 	smoker_years = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'input_field', 'min': 0}))

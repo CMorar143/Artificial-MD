@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from urllib.parse import urlencode
-from django.conf import settings
+# from django.conf import settings
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm, CreateVisitForm
 from boards.models import Examination, Patient, Patient_Ailment, Patient_Allergy, Patient_Medication, Visit, Medical_history, Investigation, Reminder, User, Ailment, Allergy, Medication
@@ -11,7 +11,6 @@ from django.db.models import Q
 
 # For Machine learning model
 import pandas as pd
-from matplotlib import pyplot as plt
 import numpy as np
 import os
 from imblearn.over_sampling import SMOTE
@@ -24,17 +23,16 @@ from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
 
 
-# Create your views here.
 class home(TemplateView):
 	template_name = 'home.html'
 
 	def get(self, request):
 		if request.user.is_authenticated:
-			print(request.user)
 			return redirect('logout')
 		else:
 			return redirect('login')
 		# return render(request, self.template_name)
+
 
 class exam(TemplateView):
 	template_name = 'exam.html'
@@ -111,7 +109,6 @@ class patient(TemplateView):
 				args['searched_patients'] = searched_patients
 		
 		return args
-
 
 	def display_info(self, request):
 		Selectform = SelectPatientForm()
