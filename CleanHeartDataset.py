@@ -3,10 +3,6 @@ import csv
 import pandas as pd
 from matplotlib import pyplot as plt
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
 
 path_heart = "../../FYP_Data/heart-disease-uci/"
 

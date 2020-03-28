@@ -85,6 +85,18 @@ def scale_values_NN(X_train, X_test):
 
 	return X_train, X_test
 
+def bin_values(heart):
+	columns_to_bin = ['age', 'trestbps', 'cigs', 'years', 'thalrest', 'trestbpd']
+
+	for col in columns_to_bin:
+		heart[col] = pd.cut(heart[col], 7)
+
+	# Chol requires more buckets
+	heart['chol'] = pd.cut(heart['chol'], 10)
+	print(heart.head())
+	
+	return heart
+
 
 def split_dataset(X, D):
 	return train_test_split(X, D, test_size = 0.28, random_state = 0)
@@ -221,8 +233,12 @@ def train_heart_models():
 
 	# Impute the remaining missing values
 	imputer = KNNImputer(n_neighbors=3)
-	heart = impute_dataset(heart, imputer)
+	
+	# Bin continuous variables
+	heart = bin_values(heart)
 
+	heart = impute_dataset(heart, imputer)
+	print("\n\n\n Got here anyway\n\n\n")
 	# Use dummy columns for the categorical features
 	# heart, scaler, columns_to_scale = scale_values(heart)
 
