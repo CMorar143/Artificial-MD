@@ -150,9 +150,10 @@ class patient(TemplateView):
 		return args
 
 	def get(self, request):
-		# Check if this is a receptionist or dooctor
-		print(request.user.groups.all())
-		print("\n\n\n")
+		# Check if this is a receptionist
+		if request.user.groups.filter(name='Receptionists').exists():
+			print(request.user.groups.all())
+			print("\n\n\n")
 		s
 		if request.GET.get('patient') is None:
 			Createform = CreatePatientForm()
