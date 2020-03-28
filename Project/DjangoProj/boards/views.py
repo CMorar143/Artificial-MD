@@ -7,6 +7,7 @@ from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, Further
 from boards.models import Examination, Patient, Patient_Ailment, Patient_Allergy, Patient_Medication, Visit, Medical_history, Investigation, Reminder, User, Ailment, Allergy, Medication
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from django.db.models import Q
 
 # For Machine learning model
 import pandas as pd
@@ -50,7 +51,7 @@ class exam(TemplateView):
 			p_name = request.GET.get('patient')
 			patient = Patient.objects.get(patient_name=p_name)
 			# visit = Visit.objects.filter(patient=patient).latest('date')
-			visit = Visit.objects.filter(patient=patient).filter(date__lt=datetime.now()).latest('date')
+			visit = Visit.objects.filter(patient=patient).filter(Q(date__lt=datetime.now()) | Q(date=datetime.now())).latest('date')
 			med_hist = Medical_history.objects.filter(patient=patient).latest('date')
 			
 			# Save data to  model
@@ -241,7 +242,7 @@ class reminders(TemplateView):
 		upcoming_rem = Reminder.objects.filter(rem_date__gt=datetime.now()).order_by('rem_date')
 		
 		# Change to less than OR equal to today
-		overdue_rem = Reminder.objects.filter(rem_date__lt=datetime.now()).order_by('rem_date')
+		overdue_rem = Reminder.objects.filter(Q(rem_date__lt=datetime.now()) | Q(rem_date=datetime.now())).order_by('rem_date')
 
 		args['upcoming_rem'] = upcoming_rem
 		args['overdue_rem'] = overdue_rem
@@ -288,7 +289,7 @@ class results(TemplateView):
 		p_name = request.GET.get('patient')
 		patient = Patient.objects.filter(patient_name=p_name)
 		# print(patient)
-		visit = Visit.objects.filter(date__lt=datetime.now()).latest('date')
+		visit = Visit.objects.filter(Q(date__lt=datetime.now()) | Q(date=datetime.now())).latest('date')
 		# visit = Visit.objects.filter(patient__in=patient).latest('date')
 		# print(visit)
 		# print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
@@ -538,7 +539,7 @@ class results(TemplateView):
 
 			if further_action.further_actions != 'None':
 				# Update the outcome of the visit
-				visit = Visit.objects.filter(patient=patient).filter(date__lt=datetime.now()).latest('date')
+				visit = Visit.objects.filter(patient=patient).filter(Q(date__lt=datetime.now()) | Q(date=datetime.now())).latest('date')
 				visit.outcome = further_action.further_actions
 				visit.save()
 				
