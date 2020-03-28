@@ -351,7 +351,6 @@ class results(TemplateView):
 		diabetes_vals.append(0 if exam_vals['reg_pulse']==False else 1)
 		diabetes_vals.append(exam_vals['blood_systolic'])
 		diabetes_vals.append(exam_vals['blood_diastolic'])
-		diabetes_vals.append(exam_vals['protein'])
 		diabetes_vals.append(exam_vals['hdl_chol'])
 		diabetes_vals.append(exam_vals['ldl_chol'])
 		diabetes_vals.append(exam_vals['chol_total'])
@@ -391,7 +390,7 @@ class results(TemplateView):
 		return heart, min_max_scaler, columns_to_scale
 
 	def scale_diabetes(self, diabetes):
-		columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'Protein', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
+		columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
 		min_max_scaler = preprocessing.MinMaxScaler()
 		diabetes[columns_to_scale] = min_max_scaler.fit_transform(diabetes[columns_to_scale])
 
