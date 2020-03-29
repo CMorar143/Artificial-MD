@@ -6,7 +6,7 @@
 		<title>Patients</title>
 		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 		<link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
-		<link rel="stylesheet" href="{% static 'css/Custom/Patient_8.css' %}">
+		<link rel="stylesheet" href="{% static 'css/Custom/Patient_9.css' %}">
 		<script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
 	</head>
 	<body>
@@ -73,8 +73,14 @@
 			<br>
 			{% if patient is None %}
 				{% if user_type == "Receptionists" %}
-					<div id="reminder_popup">
-						{{ first_login }}
+					<div id="reminder_popup">	
+						<!-- Modal content -->
+						<div class="modal-content">
+							<span class="close">&times;</span>
+							<div class="alert alert-warning">
+								<strong>Warning!</strong> Reminders are overdue
+							</div>
+						</div>
 					</div>
 				{% endif %}
 				<form method="post">
@@ -335,6 +341,7 @@
 
 			var navbar = document.getElementsByClassName("navbar")[0];
 			var sticky = navbar.offsetTop;
+			var span = document.getElementsByClassName("close")[0];
 
 			function myFunction() 
 			{
@@ -350,6 +357,20 @@
 			{
 				window.alert("{{first_login}}");
 				document.getElementById("reminder_popup").style.display = "block";
+			}
+
+			span.onclick = function() 
+			{
+				document.getElementById("reminder_popup").style.display = "none";
+			}
+
+			// When the user clicks anywhere outside of the modal, close it
+			window.onclick = function(event) 
+			{
+				if (event.target == document.getElementById("reminder_popup"))
+				{
+					document.getElementById("reminder_popup").style.display = "none";
+				}
 			}
 
 			function popUpForm() 
