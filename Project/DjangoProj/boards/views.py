@@ -265,8 +265,11 @@ class diary(TemplateView):
 		args = {}
 		
 		# Get only visits in the future to display
-		visits = Visit.objects.filter(date__gt=datetime.now()).order_by('date')
-
+		visits = Visit.objects.filter(Q(date__gt=datetime.now()) | Q(date=datetime.now().strftime("%Y-%m-%d %H:%M:00"))).order_by('date')
+		print(visits)
+		print(str(visits[0].date))
+		print(datetime.now().strftime("%Y-%m-%d 00:00:00"))
+		print("\n\n\n")
 		args['visits'] = visits
 
 		return render(request, self.template_name, args)
