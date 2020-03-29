@@ -25,13 +25,14 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
 
-first_login = True
+first_login = False
 
 @receiver(user_logged_in)
 def logged_in(sender, **kwargs):
 	if kwargs['user'].groups.filter(name='Receptionists').exists():
 		print("got here 3.14")
-		first_login = False
+		global first_login
+		first_login = True
 		# for key, value in kwargs.items():
 		# 	print("%s == %s" %(key, value))
 		print("\n\n\n")
@@ -163,10 +164,12 @@ class patient(TemplateView):
 
 	def get(self, request):
 		# Check if this is a receptionist
+		global first_login
 		if first_login == True:
-			print("first_login is true")
+			print("First time logged in today")
+			first_login = False
 		else:
-			print("first_login is false")
+			print("Not first time on today")
 		
 		if request.GET.get('patient') is None:
 			Createform = CreatePatientForm()

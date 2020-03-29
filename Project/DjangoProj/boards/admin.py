@@ -18,6 +18,7 @@ admin.site.register(Medication)
 admin.site.register(Patient_Medication)
 admin.site.register(Examination)
 
+
 # Register your models here.
 class ExamAdmin(admin.ModelAdmin):
 	fields = ('MALE', 'gender', 'FEMALE')

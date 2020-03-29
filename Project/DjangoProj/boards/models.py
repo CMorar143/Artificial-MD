@@ -1,12 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
-# from django.contrib.auth.models import AbstractUser
 
-
-# class User(AbstractUser):
-# 	logged_in_today = models.BooleanField(default=False)
-
+# Create your models here.
 class Patient(models.Model):
 	family = models.ForeignKey('Family', on_delete=models.CASCADE, null=True)
 	patient_name = models.CharField(max_length=50)
