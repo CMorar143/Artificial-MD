@@ -327,8 +327,7 @@
 		<script>
 			window.onscroll = function() {myFunction()};
 
-			var user_type = "{{user_type}}"
-			if ("Receptionists" == user_type)
+			if ("Receptionists" == "{{user_type}}")
 			{
 				rem_popup();
 			}
@@ -348,7 +347,7 @@
 
 			function rem_popup()
 			{
-				window.alert("popup");
+				// window.alert("popup");
 				document.getElementById("reminder_popup").style.display = "block";
 			}
 
