@@ -218,25 +218,20 @@ class patient(TemplateView):
 			visit = Visit.objects.filter(patient=patient)
 			
 			if visit:
-				visit = visit.filter(date=datetime.now()).latest('date')
-				
-			print(visit)
-			l
-
-			if visit.reason in 'Examination' and str(visit.date) in datetime.now().strftime("%Y-%m-%d %H:%M:00"):
-				p_arg = {}
-				p_arg['patient'] = p_name
-				base_url = reverse('exam')
-				query_string = urlencode(p_arg)
-				url = '{}?{}'.format(base_url, query_string)
-				return redirect(url)
+				visit = visit.filter(Q(date__lt=datetime.now()) | Q(date=datetime.now().strftime("%Y-%m-%d %H:%M:00"))).latest('date')
 			
+			# Update the doctor if neccessary
+			if visit.doctor != request.user and request.user.groups.filter(name='Doctors').exists():
+				visit.doctor = request.user
+				visit.save()
+				
 			p_arg = {}
 			p_arg['patient'] = p_name
 			base_url = reverse('exam')
 			query_string = urlencode(p_arg)
 			url = '{}?{}'.format(base_url, query_string)
 			return redirect(url)
+			
 
 
 
@@ -252,8 +247,7 @@ class reminders(TemplateView):
 
 		args['upcoming_rem'] = upcoming_rem
 		args['overdue_rem'] = overdue_rem
-		print(upcoming_rem)
-		print(overdue_rem)
+
 		return render(request, self.template_name, args)
 
 
@@ -266,10 +260,7 @@ class diary(TemplateView):
 		
 		# Get only visits in the future to display
 		visits = Visit.objects.filter(Q(date__gt=datetime.now()) | Q(date=datetime.now().strftime("%Y-%m-%d %H:%M:00"))).order_by('date')
-		print(visits)
-		print(str(visits[0].date))
-		print(datetime.now().strftime("%Y-%m-%d 00:00:00"))
-		print("\n\n\n")
+
 		args['visits'] = visits
 
 		return render(request, self.template_name, args)
