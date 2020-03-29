@@ -70,19 +70,26 @@
 	  var navbar = document.getElementsByClassName("navbar")[0];
 	  var sticky = navbar.offsetTop;
 
-	  function myFunction() {
-		if (window.pageYOffset >= sticky) {
+	  function myFunction() 
+	  {
+		if (window.pageYOffset >= sticky) 
+		{
 		  navbar.classList.add("sticky")
-		} else {
+		} 
+
+		else 
+		{
 		  navbar.classList.remove("sticky");
 		}
 	  }
 
-	  function popUpForm() {
+	  function popUpForm() 
+	  {
 		document.getElementById("myForm").style.display = "block";
 	  }
 
-	  function closeForm() {
+	  function closeForm() 
+	  {
 		document.getElementById("myForm").style.display = "none";
 	  }
 	</script>
