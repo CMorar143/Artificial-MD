@@ -9,8 +9,7 @@ from django.contrib.auth.models import User, Group
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from django.db.models import Q
-
-import django.contrib.auth
+from django.contrib.auth.signals import user_logged_in
 
 # For Machine learning model
 import pandas as pd
@@ -24,6 +23,11 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
+
+
+def logged_in(request):
+	print(request.user)
+	print("\n\n\n")
 
 
 class home(TemplateView):
@@ -151,9 +155,7 @@ class patient(TemplateView):
 
 	def get(self, request):
 		# Check if this is a receptionist
-		if request.user.groups.filter(name='Receptionists').exists():
-			print(request.user.groups.all())
-			print("\n\n\n")
+		user_logged_in.connect(logged_in(request))
 		
 		if request.GET.get('patient') is None:
 			Createform = CreatePatientForm()
@@ -224,7 +226,7 @@ class patient(TemplateView):
 			if visit.doctor != request.user and request.user.groups.filter(name='Doctors').exists():
 				visit.doctor = request.user
 				visit.save()
-				
+
 			p_arg = {}
 			p_arg['patient'] = p_name
 			base_url = reverse('exam')

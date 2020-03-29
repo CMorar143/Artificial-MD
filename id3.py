@@ -9,6 +9,20 @@ def load_dataframe():
 
 	return heart
 
+def bin_values(heart):
+	columns_to_bin = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
+
+	for col in columns_to_bin:
+		# Chol requires more buckets
+		if col == 'chol':
+			heart[col] = pd.cut(heart[col], 10)
+		else:
+			heart[col] = pd.cut(heart[col], 7)
+	
+	heart = pd.get_dummies(heart, columns = columns_to_bin)
+
+	return heart
+
 def get_target_entropy(heart):
 	entropy = 0
 
@@ -138,11 +152,16 @@ def main():
 	# Load dataset
 	heart = load_dataframe()
 
+	# Bin features
+	heart = bin_values(heart)
+
+	print(heart.head())
+
 	# Build tree
 	decision_tree = create_tree(heart)
 
-	# Test (should return 1.0)
-	new_data = heart.drop(['target'], axis=1).iloc[6]
+	print(heart['target'].iloc[4])
+	new_data = heart.drop(['target'], axis=1).iloc[4]
 
 	# Make predictions
 	pred = make_prediction(new_data, decision_tree)
