@@ -158,6 +158,11 @@ body
   margin-top: 1em;
 }
 
+#reminder_popup
+{
+  display: none;
+}
+
 .form-container 
 {
   max-width: 300px;

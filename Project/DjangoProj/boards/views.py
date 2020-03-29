@@ -25,9 +25,9 @@ from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
 
 
-def logged_in(request):
-	print(request.user)
-	print("\n\n\n")
+# def logged_in(request):
+# 	print(request.user)
+# 	print("\n\n\n")
 
 
 class home(TemplateView):
@@ -155,7 +155,7 @@ class patient(TemplateView):
 
 	def get(self, request):
 		# Check if this is a receptionist
-		user_logged_in.connect(logged_in(request))
+		# user_logged_in.connect(logged_in(request))
 		
 		if request.GET.get('patient') is None:
 			Createform = CreatePatientForm()
@@ -167,10 +167,10 @@ class patient(TemplateView):
 		else:
 			args = self.display_info(request)
 
-			if request.user.groups.filter(name='Doctors').exists():
-				args['user_type'] = 'Doctors'
-			else:
-				args['user_type'] = 'Receptionists'
+		if request.user.groups.filter(name='Doctors').exists():
+			args['user_type'] = 'Doctors'
+		elif request.user.groups.filter(name='Receptionists').exists():
+			args['user_type'] = 'Receptionists'
 
 		return render(request, self.template_name, args)
 

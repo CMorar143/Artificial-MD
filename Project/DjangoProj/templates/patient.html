@@ -6,7 +6,7 @@
 		<title>Patients</title>
 		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 		<link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
-		<link rel="stylesheet" href="{% static 'css/Custom/Patient_7.css' %}">
+		<link rel="stylesheet" href="{% static 'css/Custom/Patient_8.css' %}">
 		<script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
 	</head>
 	<body>
@@ -72,6 +72,11 @@
 			{% endif %}
 			<br>
 			{% if patient is None %}
+				{% if user_type == "Receptionists" %}
+					<div id="reminder_popup">
+						This is a popup
+					</div>
+				{% endif %}
 				<form method="post">
 					{% csrf_token %}
 					<div class="left_section">
@@ -322,22 +327,38 @@
 		<script>
 			window.onscroll = function() {myFunction()};
 
+			var user_type = "{{user_type}}"
+			if ("Receptionists" == user_type)
+			{
+				rem_popup();
+			}
+
 			var navbar = document.getElementsByClassName("navbar")[0];
 			var sticky = navbar.offsetTop;
 
-			function myFunction() {
-				if (window.pageYOffset >= sticky) {
+			function myFunction() 
+			{
+				if (window.pageYOffset >= sticky) 
+				{
 					navbar.classList.add("sticky");
 				} else {
 					navbar.classList.remove("sticky");
 				}
 			}
 
-			function popUpForm() {
+			function rem_popup()
+			{
+				window.alert("popup");
+				document.getElementById("reminder_popup").style.display = "block";
+			}
+
+			function popUpForm() 
+			{
 				document.getElementById("myForm").style.display = "block";
 			}
 
-			function closeForm() {
+			function closeForm() 
+			{
 				document.getElementById("myForm").style.display = "none";
 			}
 		</script>
