@@ -164,12 +164,6 @@ class patient(TemplateView):
 
 	def get(self, request):
 		# Check if this is a receptionist
-		global first_login
-		if first_login == True:
-			print("First time logged in today")
-			first_login = False
-		else:
-			print("Not first time on today")
 		
 		if request.GET.get('patient') is None:
 			Createform = CreatePatientForm()
@@ -183,8 +177,15 @@ class patient(TemplateView):
 
 		if request.user.groups.filter(name='Doctors').exists():
 			args['user_type'] = 'Doctors'
+		
 		elif request.user.groups.filter(name='Receptionists').exists():
 			args['user_type'] = 'Receptionists'
+			
+			global first_login
+			if first_login == True:
+				print("First time logged in today")
+				args['first_login'] = True
+				first_login = False
 
 		return render(request, self.template_name, args)
 

@@ -74,7 +74,7 @@
 			{% if patient is None %}
 				{% if user_type == "Receptionists" %}
 					<div id="reminder_popup">
-						This is a popup
+						{{ first_login }}
 					</div>
 				{% endif %}
 				<form method="post">
@@ -327,7 +327,8 @@
 		<script>
 			window.onscroll = function() {myFunction()};
 
-			if ("Receptionists" == "{{user_type}}")
+			//  && "{{first_login}}" == true
+			if ("Receptionists" == "{{user_type}}" && "{{first_login}}" == "True")
 			{
 				rem_popup();
 			}
@@ -347,7 +348,7 @@
 
 			function rem_popup()
 			{
-				// window.alert("popup");
+				window.alert("{{first_login}}");
 				document.getElementById("reminder_popup").style.display = "block";
 			}
 

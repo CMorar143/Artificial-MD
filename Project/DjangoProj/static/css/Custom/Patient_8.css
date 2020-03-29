@@ -147,7 +147,6 @@ body
 {
   display: none;
   position: relative;
-  /*border: 3px solid #f1f1f1;*/
   z-index: 9;
   transition: 0.5s;
 }
