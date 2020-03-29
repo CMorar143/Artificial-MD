@@ -154,17 +154,21 @@ class patient(TemplateView):
 		if request.user.groups.filter(name='Receptionists').exists():
 			print(request.user.groups.all())
 			print("\n\n\n")
-		s
+		
 		if request.GET.get('patient') is None:
 			Createform = CreatePatientForm()
 			Selectform = SelectPatientForm()
 
-			searched_name = ''
 			args = {'Createform': Createform, 'Selectform': Selectform}			
 			args = self.search_patients(request, args)
 
 		else:
 			args = self.display_info(request)
+
+			if request.user.groups.filter(name='Doctors').exists():
+				args['user_type'] = 'Doctors'
+			else:
+				args['user_type'] = 'Receptionists'
 
 		return render(request, self.template_name, args)
 
@@ -198,44 +202,41 @@ class patient(TemplateView):
 			patient = Patient.objects.get(patient_name=p_name)
 				
 			if Visitform.is_valid():
-				
 				# Save data to model
 				visit = Visitform.save(commit=False)
 				visit.doctor = request.user
 				visit.patient = patient
 				visit.save()
-
-				if visit.reason in 'Examination' and str(visit.date) in datetime.now().strftime("%Y-%m-%d %H:%M:00"):
-					p_arg = {}
-					p_arg['patient'] = p_name
-					base_url = reverse('exam')
-					query_string = urlencode(p_arg)
-					url = '{}?{}'.format(base_url, query_string)
-					return redirect(url)
 			
 			args = {'patient': patient, 'Visitform': Visitform, 'Selectform': Selectform}
 			args = self.display_info(request)
 			return render(request, self.template_name, args)
 
-		# elif 'start_exam' in request.POST:
-		# 	p_name = request.GET.get('patient')
-		# 	patient = Patient.objects.get(patient_name=p_name)
-		# 	visit = Visit.objects.filter(patient=patient)
+		elif 'start_exam' in request.POST:
+			p_name = request.GET.get('patient')
+			patient = Patient.objects.get(patient_name=p_name)
+			visit = Visit.objects.filter(patient=patient)
 			
-		# 	if visit:
-		# 		visit = visit.latest('date')
-		# 		# If they dont have a visit for today, create one
+			if visit:
+				visit = visit.filter(date=datetime.now()).latest('date')
+				
+			print(visit)
+			l
+
+			if visit.reason in 'Examination' and str(visit.date) in datetime.now().strftime("%Y-%m-%d %H:%M:00"):
+				p_arg = {}
+				p_arg['patient'] = p_name
+				base_url = reverse('exam')
+				query_string = urlencode(p_arg)
+				url = '{}?{}'.format(base_url, query_string)
+				return redirect(url)
 			
-		# 	if not visit or visit.date.date() != date.today():
-		# 		v = Visit(reason="Examination", doctor=request.user, patient=patient)
-		# 		v.save()
-			
-		# 	p_arg = {}
-		# 	p_arg['patient'] = p_name
-		# 	base_url = reverse('exam')
-		# 	query_string = urlencode(p_arg)
-		# 	url = '{}?{}'.format(base_url, query_string)
-		# 	return redirect(url)
+			p_arg = {}
+			p_arg['patient'] = p_name
+			base_url = reverse('exam')
+			query_string = urlencode(p_arg)
+			url = '{}?{}'.format(base_url, query_string)
+			return redirect(url)
 
 
 

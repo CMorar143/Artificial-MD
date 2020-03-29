@@ -6,7 +6,7 @@
 		<title>Patients</title>
 		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 		<link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
-		<link rel="stylesheet" href="{% static 'css/Custom/Patient_3.css' %}">
+		<link rel="stylesheet" href="{% static 'css/Custom/Patient_6.css' %}">
 		<script type="text/javascript" src="{% static 'js/Custom/Navbar.js' %}"></script>
 	</head>
 	<body>
@@ -293,21 +293,28 @@
 						{% endif %}
 					</div>
 					<div class="info">
-						<button class="btn btn-primary btn-lg btn-block" onclick="popUpForm()">
-						Create Appointment
-						</button>
-						<div class="form-popup" id="myForm">
-							<form method="post" class="form-container">
+						{% if user_type == "Receptionists" %}
+							<button class="btn btn-primary btn-lg btn-block" onclick="popUpForm()">
+							Create Appointment
+							</button>
+							<div class="form-popup" id="myForm">
+								<form method="post" class="form-container">
+									{% csrf_token %}
+									{{ Visitform.as_p }}
+									<button type="submit" name="create_visit" class="create_visit_btn">
+										Create Visit
+									</button>
+									<button type="button" class="create_visit_btn cancel" onclick="closeForm()">
+									Close
+									</button>
+								</form>
+							</div>
+						{% else %}
+							<form method="post" class="start_exam_btn">
 								{% csrf_token %}
-								{{ Visitform.as_p }}
-								<button type="submit" name="create_visit" class="create_visit_btn">
-									Create Visit
-								</button>
-								<button type="button" class="create_visit_btn cancel" onclick="closeForm()">
-								Close
-								</button>
+								<input class="btn btn-primary btn-lg btn-block" name="start_exam" type="submit" value="Start Examination" />
 							</form>
-						</div>
+						{% endif %}
 					</div>
 				</div>
 			{% endif %}

@@ -16,7 +16,6 @@ class Patient(models.Model):
 	acc_balance = models.FloatField(default=0)
 	tel_num = models.CharField(max_length=15, null=True)
 	home_num = models.CharField(max_length=15, null=True)
-	# next_app = models.DateTimeField(null=True)
 	recall_period = models.PositiveSmallIntegerField(null=True)
 
 	def __str__(self):
@@ -24,7 +23,7 @@ class Patient(models.Model):
 			self.patient_name, self.DOB, self.address_line1,
 			self.address_line2, self.address_line3,	self.occupation, 
 			self.marital_status, self.acc_balance, self.tel_num, 
-			self.home_num, self.next_app, self.recall_period 
+			self.home_num, self.recall_period 
 		)
 		return str(self.patient_name)
 
