@@ -27,8 +27,11 @@ from sklearn.neural_network import MLPClassifier
 
 @receiver(user_logged_in)
 def logged_in(sender, **kwargs):
-	print("got here 3.14")
-	print("\n\n\n")
+	if kwargs['user'].groups.filter(name='Receptionists').exists():
+		print("got here 3.14")
+		for key, value in kwargs.items():
+			print("%s == %s" %(key, value))
+		print("\n\n\n")
 
 user_logged_in.connect(logged_in)
 
