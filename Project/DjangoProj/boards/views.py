@@ -183,9 +183,12 @@ class patient(TemplateView):
 			
 			global first_login
 			if first_login == True:
+				overdue_rem = Reminder.objects.filter(Q(rem_date__lt=datetime.now()) | Q(rem_date=datetime.now())).order_by('rem_date')
 				print("First time logged in today")
-				args['first_login'] = True
 				first_login = False
+				
+				args['first_login'] = True
+				args['overdue_rem'] = overdue_rem
 
 		return render(request, self.template_name, args)
 
@@ -259,7 +262,6 @@ class reminders(TemplateView):
 		args = {}
 		upcoming_rem = Reminder.objects.filter(rem_date__gt=datetime.now()).order_by('rem_date')
 		
-		# Change to less than OR equal to today
 		overdue_rem = Reminder.objects.filter(Q(rem_date__lt=datetime.now()) | Q(rem_date=datetime.now())).order_by('rem_date')
 
 		args['upcoming_rem'] = upcoming_rem
