@@ -311,8 +311,6 @@ class results(TemplateView):
 		visit = Visit.objects.filter(patient__in=patient)
 		visit = visit.filter(Q(date__lt=datetime.now()) | Q(date=datetime.now())).latest('date')
 		
-		print(visit.id)
-		print('hey there\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 		exams = Examination.objects.filter(visit=visit)
 		# print(exams)
 		med_hist_vals = Medical_history.objects.filter(patient__in=patient).latest('date')
@@ -407,15 +405,14 @@ class results(TemplateView):
 	def bin_heart(self, heart, has_chest_pain):
 		if has_chest_pain:
 			heart = pd.get_dummies(heart, columns = ['cp'])
-		columns_to_bin = ['age', 'trestbps', 'trestbpd', 'chol', 'cigs', 'years', 'thalrest']
+		columns_to_bin = ['age', 'trestbps', 'trestbpd', 'cigs', 'years', 'thalrest']
 
 		for col in columns_to_bin:
-			# Chol requires more buckets
-			if col == 'chol':
-				heart[col] = pd.cut(heart[col], 10)
-			else:
-				heart[col] = pd.cut(heart[col], 7)
+			heart[col] = pd.cut(heart[col], 6)
 		
+		# Chol requires more buckets
+		heart['chol'] = pd.cut(heart['chol'], 8)
+
 		heart = pd.get_dummies(heart, columns = columns_to_bin)
 
 		return heart
@@ -474,7 +471,8 @@ class results(TemplateView):
 
 		# Get entropy of target feature
 		target_entropy = self.get_target_entropy(heart)
-
+		# print(target_entropy)
+		# print(features)
 		for f in features:
 			feature_entropy = self.get_feature_entropy(heart, f)
 			information_gain = target_entropy - feature_entropy
@@ -484,7 +482,7 @@ class results(TemplateView):
 
 	def find_feature(self, heart, info_gains):
 		info_gains = self.calc_info_gains(heart, info_gains)
-
+		# print(info_gains)
 		vals = list(info_gains.values())
 		feat = list(info_gains.keys())
 
@@ -494,6 +492,7 @@ class results(TemplateView):
 		# Find the feature to split on i.e. the node feature
 		info_gains = {}
 		node_feature = self.find_feature(heart, info_gains)
+		# print(node_feature)
 		node_feat_vals = heart[node_feature]
 
 		# Initialise decision tree
@@ -503,13 +502,13 @@ class results(TemplateView):
 
 		# Get all values for the node
 		all_node_vals = np.unique(node_feat_vals)
-
+		
 		# Build the tree with recursion
 		for val in all_node_vals:
 			sub_tree = heart[node_feat_vals == val].reset_index(drop=True)
 
 			values, size = np.unique(sub_tree['target'], return_counts=True)
-			
+			print("looped\n\n")
 			# More of the tree needs to be built
 			if len(size) > 1:
 				dec_tree[node_feature][val] = self.create_tree(sub_tree) 
@@ -588,8 +587,10 @@ class results(TemplateView):
 
 		# Put new data into dataframe
 		heart_vals = pd.DataFrame(heart_vals).transpose()
+		heart_vals.columns = heart.drop(['target'], axis=1).columns
 
 		heart = heart.append(heart_vals, ignore_index=True)
+
 		heart = self.bin_heart(heart, has_chest_pain)
 
 		if has_chest_pain == False:
@@ -619,9 +620,9 @@ class results(TemplateView):
 		# lsv_classifier = self.linear_support_vector(X, H)
 		
 		# Make predictions
-		heart_pred = make_prediction(heart_vals, dt_classifier)
+		heart_pred = self.make_prediction(heart_vals, dt_classifier)
 		print(heart_vals)
-		print(pred)
+		print(heart_pred)
 		# print(knn_classifier.predict(heart_vals))
 		# print(dt_classifier.predict(heart_vals))
 		# print(nb_classifier.predict(heart_vals))
