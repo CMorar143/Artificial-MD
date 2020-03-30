@@ -64,16 +64,17 @@ class exam(TemplateView):
 			# Get patient and visit object linked to this exam
 			p_name = request.GET.get('patient')
 			patient = Patient.objects.get(patient_name=p_name)
-			# visit = Visit.objects.filter(patient=patient).latest('date')
+			
 			visit = Visit.objects.filter(patient=patient).filter(Q(date__lt=datetime.now()) | Q(date=datetime.now())).latest('date')
 			med_hist = Medical_history.objects.filter(patient=patient).latest('date')
-			
+
 			# Save data to  model
 			exam = Examform.save(commit=False)
 			exam.user = request.user
 			exam.visit = visit
 			exam.save()
 			exam_input = Examform.cleaned_data
+			print(exam_input)
 			
 			# Check if their hist is changed, if it has, insert that into the medical_history model
 			if int(exam_input.get('cp')) != med_hist.chest_pain and bool(exam_input.get('breathlessness')) != med_hist.breathlessness:
@@ -254,7 +255,6 @@ class patient(TemplateView):
 			
 
 
-
 class reminders(TemplateView):
 	template_name = 'reminders.html'
 
@@ -307,18 +307,20 @@ class results(TemplateView):
 
 		p_name = request.GET.get('patient')
 		patient = Patient.objects.filter(patient_name=p_name)
-		# print(patient)
-		visit = Visit.objects.filter(Q(date__lt=datetime.now()) | Q(date=datetime.now())).latest('date')
-		# visit = Visit.objects.filter(patient__in=patient).latest('date')
-		# print(visit)
-		# print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
+		print(patient)
+		visit = Visit.objects.filter(patient__in=patient)
+		visit = visit.filter(Q(date__lt=datetime.now()) | Q(date=datetime.now())).latest('date')
+		
+		print(visit.id)
+		print('hey there\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 		exams = Examination.objects.filter(visit=visit)
 		# print(exams)
 		med_hist_vals = Medical_history.objects.filter(patient__in=patient).latest('date')
 		# print(med_hist['chest_pain'])
 
-		exam_vals = exams.values()[0]
-		# print(exam_vals)
+		exam_vals = exams.values().last()
+		print(exam_vals)
+		print("\n\n\n\n")
 		
 		# Get age and sex
 		patient_vals = patient.values_list('sex')[0]
@@ -348,7 +350,7 @@ class results(TemplateView):
 		heart_vals.append(exam_vals['smoke_per_day'])
 		heart_vals.append(exam_vals['smoker_years'])
 		heart_vals.append(fbs)
-		heart_vals.append(0 if med_hist_vals.diabetes==False else 1)
+		# heart_vals.append(0 if med_hist_vals.diabetes==False else 1)
 		heart_vals.append(0 if med_hist_vals.heart_attack==False else 1)
 		heart_vals.append(exam_vals['heart_rate'])
 		heart_vals.append(0 if med_hist_vals.angina==False else 1)
@@ -387,6 +389,8 @@ class results(TemplateView):
 		parent_dir = os.path.abspath(current_dir + "/../")
 		pathHeart = parent_dir + '/Data/new_cleveland.csv'
 		heart = pd.read_csv(pathHeart)
+		heart = heart.drop(['dm'], axis=1)
+
 
 		return heart
 
@@ -400,14 +404,145 @@ class results(TemplateView):
 		return diabetes
 
 
-	def scale_heart(self, heart, has_chest_pain):
+	def bin_heart(self, heart, has_chest_pain):
 		if has_chest_pain:
 			heart = pd.get_dummies(heart, columns = ['cp'])
-		columns_to_scale = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
-		min_max_scaler = preprocessing.MinMaxScaler()
-		heart[columns_to_scale] = min_max_scaler.fit_transform(heart[columns_to_scale])
+		columns_to_bin = ['age', 'trestbps', 'trestbpd', 'chol', 'cigs', 'years', 'thalrest']
 
-		return heart, min_max_scaler, columns_to_scale
+		for col in columns_to_bin:
+			# Chol requires more buckets
+			if col == 'chol':
+				heart[col] = pd.cut(heart[col], 10)
+			else:
+				heart[col] = pd.cut(heart[col], 7)
+		
+		heart = pd.get_dummies(heart, columns = columns_to_bin)
+
+		return heart
+
+	def get_target_entropy(self, heart):
+		entropy = 0
+
+		# Possible values are they have heart disease or they don't (1 or 0 respectively)
+		values = heart['target'].unique()
+
+		# Calculate entropy
+		for value in values:
+			val_split = heart['target'].value_counts()[value]/len(heart['target'])
+			entropy = entropy + -val_split*np.log2(val_split)
+
+		return entropy
+
+	def get_feature_entropy(self, heart, feature):
+		feature_entropy = 0
+
+		# To prevent the feature entropies from being null
+		smallest_num = np.finfo(float).tiny
+
+		# Get the unique values for the target and the feature
+		values = heart['target'].unique()
+		feature_vals = heart[feature].unique()
+
+		for value in feature_vals:
+			val_entropy = 0
+			for val in values:
+				# Get the number of possible values within the feature
+				num_of_each_val = heart[feature][heart[feature]==value]
+				
+				# For getting the ratio
+				numerator = len(num_of_each_val[heart['target']==val])
+				denominator = len(num_of_each_val)
+				
+				# Add the smallest number so its not dividing by 0
+				val_split = numerator/(denominator+smallest_num)
+				
+				""" Get the entropy for both target feature 
+					values with respect to this feature value
+				"""
+				# Add the smallest number so its not log2(0)
+				val_entropy = val_entropy + -val_split*np.log2(val_split+smallest_num)
+
+			# Get the entropy for all values in this feature
+			val_ratio = denominator/len(heart)
+			feature_entropy = feature_entropy + val_ratio*val_entropy
+		
+		return feature_entropy
+
+	def calc_info_gains(self, heart, info_gains):
+		# Calculate the info_gain for non-target features only
+		features = heart.drop(['target'], axis=1)
+
+		# Get entropy of target feature
+		target_entropy = self.get_target_entropy(heart)
+
+		for f in features:
+			feature_entropy = self.get_feature_entropy(heart, f)
+			information_gain = target_entropy - feature_entropy
+			info_gains[f] = information_gain
+
+		return info_gains
+
+	def find_feature(self, heart, info_gains):
+		info_gains = self.calc_info_gains(heart, info_gains)
+
+		vals = list(info_gains.values())
+		feat = list(info_gains.keys())
+
+		return feat[vals.index(max(vals))]
+
+	def create_tree(self, heart, dec_tree = 0):
+		# Find the feature to split on i.e. the node feature
+		info_gains = {}
+		node_feature = self.find_feature(heart, info_gains)
+		node_feat_vals = heart[node_feature]
+
+		# Initialise decision tree
+		if dec_tree == 0:
+			dec_tree = {}
+			dec_tree[node_feature] = {}
+
+		# Get all values for the node
+		all_node_vals = np.unique(node_feat_vals)
+
+		# Build the tree with recursion
+		for val in all_node_vals:
+			sub_tree = heart[node_feat_vals == val].reset_index(drop=True)
+
+			values, size = np.unique(sub_tree['target'], return_counts=True)
+			
+			# More of the tree needs to be built
+			if len(size) > 1:
+				dec_tree[node_feature][val] = self.create_tree(sub_tree) 
+			
+			# This is the leaf node
+			else:
+				dec_tree[node_feature][val] = values[0]
+				
+		return dec_tree
+
+	def make_prediction(self, new_data, decision_tree):
+		# Start at the root node
+		root = list(decision_tree.keys())
+
+		# Loop through all possible sub nodes
+		for sub_node in root:
+			
+			# Getting the value of the root node for the new data point
+			val = new_data[sub_node]
+			
+			# Getting the subtree at that value
+			decision_tree = decision_tree[sub_node][val]
+			pred = 0
+
+			# If the subtree has its own subtree then make the recursive call
+			if type(decision_tree) == type({}):
+				pred = self.make_prediction(new_data, decision_tree)
+			
+			# The subtree just contains the prediction
+			else:
+				pred = decision_tree
+
+		return pred
 
 	def scale_diabetes(self, diabetes):
 		columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
@@ -454,49 +589,43 @@ class results(TemplateView):
 		# Put new data into dataframe
 		heart_vals = pd.DataFrame(heart_vals).transpose()
 
-		if has_chest_pain == False:
-			heart_vals.columns = heart.drop(['target', 'cp'], axis=1).columns
-		else:
-			heart_vals.columns = heart.drop(['target'], axis=1).columns
-
-		# Use dummy columns for the categorical features
-		heart, min_max_scaler, columns_to_scale = self.scale_heart(heart, has_chest_pain)
+		heart = heart.append(heart_vals, ignore_index=True)
+		heart = self.bin_heart(heart, has_chest_pain)
 
 		if has_chest_pain == False:
 			heart = heart.drop(['cp'], axis = 1)
 
+		heart_vals = heart.drop(['target'], axis=1).iloc[-1]
+		heart = heart.drop(heart.index[-1])
+
 		# Split dataset
-		H = heart['target']
-		X = heart.drop(['target'], axis = 1)
+		# H = heart['target']
+		# X = heart.drop(['target'], axis = 1)
 
 		# With oversampling
 		sm = SMOTE(random_state=52)
-		X, H = sm.fit_sample(X, H)
+		# X, H = sm.fit_sample(X, H)
 		
 		# KNN
-		knn_classifier = self.KNN(X, H)
+		# knn_classifier = self.KNN(X, H)
 
 		# Decision Tree
-		dt_classifier = self.decision_tree(X, H)
+		dt_classifier = self.create_tree(heart)
 
 		# Naive Bayes
-		nb_classifier = self.naive_bayes(X, H)
+		# nb_classifier = self.naive_bayes(X, H)
 
 		# Linear Support Vector
-		lsv_classifier = self.linear_support_vector(X, H)
+		# lsv_classifier = self.linear_support_vector(X, H)
 		
-		# Scaling the new instance and getting dummies for cp col
-		if has_chest_pain:
-			heart_vals = pd.get_dummies(heart_vals, columns = ['cp'])
-		heart_vals[columns_to_scale] = min_max_scaler.transform(heart_vals[columns_to_scale])
-		heart_vals = heart_vals.reindex(columns=X.columns, fill_value=0)
-
-		# Making prediction
-		heart_pred = knn_classifier.predict(heart_vals)
-		print(knn_classifier.predict(heart_vals))
-		print(dt_classifier.predict(heart_vals))
-		print(nb_classifier.predict(heart_vals))
-		print(lsv_classifier.predict(heart_vals))
+		# Make predictions
+		heart_pred = make_prediction(heart_vals, dt_classifier)
+		print(heart_vals)
+		print(pred)
+		# print(knn_classifier.predict(heart_vals))
+		# print(dt_classifier.predict(heart_vals))
+		# print(nb_classifier.predict(heart_vals))
+		# print(lsv_classifier.predict(heart_vals))
 		print("\n\n\n")
 
 		# Diabetes
