@@ -176,6 +176,11 @@ body
   background-color: rgba(0,0,0,0.4);
 }
 
+.overdue
+{
+  text-decoration-color: red;
+}
+
 /* Modal Content */
 .modal-content {
   background-color: #fefefe;
