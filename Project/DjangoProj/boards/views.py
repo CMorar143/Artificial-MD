@@ -417,37 +417,47 @@ class results(TemplateView):
 
 		return heart
 
-	def get_target_entropy(self, heart):
+	def bin_diabetes(self, diabetes):
+		columns_to_bin = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
+		
+		for col in columns_to_bin:
+			diabetes[col] = pd.cut(diabetes[col], 5)
+
+		diabetes = pd.get_dummies(diabetes, columns = columns_to_bin)
+
+		return diabetes
+
+	def get_target_entropy(self, df):
 		entropy = 0
 
 		# Possible values are they have heart disease or they don't (1 or 0 respectively)
-		values = heart['target'].unique()
+		values = df['target'].unique()
 
 		# Calculate entropy
 		for value in values:
-			val_split = heart['target'].value_counts()[value]/len(heart['target'])
+			val_split = df['target'].value_counts()[value]/len(df['target'])
 			entropy = entropy + -val_split*np.log2(val_split)
 
 		return entropy
 
-	def get_feature_entropy(self, heart, feature):
+	def get_feature_entropy(self, df, feature):
 		feature_entropy = 0
 
 		# To prevent the feature entropies from being null
 		smallest_num = np.finfo(float).tiny
 
 		# Get the unique values for the target and the feature
-		values = heart['target'].unique()
-		feature_vals = heart[feature].unique()
+		values = df['target'].unique()
+		feature_vals = df[feature].unique()
 
 		for value in feature_vals:
 			val_entropy = 0
 			for val in values:
 				# Get the number of possible values within the feature
-				num_of_each_val = heart[feature][heart[feature]==value]
+				num_of_each_val = df[feature][df[feature]==value]
 				
 				# For getting the ratio
-				numerator = len(num_of_each_val[heart['target']==val])
+				numerator = len(num_of_each_val[df['target']==val])
 				denominator = len(num_of_each_val)
 				
 				# Add the smallest number so its not dividing by 0
@@ -460,40 +470,40 @@ class results(TemplateView):
 				val_entropy = val_entropy + -val_split*np.log2(val_split+smallest_num)
 
 			# Get the entropy for all values in this feature
-			val_ratio = denominator/len(heart)
+			val_ratio = denominator/len(df)
 			feature_entropy = feature_entropy + val_ratio*val_entropy
 		
 		return feature_entropy
 
-	def calc_info_gains(self, heart, info_gains):
+	def calc_info_gains(self, df, info_gains):
 		# Calculate the info_gain for non-target features only
-		features = heart.drop(['target'], axis=1)
+		features = df.drop(['target'], axis=1)
 
 		# Get entropy of target feature
-		target_entropy = self.get_target_entropy(heart)
+		target_entropy = self.get_target_entropy(df)
 		# print(target_entropy)
 		# print(features)
 		for f in features:
-			feature_entropy = self.get_feature_entropy(heart, f)
+			feature_entropy = self.get_feature_entropy(df, f)
 			information_gain = target_entropy - feature_entropy
 			info_gains[f] = information_gain
 
 		return info_gains
 
-	def find_feature(self, heart, info_gains):
-		info_gains = self.calc_info_gains(heart, info_gains)
+	def find_feature(self, df, info_gains):
+		info_gains = self.calc_info_gains(df, info_gains)
 		# print(info_gains)
 		vals = list(info_gains.values())
 		feat = list(info_gains.keys())
 
 		return feat[vals.index(max(vals))]
 
-	def create_tree(self, heart, dec_tree = 0):
+	def create_tree(self, df, dec_tree = 0):
 		# Find the feature to split on i.e. the node feature
 		info_gains = {}
-		node_feature = self.find_feature(heart, info_gains)
+		node_feature = self.find_feature(df, info_gains)
 		# print(node_feature)
-		node_feat_vals = heart[node_feature]
+		node_feat_vals = df[node_feature]
 
 		# Initialise decision tree
 		if dec_tree == 0:
@@ -502,15 +512,19 @@ class results(TemplateView):
 
 		# Get all values for the node
 		all_node_vals = np.unique(node_feat_vals)
-		
+		print(all_node_vals)
+		print(node_feature)
 		# Build the tree with recursion
 		for val in all_node_vals:
-			sub_tree = heart[node_feat_vals == val].reset_index(drop=True)
+			sub_tree = df[node_feat_vals == val].reset_index(drop=True)
 
 			values, size = np.unique(sub_tree['target'], return_counts=True)
-			print("looped\n\n")
+			print(val)
+			print(values)
+			print(len(size))
 			# More of the tree needs to be built
 			if len(size) > 1:
+				print("Making recursive call\n\n\n")
 				dec_tree[node_feature][val] = self.create_tree(sub_tree) 
 			
 			# This is the leaf node
@@ -543,40 +557,40 @@ class results(TemplateView):
 
 		return pred
 
-	def scale_diabetes(self, diabetes):
-		columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
-		min_max_scaler = preprocessing.MinMaxScaler()
-		diabetes[columns_to_scale] = min_max_scaler.fit_transform(diabetes[columns_to_scale])
+	# def scale_diabetes(self, diabetes):
+	# 	columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
+	# 	min_max_scaler = preprocessing.MinMaxScaler()
+	# 	diabetes[columns_to_scale] = min_max_scaler.fit_transform(diabetes[columns_to_scale])
 
-		return diabetes, min_max_scaler, columns_to_scale
-
-
-	def KNN(self, X_train, H_train):
-		knn_classifier = KNeighborsClassifier(n_neighbors = 9)
-		knn_classifier.fit(X_train, H_train)
-
-		return knn_classifier
+	# 	return diabetes, min_max_scaler, columns_to_scale
 
 
-	def decision_tree(self, X_train, H_train):
-		dt_classifier = DecisionTreeClassifier(max_features = 10, random_state = 0)
-		dt_classifier.fit(X_train, H_train)
+	# def KNN(self, X_train, H_train):
+	# 	knn_classifier = KNeighborsClassifier(n_neighbors = 9)
+	# 	knn_classifier.fit(X_train, H_train)
+
+	# 	return knn_classifier
+
+
+	# def decision_tree(self, X_train, H_train):
+	# 	dt_classifier = DecisionTreeClassifier(max_features = 10, random_state = 0)
+	# 	dt_classifier.fit(X_train, H_train)
 		
-		return dt_classifier
+	# 	return dt_classifier
 
 
-	def naive_bayes(self, X_train, H_train):
-		model = GaussianNB()
-		model.fit(X_train, H_train)
+	# def naive_bayes(self, X_train, H_train):
+	# 	model = GaussianNB()
+	# 	model.fit(X_train, H_train)
 		
-		return model
+	# 	return model
 
 
-	def linear_support_vector(self, X_train, H_train):
-		svm_model = LinearSVC(random_state=0, max_iter=3500)
-		svm_model.fit(X_train, H_train)
+	# def linear_support_vector(self, X_train, H_train):
+	# 	svm_model = LinearSVC(random_state=0, max_iter=3500)
+	# 	svm_model.fit(X_train, H_train)
 		
-		return svm_model
+	# 	return svm_model
 
 
 	def get(self, request):
@@ -587,88 +601,73 @@ class results(TemplateView):
 
 		# Put new data into dataframe
 		heart_vals = pd.DataFrame(heart_vals).transpose()
+		
+		if has_chest_pain == False:
+			heart = heart.drop(['cp'], axis = 1)
+
 		heart_vals.columns = heart.drop(['target'], axis=1).columns
 
 		heart = heart.append(heart_vals, ignore_index=True)
 
 		heart = self.bin_heart(heart, has_chest_pain)
 
-		if has_chest_pain == False:
-			heart = heart.drop(['cp'], axis = 1)
-
 		heart_vals = heart.drop(['target'], axis=1).iloc[-1]
 		heart = heart.drop(heart.index[-1])
 
-		# Split dataset
-		# H = heart['target']
-		# X = heart.drop(['target'], axis = 1)
-
 		# With oversampling
 		sm = SMOTE(random_state=52)
-		# X, H = sm.fit_sample(X, H)
-		
-		# KNN
-		# knn_classifier = self.KNN(X, H)
 
 		# Decision Tree
-		dt_classifier = self.create_tree(heart)
-
-		# Naive Bayes
-		# nb_classifier = self.naive_bayes(X, H)
-
-		# Linear Support Vector
-		# lsv_classifier = self.linear_support_vector(X, H)
-		
+		# heart_dt = self.create_tree(heart)
+		heart_pred = 0
 		# Make predictions
-		heart_pred = self.make_prediction(heart_vals, dt_classifier)
-		print(heart_vals)
-		print(heart_pred)
-		# print(knn_classifier.predict(heart_vals))
-		# print(dt_classifier.predict(heart_vals))
-		# print(nb_classifier.predict(heart_vals))
-		# print(lsv_classifier.predict(heart_vals))
+		# heart_pred = self.make_prediction(heart_vals, heart_dt)
+		# print(heart_vals)
+		# print(heart_pred)
+		
 		print("\n\n\n")
 
 		# Diabetes
 		# Load dataframes
 		diabetes = self.load_diabetes()
 
+		# In order to use the methods to create the tree
+		diabetes.rename(columns={'Diabetes': 'target'}, inplace=True)
+		print(diabetes.columns)
+
 		# Put new data into dataframe
 		diabetes_vals = pd.DataFrame(diabetes_vals).transpose()
-		diabetes_vals.columns = diabetes.drop(['Diabetes'],axis=1).columns
+		diabetes_vals.columns = diabetes.drop(['target'],axis=1).columns
+
+		diabetes = diabetes.append(diabetes_vals, ignore_index=True)
+
+		diabetes = self.bin_diabetes(diabetes)
+
+		diabetes_vals = diabetes.drop(['target'], axis=1).iloc[-1]
+		diabetes = diabetes.drop(diabetes.index[-1])
+
+		# With oversampling
+		sm = SMOTE(random_state=52)
+
+		# Decision Tree
+		diabetes_dt = self.create_tree(diabetes)
+		diabetes_pred = 0
+		# Make predictions
+		print('tree made')
+		diabetes_pred = self.make_prediction(diabetes_vals, diabetes_dt)
+		print(diabetes_vals)
+		print(diabetes_pred)
 
 		# Use dummy columns for the categorical features
-		diabetes, min_max_scaler, columns_to_scale = self.scale_diabetes(diabetes)
+		# diabetes, min_max_scaler, columns_to_scale = self.scale_diabetes(diabetes)
 		
 		# Split dataset
-		D = diabetes['Diabetes']
-		X = diabetes.drop(['Diabetes'], axis = 1)
+		# D = diabetes['target']
+		# X = diabetes.drop(['target'], axis = 1)
 		
 		# With oversampling
 		# sm = SMOTE(random_state=52)
 		# X, D = sm.fit_sample(X, D)
-		
-		# KNN
-		knn_classifier = self.KNN(X, D)
-
-		# Decision Tree
-		dt_classifier = self.decision_tree(X, D)
-
-		# Naive Bayes
-		nb_classifier = self.naive_bayes(X, D)
-
-		# Linear Support Vector
-		lsv_classifier = self.linear_support_vector(X, D)
-		
-		# Scaling the new instance
-		diabetes_vals[columns_to_scale] = min_max_scaler.transform(diabetes_vals[columns_to_scale])
-
-		# Making prediction
-		diabetes_pred = knn_classifier.predict(diabetes_vals)
-		print(knn_classifier.predict(diabetes_vals))
-		print(dt_classifier.predict(diabetes_vals))
-		print(nb_classifier.predict(diabetes_vals))
-		print(lsv_classifier.predict(diabetes_vals))
 
 		# Allow physician to choose further action
 		further_action_form = FurtherActionsForm()
