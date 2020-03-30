@@ -10,7 +10,7 @@ def load_dataframe():
 	return heart
 
 def bin_values(heart):
-	columns_to_bin = ['age', 'trestbps', 'chol', 'cigs', 'years', 'thalrest', 'trestbpd']
+	columns_to_bin = ['age', 'trestbps', 'trestbpd', 'chol', 'cigs', 'years', 'thalrest']
 
 	for col in columns_to_bin:
 		# Chol requires more buckets
@@ -123,6 +123,7 @@ def create_tree(heart, dec_tree = 0):
 			
 	return dec_tree
 
+
 def make_prediction(new_data, decision_tree):
 	# Start at the root node
 	root = list(decision_tree.keys())
@@ -151,17 +152,33 @@ def make_prediction(new_data, decision_tree):
 def main():
 	# Load dataset
 	heart = load_dataframe()
+	data = np.array([21,1,1,131,87,205,5,4,0,0,75,0])
+	instance = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
+									'chol','cigs','years','fbs','famhist','thalrest',
+									'exang'])
+
+	print(instance)
+
+	heart = heart.append(instance, ignore_index=True)
 
 	# Bin features
 	heart = bin_values(heart)
 
-	print(heart.head())
+	print(heart.tail())
 
+	new_data = heart.drop(['target'], axis=1).iloc[-1]
+	heart = heart.drop(heart.index[-1])
+	# Fit new instance
+	# new_data = fit_new_inst(instance, columns_to_bin, heart)
+
+	print(heart.tail())
+	print(new_data)
 	# Build tree
 	decision_tree = create_tree(heart)
 
-	print(heart['target'].iloc[4])
-	new_data = heart.drop(['target'], axis=1).iloc[4]
+	# print(heart.iloc[4])
+
+	# new_data = heart.drop(['target'], axis=1).iloc[4]
 
 	# Make predictions
 	pred = make_prediction(new_data, decision_tree)
