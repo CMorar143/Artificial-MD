@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+import pickle
+from sklearn.externals import joblib
 
 def load_dataframe():
 	# Load diabetes disease dataset into pandas dataframe
@@ -15,7 +17,7 @@ def bin_values(diabetes):
 		if col == 'Uric_Acid':
 			diabetes[col] = pd.cut(diabetes[col], 2)
 		else:
-			diabetes[col] = pd.cut(diabetes[col], 9)
+			diabetes[col] = pd.cut(diabetes[col], 8)
 	
 	# diabetes = pd.get_dummies(diabetes, columns = columns_to_bin)
 
@@ -186,7 +188,7 @@ def main():
 	# print(new_data)
 	# Build tree
 	decision_tree = create_tree(diabetes)
-
+	joblib.dump(decision_tree, 'decision_tree.pkl')
 	# print(diabetes.iloc[4])
 
 	# new_data = diabetes.drop(['Diabetes'], axis=1).iloc[4]
