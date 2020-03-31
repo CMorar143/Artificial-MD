@@ -9,16 +9,15 @@ def load_dataframe():
 	return diabetes
 
 def bin_values(diabetes):
-	columns_to_bin = ['age', 'trestbps', 'trestbpd', 'chol', 'cigs', 'years', 'thalrest']
-
-	for col in columns_to_bin:
-		# Chol requires more buckets
-		if col == 'chol':
-			diabetes[col] = pd.cut(diabetes[col], 10)
-		else:
-			diabetes[col] = pd.cut(diabetes[col], 7)
+	columns_to_bin = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
 	
-	diabetes = pd.get_dummies(diabetes, columns = columns_to_bin)
+	for col in columns_to_bin:
+		if col == 'Uric_Acid':
+			diabetes[col] = pd.cut(diabetes[col], 2)
+		else:
+			diabetes[col] = pd.cut(diabetes[col], 9)
+	
+	# diabetes = pd.get_dummies(diabetes, columns = columns_to_bin)
 
 	return diabetes
 
@@ -26,11 +25,11 @@ def get_target_entropy(diabetes):
 	entropy = 0
 
 	# Possible values are they have diabetes disease or they don't (1 or 0 respectively)
-	values = diabetes['target'].unique()
+	values = diabetes['Diabetes'].unique()
 
 	# Calculate entropy
 	for value in values:
-		val_split = diabetes['target'].value_counts()[value]/len(diabetes['target'])
+		val_split = diabetes['Diabetes'].value_counts()[value]/len(diabetes['Diabetes'])
 		entropy = entropy + -val_split*np.log2(val_split)
 
 	return entropy
@@ -42,7 +41,7 @@ def get_feature_entropy(diabetes, feature):
 	smallest_num = np.finfo(float).tiny
 
 	# Get the unique values for the target and the feature
-	values = diabetes['target'].unique()
+	values = diabetes['Diabetes'].unique()
 	feature_vals = diabetes[feature].unique()
 
 	for value in feature_vals:
@@ -52,7 +51,7 @@ def get_feature_entropy(diabetes, feature):
 			num_of_each_val = diabetes[feature][diabetes[feature]==value]
 			
 			# For getting the ratio
-			numerator = len(num_of_each_val[diabetes['target']==val])
+			numerator = len(num_of_each_val[diabetes['Diabetes']==val])
 			denominator = len(num_of_each_val)
 			
 			# Add the smallest number so its not dividing by 0
@@ -72,7 +71,7 @@ def get_feature_entropy(diabetes, feature):
 
 def calc_info_gains(diabetes, info_gains):
 	# Calculate the info_gain for non-target features only
-	features = diabetes.drop(['target'], axis=1)
+	features = diabetes.drop(['Diabetes'], axis=1)
 
 	# Get entropy of target feature
 	target_entropy = get_target_entropy(diabetes)
@@ -105,16 +104,31 @@ def create_tree(diabetes, dec_tree = 0):
 
 	# Get all values for the node
 	all_node_vals = np.unique(node_feat_vals)
-
+	print(node_feature)
 	# Build the tree with recursion
 	for val in all_node_vals:
 		sub_tree = diabetes[node_feat_vals == val].reset_index(drop=True)
 
-		values, size = np.unique(sub_tree['target'], return_counts=True)
-		
+		values, size = np.unique(sub_tree['Diabetes'], return_counts=True)
+		print(val)
+		print(values)
+		print(size)
 		# More of the tree needs to be built
 		if len(size) > 1:
-			dec_tree[node_feature][val] = create_tree(sub_tree) 
+			# print(dec_tree[node_feature])
+			without_target = sub_tree.drop(['Diabetes'], axis=1)
+			no_duplicates = without_target.drop_duplicates(without_target.columns)
+			print(sub_tree.transpose())
+			print(len(size))
+			print(size[1])
+			print(len(no_duplicates))
+			# if node_feature == 'Short_Breath':
+			if len(no_duplicates) == 1:
+				print("THEY'RE EQUAL\n\n\n")
+				continue
+			else:
+				print("Making recursive call\n\n\n")
+				dec_tree[node_feature][val] = create_tree(sub_tree) 
 		
 		# This is the leaf node
 		else:
@@ -151,33 +165,31 @@ def make_prediction(new_data, decision_tree):
 def main():
 	# Load dataset
 	diabetes = load_dataframe()
-	data = np.array([21,1,1,131,87,205,5,4,0,0,75,0])
-	instance = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
-									'chol','cigs','years','fbs','famhist','thalrest',
-									'exang'])
+	# data = np.array([21,1,1,131,87,205,5,4,0,0,75,0])
+	# instance = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
+	# 								'chol','cigs','years','fbs','famhist','thalrest',
+	# 								'exang'])
 
-	print(instance)
+	# print(instance)
 
-	diabetes = diabetes.append(instance, ignore_index=True)
+	# diabetes = diabetes.append(instance, ignore_index=True)
 
 	# Bin features
 	diabetes = bin_values(diabetes)
 
 	print(diabetes.tail())
 
-	new_data = diabetes.drop(['target'], axis=1).iloc[-1]
+	new_data = diabetes.drop(['Diabetes'], axis=1).iloc[-1]
 	diabetes = diabetes.drop(diabetes.index[-1])
-	# Fit new instance
-	# new_data = fit_new_inst(instance, columns_to_bin, diabetes)
 
 	print(diabetes.tail())
-	print(new_data)
+	# print(new_data)
 	# Build tree
 	decision_tree = create_tree(diabetes)
 
 	# print(diabetes.iloc[4])
 
-	# new_data = diabetes.drop(['target'], axis=1).iloc[4]
+	# new_data = diabetes.drop(['Diabetes'], axis=1).iloc[4]
 
 	# Make predictions
 	pred = make_prediction(new_data, decision_tree)

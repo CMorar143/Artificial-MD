@@ -106,15 +106,19 @@ def create_tree(heart, dec_tree = 0):
 
 	# Get all values for the node
 	all_node_vals = np.unique(node_feat_vals)
-
+	print(node_feature)
 	# Build the tree with recursion
 	for val in all_node_vals:
 		sub_tree = heart[node_feat_vals == val].reset_index(drop=True)
 
 		values, size = np.unique(sub_tree['target'], return_counts=True)
-		
+		print(val)
+		print(values)
+		print(size)
 		# More of the tree needs to be built
 		if len(size) > 1:
+			print(dec_tree[node_feature])
+			print("Making recursive call\n\n\n")
 			dec_tree[node_feature][val] = create_tree(sub_tree) 
 		
 		# This is the leaf node
