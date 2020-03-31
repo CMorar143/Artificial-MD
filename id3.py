@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.externals import joblib
 
 def load_dataframe():
 	# Load heart disease dataset into pandas dataframe
@@ -21,7 +22,7 @@ def bin_values(heart):
 	
 	heart = pd.get_dummies(heart, columns = columns_to_bin)
 
-	return heart
+	return heart, columns_to_bin
 
 def get_target_entropy(heart):
 	entropy = 0
@@ -166,26 +167,25 @@ def main():
 	heart = heart.append(instance, ignore_index=True)
 
 	# Bin features
-	heart = bin_values(heart)
+	heart, columns_to_bin = bin_values(heart)
+	columns_to_bin = ['age', 'trestbps', 'trestbpd', 'chol', 'cigs', 'years', 'thalrest']
 
 	print(heart.tail())
 
-	new_data = heart.drop(['target'], axis=1).iloc[-1]
+	instance = heart.drop(['target'], axis=1).iloc[-1]
 	heart = heart.drop(heart.index[-1])
-	# Fit new instance
-	# new_data = fit_new_inst(instance, columns_to_bin, heart)
 
 	print(heart.tail())
-	print(new_data)
+	print(instance)
 	# Build tree
 	decision_tree = create_tree(heart)
-
+	joblib.dump(decision_tree, 'decision_tree.pkl')
 	# print(heart.iloc[4])
 
 	# new_data = heart.drop(['target'], axis=1).iloc[4]
 
 	# Make predictions
-	pred = make_prediction(new_data, decision_tree)
+	pred = make_prediction(instance, decision_tree)
 
 	print(pred)
 

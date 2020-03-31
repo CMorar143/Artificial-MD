@@ -52,10 +52,10 @@ def make_prediction(new_data, decision_tree):
 def main():
 	# Load dataset
 	diabetes = load_dataframe()
-	# data = np.array([21,1,1,131,87,205,5,4,0,0,75,0])
-	# instance = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
-	# 								'chol','cigs','years','fbs','famhist','thalrest',
-	# 								'exang'])
+	data = np.array([21,1,1,131,87,205,5,4,0,0,75,0])
+	instance = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
+									'chol','cigs','years','fbs','famhist','thalrest',
+									'exang'])
 
 	# print(instance)
 
