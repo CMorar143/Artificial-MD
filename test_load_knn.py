@@ -21,7 +21,7 @@ def bin_values(need_updated_tree, heart):
 			heart[col] = pd.cut(heart[col], 7)
 	
 	# if need_updated_tree:
-	# heart = pd.get_dummies(heart, columns = columns_to_bin)
+		# heart = pd.get_dummies(heart, columns = columns_to_bin)
 
 	return heart, columns_to_bin
 
@@ -160,7 +160,7 @@ def make_prediction(new_data, decision_tree):
 def main():
 	# Load dataset
 	heart = load_dataframe()
-	data = np.array([30,1,1,131,87,205,5,4,0,0,75,0])
+	data = np.array([21,1,1,131,87,205,5,4,0,0,75,0])
 	instance = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
 									'chol','cigs','years','fbs','famhist','thalrest',
 									'exang'])
@@ -174,38 +174,38 @@ def main():
 
 	columns_to_check = ['age', 'trestbps', 'trestbpd', 'chol', 'thalrest']
 	
-	# for col in columns_to_check:
-	# 	m = [instance[col] in x for x in heart[col].unique()]
-	# 	print(m)
-	# 	if True in m:
-	# 		print(col)
-	# 		print("3.14159265")
-	# 	else:
-	# 		need_updated_tree = True
+	for col in columns_to_check:
+		m = [instance[col] in x for x in heart[col].unique()]
+		print(m)
+		if True in m:
+			print(col)
+			print("3.14159265")
+		else:
+			need_updated_tree = True
 
 
-	# print(heart.tail())
-	# print(instance)
-	# print(need_updated_tree)
-	# # Build tree
-	# if need_updated_tree:
-	# 	heart = load_dataframe()
-
-	# 	heart = heart.append(instance, ignore_index=True)
-
-	# 	# Bin features
-	# 	heart, _ = bin_values(need_updated_tree, heart)
+	print(heart.tail())
+	print(instance)
+	print(need_updated_tree)
+	
+	heart = load_dataframe()
+	heart = heart.append(instance, ignore_index=True)
+	heart, _ = bin_values(need_updated_tree, heart)
 
 	instance = heart.drop(['target'], axis=1).iloc[-1]
 	heart = heart.drop(heart.index[-1])
-	print(instance)
-	print(heart.columns)
-	# 	decision_tree = create_tree(heart)
 
-	# else:
-	# heart = pd.get_dummies(heart, columns = columns_to_bin)
-	# print(heart['thalrest_(62.571, 73.857]'])
-	decision_tree = joblib.load('heart_dt_hascp.pkl')
+	# Build tree
+	if need_updated_tree:
+		print("update TREE111")
+		
+		print(instance)
+		print(heart.columns)
+		decision_tree = create_tree(heart)
+
+	else:
+		# print(heart['thalrest_(62.571, 73.857]'])
+		decision_tree = joblib.load('heart_dt_hascp.pkl')
 		
 	# print(decision_tree)
 	
