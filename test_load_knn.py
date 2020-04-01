@@ -10,7 +10,7 @@ def load_dataframe():
 
 	return heart
 
-def bin_values(need_updated_tree, heart):
+def bin_values(heart):
 	columns_to_bin = ['age', 'trestbps', 'trestbpd', 'chol', 'cigs', 'years', 'thalrest']
 
 	for col in columns_to_bin:
@@ -20,10 +20,7 @@ def bin_values(need_updated_tree, heart):
 		else:
 			heart[col] = pd.cut(heart[col], 7)
 	
-	# if need_updated_tree:
-		# heart = pd.get_dummies(heart, columns = columns_to_bin)
-
-	return heart, columns_to_bin
+	return heart
 
 
 
@@ -160,7 +157,7 @@ def make_prediction(new_data, decision_tree):
 def main():
 	# Load dataset
 	heart = load_dataframe()
-	data = np.array([21,1,1,131,87,205,5,4,0,0,75,0])
+	data = np.array([29,1,1,131,87,205,5,4,0,0,75,0])
 	instance = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
 									'chol','cigs','years','fbs','famhist','thalrest',
 									'exang'])
@@ -170,19 +167,16 @@ def main():
 	need_updated_tree = False
 
 	# Bin features
-	heart, columns_to_bin = bin_values(need_updated_tree, heart)
+	heart = bin_values(heart)
 
 	columns_to_check = ['age', 'trestbps', 'trestbpd', 'chol', 'thalrest']
 	
 	for col in columns_to_check:
-		m = [instance[col] in x for x in heart[col].unique()]
-		print(m)
-		if True in m:
-			print(col)
-			print("3.14159265")
-		else:
+		check = [instance[col] in x for x in heart[col].unique()]
+		print(check)
+		if True not in check:
 			need_updated_tree = True
-
+			
 
 	print(heart.tail())
 	print(instance)
@@ -190,7 +184,7 @@ def main():
 	
 	heart = load_dataframe()
 	heart = heart.append(instance, ignore_index=True)
-	heart, _ = bin_values(need_updated_tree, heart)
+	heart = bin_values(heart)
 
 	instance = heart.drop(['target'], axis=1).iloc[-1]
 	heart = heart.drop(heart.index[-1])
