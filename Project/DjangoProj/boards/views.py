@@ -574,41 +574,6 @@ class results(TemplateView):
 
 		return pred
 
-	# def scale_diabetes(self, diabetes):
-	# 	columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
-	# 	min_max_scaler = preprocessing.MinMaxScaler()
-	# 	diabetes[columns_to_scale] = min_max_scaler.fit_transform(diabetes[columns_to_scale])
-
-	# 	return diabetes, min_max_scaler, columns_to_scale
-
-
-	# def KNN(self, X_train, H_train):
-	# 	knn_classifier = KNeighborsClassifier(n_neighbors = 9)
-	# 	knn_classifier.fit(X_train, H_train)
-
-	# 	return knn_classifier
-
-
-	# def decision_tree(self, X_train, H_train):
-	# 	dt_classifier = DecisionTreeClassifier(max_features = 10, random_state = 0)
-	# 	dt_classifier.fit(X_train, H_train)
-		
-	# 	return dt_classifier
-
-
-	# def naive_bayes(self, X_train, H_train):
-	# 	model = GaussianNB()
-	# 	model.fit(X_train, H_train)
-		
-	# 	return model
-
-
-	# def linear_support_vector(self, X_train, H_train):
-	# 	svm_model = LinearSVC(random_state=0, max_iter=3500)
-	# 	svm_model.fit(X_train, H_train)
-		
-	# 	return svm_model
-
 
 	def get(self, request):
 		heart_vals, diabetes_vals, has_chest_pain = self.get_data(request)
@@ -654,64 +619,61 @@ class results(TemplateView):
 				heart_dt = self.load_dt('heart_dt_hascp.pkl')
 			else:
 				heart_dt = self.load_dt('heart_dt.pkl')
-		
 
-		# With oversampling
-		# sm = SMOTE(random_state=52)
-
-		# Decision Tree
-		# heart_dt = self.create_tree(heart)
 		heart_pred = 0
 		# Make predictions
 		heart_pred = self.make_prediction(heart_vals, heart_dt)
-		# print(heart_vals)
-		# print(heart_pred)
 		
 		print("\n\n\n")
 
 		# Diabetes
 		# Load dataframes
 		diabetes = self.load_diabetes()
-
+		data = np.array([1,1,0,0,2.9,0,140,90,60,56,126,193,51,5.7])
+		diabetes_vals = pd.Series(data, index=['Short_Breath', 'Chest_Pains', 'High_Chol_Hist',
+									'High_BP_Hist',	'BMI', 'Reg_Pulse',	'Sys_BP', 'Dias_BP',
+									'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride',
+									'Uric_Acid'])
+		
 		# In order to use the methods to create the tree
-		diabetes.rename(columns={'Diabetes': 'target'}, inplace=True)
+		# diabetes.rename(columns={'Diabetes': 'target'}, inplace=True)
 		print(diabetes.columns)
 
 		# Put new data into dataframe
-		diabetes_vals = pd.DataFrame(diabetes_vals).transpose()
-		diabetes_vals.columns = diabetes.drop(['target'], axis=1).columns
-
-		# diabetes = diabetes.append(diabetes_vals, ignore_index=True)
+		# diabetes_vals = pd.DataFrame(diabetes_vals).transpose()
+		diabetes_vals.columns = diabetes.drop(['Diabetes'], axis=1).columns
 
 		diabetes = self.bin_diabetes(diabetes)
+
+		need_updated_tree = False
+		columns_to_check = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
+		
+		for col in columns_to_check:
+			check = [diabetes_vals[col] in x for x in diabetes[col].unique()]
+			print(check)
+			if True not in check:
+				need_updated_tree = True
+
+		diabetes = self.load_diabetes()
+		diabetes = diabetes.append(diabetes_vals, ignore_index=True)
+		diabetes = self.bin_diabetes(diabetes)
+
+		# In order to use the methods to create the tree
+		diabetes.rename(columns={'Diabetes': 'target'}, inplace=True)
 
 		diabetes_vals = diabetes.drop(['target'], axis=1).iloc[-1]
 		diabetes = diabetes.drop(diabetes.index[-1])
 
-		# With oversampling
-		sm = SMOTE(random_state=52)
+		# Build tree
+		if need_updated_tree:
+			diabetes_dt = self.create_tree(diabetes)
 
-		# Decision Tree
-		# diabetes_dt = self.create_tree(diabetes)
-		diabetes_dt = self.load_dt('diabetes_dt.pkl')
-		
+		else:
+			diabetes_dt = self.load_dt('diabetes_dt.pkl')
+
 		diabetes_pred = 0
 		# Make predictions
-		print('tree made')
 		diabetes_pred = self.make_prediction(diabetes_vals, diabetes_dt)
-		print(diabetes_vals)
-		print(diabetes_pred)
-
-		# Use dummy columns for the categorical features
-		# diabetes, min_max_scaler, columns_to_scale = self.scale_diabetes(diabetes)
-		
-		# Split dataset
-		# D = diabetes['target']
-		# X = diabetes.drop(['target'], axis = 1)
-		
-		# With oversampling
-		# sm = SMOTE(random_state=52)
-		# X, D = sm.fit_sample(X, D)
 
 		# Allow physician to choose further action
 		further_action_form = FurtherActionsForm()

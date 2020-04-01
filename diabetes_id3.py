@@ -167,15 +167,14 @@ def make_prediction(new_data, decision_tree):
 def main():
 	# Load dataset
 	diabetes = load_dataframe()
-	# data = np.array([21,1,1,131,87,205,5,4,0,0,75,0])
-	# instance = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
-	# 								'chol','cigs','years','fbs','famhist','thalrest',
-	# 								'exang'])
+	data = np.array([1,1,1,1,31,0,140,95,56,124,193,51,5.0])
+	instance = pd.Series(data, index=['Short_Breath', 'Chest_Pains', 'High_Chol_Hist',
+									'High_BP_Hist',	'BMI', 'Reg_Pulse',	'Sys_BP', 'Dias_BP',
+									'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride',
+									'Uric_Acid'])
 
 	# print(instance)
-
-	# diabetes = diabetes.append(instance, ignore_index=True)
-
+		
 	# Bin features
 	diabetes = bin_values(diabetes)
 
