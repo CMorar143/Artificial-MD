@@ -615,7 +615,7 @@ class results(TemplateView):
 
 		# Load dataframes
 		heart = self.load_heart()
-		data = np.array([21,1,1,131,87,205,5,4,0,0,75,0])
+		data = np.array([29,1,1,131,87,205,5,4,0,0,75,0])
 		heart_vals = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
 										'chol','cigs','years','fbs','famhist','thalrest',
 										'exang'])

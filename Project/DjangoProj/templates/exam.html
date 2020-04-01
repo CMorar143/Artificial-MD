@@ -5,7 +5,7 @@
 		<title>Exam</title>
 		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 		<!-- <link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Form.css' %}"> -->
-		<link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Exam2.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/Custom/Exam3.css' %}">
 		<link rel="stylesheet" href="{% static 'css/Custom/Navbar3.css' %}">
 	</head>
 	<body>
@@ -18,7 +18,18 @@
 			<li><a href="{% url 'diary' %}">Diary</a></li>
 			<li><a href="#">Till</a></li>
 		</ul>
-		<div class="main">			
+		<div class="main">
+			<div id="popup">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<div class="alert alert-primary">
+						<strong>Info!</strong> Processing the Exam Information
+					</div>
+					<div class="process_info">
+						Processing 
+					</div>
+				</div>
+			</div>		
 			<form method="post">
 				{% csrf_token %}
 				<div class="left_section">
@@ -96,7 +107,7 @@
 					</div>
 				</div>
 				<div class="submit_btn">
-						<input class="btn btn-primary btn-lg btn-block" name="process_exam" type="submit" value="Process Exam" />
+						<input class="btn btn-primary btn-lg btn-block" name="process_exam" type="submit" value="Process Exam" onclick="displayMessage()" />
 					</div>
 			</form>
 		</div>
@@ -113,6 +124,26 @@
 					navbar.classList.remove("sticky");
 				}
 			}
+
+			function displayMessage()
+			{
+				document.getElementById("popup").style.display = "block";
+			}
+
+			span.onclick = function() 
+			{
+				document.getElementById("popup").style.display = "none";
+			}
+
+			// When the user clicks anywhere outside of the modal, close it
+			window.onclick = function(event) 
+			{
+				if (event.target == document.getElementById("popup"))
+				{
+					document.getElementById("popup").style.display = "none";
+				}
+			}
+
 		</script>
 	</body>
 </html>
