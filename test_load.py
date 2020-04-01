@@ -72,7 +72,7 @@ def main():
 	print(diabetes.tail())
 	# print(new_data)
 	# Build tree
-	decision_tree = joblib.load('decision_tree.pkl')
+	decision_tree = joblib.load('diabetes_dt.pkl')
 	
 	# print(diabetes.iloc[4])
 

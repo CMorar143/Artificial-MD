@@ -6,7 +6,7 @@ def load_dataframe():
 	# Load heart disease dataset into pandas dataframe
 	pathHeart = "../../FYP_Data/heart-disease-uci/"
 	heart = pd.read_csv(pathHeart + 'new_cleveland.csv')
-	heart = heart.drop(['dm'], axis=1)
+	heart = heart.drop(['dm', 'cp'], axis=1)
 
 	return heart
 
@@ -166,8 +166,8 @@ def make_prediction(new_data, decision_tree):
 def main():
 	# Load dataset
 	heart = load_dataframe()
-	data = np.array([21,1,1,131,87,205,5,4,0,0,75,0])
-	instance = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
+	data = np.array([21,1,131,87,205,5,4,0,0,75,0])
+	instance = pd.Series(data, index=['age','sex','trestbps','trestbpd',
 									'chol','cigs','years','fbs','famhist','thalrest',
 									'exang'])
 
@@ -179,22 +179,23 @@ def main():
 	heart, columns_to_bin = bin_values(heart)
 	columns_to_bin = ['age', 'trestbps', 'trestbpd', 'chol', 'cigs', 'years', 'thalrest']
 
-	# print(heart.tail())
+	print(heart.tail())
 
-	# instance = heart.drop(['target'], axis=1).iloc[-1]
+	instance = heart.drop(['target'], axis=1).iloc[-1]
 	# heart = heart.drop(heart.index[-1])
 
-
+	print(heart.tail())
+	print(instance)
 	# Build tree
 	decision_tree = create_tree(heart)
-	joblib.dump(decision_tree, 'heart_dt_hascp.pkl')
+	joblib.dump(decision_tree, 'heart_dt.pkl')
 	# print(heart.iloc[4])
 
 	# new_data = heart.drop(['target'], axis=1).iloc[4]
 
 	# Make predictions
-	# pred = make_prediction(instance, decision_tree)
+	pred = make_prediction(instance, decision_tree)
 
-	# print(pred)
+	print(pred)
 
 main()

@@ -19,6 +19,7 @@ import os
 from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import train_test_split
 from sklearn import metrics, preprocessing
+from sklearn.externals import joblib
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -30,12 +31,8 @@ first_login = False
 @receiver(user_logged_in)
 def logged_in(sender, **kwargs):
 	if kwargs['user'].groups.filter(name='Receptionists').exists():
-		print("got here 3.14")
 		global first_login
 		first_login = True
-		# for key, value in kwargs.items():
-		# 	print("%s == %s" %(key, value))
-		print("\n\n\n")
 
 user_logged_in.connect(logged_in)
 
@@ -185,7 +182,6 @@ class patient(TemplateView):
 			global first_login
 			if first_login == True:
 				overdue_rem = Reminder.objects.filter(Q(rem_date__lt=datetime.now()) | Q(rem_date=datetime.now())).order_by('rem_date')
-				print("First time logged in today")
 				first_login = False
 				
 				args['first_login'] = True
@@ -401,137 +397,158 @@ class results(TemplateView):
 
 		return diabetes
 
+	def load_dt(self, dt):
+		current_dir =  os.path.abspath(os.path.dirname(__file__))
+		parent_dir = os.path.abspath(current_dir + "/../")
+		pathDT = parent_dir + '/Classifiers/' + dt
+
+		decision_tree = joblib.load(pathDT)
+
+		return decision_tree
+
 
 	def bin_heart(self, heart, has_chest_pain):
 		if has_chest_pain:
 			heart = pd.get_dummies(heart, columns = ['cp'])
-		columns_to_bin = ['age', 'trestbps', 'trestbpd', 'cigs', 'years', 'thalrest']
+		columns_to_bin = ['age', 'trestbps', 'trestbpd', 'chol', 'cigs', 'years', 'thalrest']
 
 		for col in columns_to_bin:
-			heart[col] = pd.cut(heart[col], 6)
-		
-		# Chol requires more buckets
-		heart['chol'] = pd.cut(heart['chol'], 8)
+			# Chol requires more buckets
+			if col == 'chol':
+				heart[col] = pd.cut(heart[col], 10)
+			else:
+				heart[col] = pd.cut(heart[col], 7)
 
-		heart = pd.get_dummies(heart, columns = columns_to_bin)
+		# heart = pd.get_dummies(heart, columns = columns_to_bin)
 
 		return heart
 
 	def bin_diabetes(self, diabetes):
-		columns_to_bin = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
-		
-		for col in columns_to_bin:
-			diabetes[col] = pd.cut(diabetes[col], 5)
+		columns_to_bin = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 
+						'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
 
-		diabetes = pd.get_dummies(diabetes, columns = columns_to_bin)
+		for col in columns_to_bin:
+			if col == 'Uric_Acid':
+				diabetes[col] = pd.cut(diabetes[col], 2)
+			else:
+				diabetes[col] = pd.cut(diabetes[col], 8)
+
+		# diabetes = pd.get_dummies(diabetes, columns = columns_to_bin)
 
 		return diabetes
 
-	def get_target_entropy(self, df):
-		entropy = 0
+	# def get_target_entropy(self, df):
+	# 	entropy = 0
 
-		# Possible values are they have heart disease or they don't (1 or 0 respectively)
-		values = df['target'].unique()
+	# 	# Possible values are they have heart disease or they don't (1 or 0 respectively)
+	# 	values = df['target'].unique()
 
-		# Calculate entropy
-		for value in values:
-			val_split = df['target'].value_counts()[value]/len(df['target'])
-			entropy = entropy + -val_split*np.log2(val_split)
+	# 	# Calculate entropy
+	# 	for value in values:
+	# 		val_split = df['target'].value_counts()[value]/len(df['target'])
+	# 		entropy = entropy + -val_split*np.log2(val_split)
 
-		return entropy
+	# 	return entropy
 
-	def get_feature_entropy(self, df, feature):
-		feature_entropy = 0
+	# def get_feature_entropy(self, df, feature):
+	# 	feature_entropy = 0
 
-		# To prevent the feature entropies from being null
-		smallest_num = np.finfo(float).tiny
+	# 	# To prevent the feature entropies from being null
+	# 	smallest_num = np.finfo(float).tiny
 
-		# Get the unique values for the target and the feature
-		values = df['target'].unique()
-		feature_vals = df[feature].unique()
+	# 	# Get the unique values for the target and the feature
+	# 	values = df['target'].unique()
+	# 	feature_vals = df[feature].unique()
 
-		for value in feature_vals:
-			val_entropy = 0
-			for val in values:
-				# Get the number of possible values within the feature
-				num_of_each_val = df[feature][df[feature]==value]
+	# 	for value in feature_vals:
+	# 		val_entropy = 0
+	# 		for val in values:
+	# 			# Get the number of possible values within the feature
+	# 			num_of_each_val = df[feature][df[feature]==value]
 				
-				# For getting the ratio
-				numerator = len(num_of_each_val[df['target']==val])
-				denominator = len(num_of_each_val)
+	# 			# For getting the ratio
+	# 			numerator = len(num_of_each_val[df['target']==val])
+	# 			denominator = len(num_of_each_val)
 				
-				# Add the smallest number so its not dividing by 0
-				val_split = numerator/(denominator+smallest_num)
+	# 			# Add the smallest number so its not dividing by 0
+	# 			val_split = numerator/(denominator+smallest_num)
 				
-				""" Get the entropy for both target feature 
-					values with respect to this feature value
-				"""
-				# Add the smallest number so its not log2(0)
-				val_entropy = val_entropy + -val_split*np.log2(val_split+smallest_num)
+	# 			""" Get the entropy for both target feature 
+	# 				values with respect to this feature value
+	# 			"""
+	# 			# Add the smallest number so its not log2(0)
+	# 			val_entropy = val_entropy + -val_split*np.log2(val_split+smallest_num)
 
-			# Get the entropy for all values in this feature
-			val_ratio = denominator/len(df)
-			feature_entropy = feature_entropy + val_ratio*val_entropy
+	# 		# Get the entropy for all values in this feature
+	# 		val_ratio = denominator/len(df)
+	# 		feature_entropy = feature_entropy + val_ratio*val_entropy
 		
-		return feature_entropy
+	# 	return feature_entropy
 
-	def calc_info_gains(self, df, info_gains):
-		# Calculate the info_gain for non-target features only
-		features = df.drop(['target'], axis=1)
+	# def calc_info_gains(self, df, info_gains):
+	# 	# Calculate the info_gain for non-target features only
+	# 	features = df.drop(['target'], axis=1)
 
-		# Get entropy of target feature
-		target_entropy = self.get_target_entropy(df)
-		# print(target_entropy)
-		# print(features)
-		for f in features:
-			feature_entropy = self.get_feature_entropy(df, f)
-			information_gain = target_entropy - feature_entropy
-			info_gains[f] = information_gain
+	# 	# Get entropy of target feature
+	# 	target_entropy = self.get_target_entropy(df)
+	# 	# print(target_entropy)
+	# 	# print(features)
+	# 	for f in features:
+	# 		feature_entropy = self.get_feature_entropy(df, f)
+	# 		information_gain = target_entropy - feature_entropy
+	# 		info_gains[f] = information_gain
 
-		return info_gains
+	# 	return info_gains
 
-	def find_feature(self, df, info_gains):
-		info_gains = self.calc_info_gains(df, info_gains)
-		# print(info_gains)
-		vals = list(info_gains.values())
-		feat = list(info_gains.keys())
+	# def find_feature(self, df, info_gains):
+	# 	info_gains = self.calc_info_gains(df, info_gains)
+	# 	# print(info_gains)
+	# 	vals = list(info_gains.values())
+	# 	feat = list(info_gains.keys())
 
-		return feat[vals.index(max(vals))]
+	# 	return feat[vals.index(max(vals))]
 
-	def create_tree(self, df, dec_tree = 0):
-		# Find the feature to split on i.e. the node feature
-		info_gains = {}
-		node_feature = self.find_feature(df, info_gains)
-		# print(node_feature)
-		node_feat_vals = df[node_feature]
+	# def create_tree(self, df, dec_tree = 0):
+	# 	# Find the feature to split on i.e. the node feature
+	# 	info_gains = {}
+	# 	node_feature = self.find_feature(df, info_gains)
+	# 	# print(node_feature)
+	# 	node_feat_vals = df[node_feature]
 
-		# Initialise decision tree
-		if dec_tree == 0:
-			dec_tree = {}
-			dec_tree[node_feature] = {}
+	# 	# Initialise decision tree
+	# 	if dec_tree == 0:
+	# 		dec_tree = {}
+	# 		dec_tree[node_feature] = {}
 
-		# Get all values for the node
-		all_node_vals = np.unique(node_feat_vals)
-		print(all_node_vals)
-		print(node_feature)
-		# Build the tree with recursion
-		for val in all_node_vals:
-			sub_tree = df[node_feat_vals == val].reset_index(drop=True)
+	# 	# Get all values for the node
+	# 	all_node_vals = np.unique(node_feat_vals)
+	# 	print(all_node_vals)
+	# 	print(node_feature)
+	# 	# Build the tree with recursion
+	# 	for val in all_node_vals:
+	# 		sub_tree = df[node_feat_vals == val].reset_index(drop=True)
 
-			values, size = np.unique(sub_tree['target'], return_counts=True)
-			print(val)
-			print(values)
-			print(len(size))
-			# More of the tree needs to be built
-			if len(size) > 1:
-				print("Making recursive call\n\n\n")
-				dec_tree[node_feature][val] = self.create_tree(sub_tree) 
-			
-			# This is the leaf node
-			else:
-				dec_tree[node_feature][val] = values[0]
+	# 		values, size = np.unique(sub_tree['target'], return_counts=True)
+	# 		print(val)
+	# 		print(values)
+	# 		print(len(size))
+	# 		# More of the tree needs to be built
+	# 		if len(size) > 1:
+	# 			without_target = sub_tree.drop(['target'], axis=1)
+	# 			no_duplicates = without_target.drop_duplicates(without_target.columns)
 				
-		return dec_tree
+	# 			if len(no_duplicates) == 1:
+	# 				print("THEY'RE EQUAL\n\n\n")
+	# 				continue
+	# 			else:
+	# 				print("Making recursive call\n\n\n")
+	# 				dec_tree[node_feature][val] = self.create_tree(sub_tree) 
+			
+	# 		# This is the leaf node
+	# 		else:
+	# 			dec_tree[node_feature][val] = values[0]
+
+	# 	return dec_tree
 
 	def make_prediction(self, new_data, decision_tree):
 		# Start at the root node
@@ -542,7 +559,7 @@ class results(TemplateView):
 			
 			# Getting the value of the root node for the new data point
 			val = new_data[sub_node]
-			
+			print(decision_tree.keys())
 			# Getting the subtree at that value
 			decision_tree = decision_tree[sub_node][val]
 			pred = 0
@@ -607,10 +624,10 @@ class results(TemplateView):
 
 		heart_vals.columns = heart.drop(['target'], axis=1).columns
 
-		heart = heart.append(heart_vals, ignore_index=True)
+		# heart = heart.append(heart_vals, ignore_index=True)
 
 		heart = self.bin_heart(heart, has_chest_pain)
-
+		print(heart.columns)
 		heart_vals = heart.drop(['target'], axis=1).iloc[-1]
 		heart = heart.drop(heart.index[-1])
 
@@ -619,9 +636,14 @@ class results(TemplateView):
 
 		# Decision Tree
 		# heart_dt = self.create_tree(heart)
+		
+		if has_chest_pain:
+			heart_dt = self.load_dt('heart_dt_hascp.pkl')
+		else:
+			heart_dt = self.load_dt('heart_dt.pkl')
 		heart_pred = 0
 		# Make predictions
-		# heart_pred = self.make_prediction(heart_vals, heart_dt)
+		heart_pred = self.make_prediction(heart_vals, heart_dt)
 		# print(heart_vals)
 		# print(heart_pred)
 		
@@ -637,9 +659,9 @@ class results(TemplateView):
 
 		# Put new data into dataframe
 		diabetes_vals = pd.DataFrame(diabetes_vals).transpose()
-		diabetes_vals.columns = diabetes.drop(['target'],axis=1).columns
+		diabetes_vals.columns = diabetes.drop(['target'], axis=1).columns
 
-		diabetes = diabetes.append(diabetes_vals, ignore_index=True)
+		# diabetes = diabetes.append(diabetes_vals, ignore_index=True)
 
 		diabetes = self.bin_diabetes(diabetes)
 
@@ -650,7 +672,9 @@ class results(TemplateView):
 		sm = SMOTE(random_state=52)
 
 		# Decision Tree
-		diabetes_dt = self.create_tree(diabetes)
+		# diabetes_dt = self.create_tree(diabetes)
+		diabetes_dt = self.load_dt('diabetes_dt.pkl')
+		
 		diabetes_pred = 0
 		# Make predictions
 		print('tree made')

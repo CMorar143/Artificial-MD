@@ -10,7 +10,8 @@ def load_dataframe():
 	return diabetes
 
 def bin_values(diabetes):
-	columns_to_bin = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
+	columns_to_bin = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 
+					'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
 	
 	for col in columns_to_bin:
 		if col == 'Uric_Acid':
@@ -181,13 +182,13 @@ def main():
 	print(diabetes.tail())
 
 	new_data = diabetes.drop(['Diabetes'], axis=1).iloc[-1]
-	diabetes = diabetes.drop(diabetes.index[-1])
+	# diabetes = diabetes.drop(diabetes.index[-1])
 
 	print(diabetes.tail())
 	# print(new_data)
 	# Build tree
 	decision_tree = create_tree(diabetes)
-	joblib.dump(decision_tree, 'decision_tree.pkl')
+	joblib.dump(decision_tree, 'diabetes_dt.pkl')
 	# print(diabetes.iloc[4])
 
 	# new_data = diabetes.drop(['Diabetes'], axis=1).iloc[4]

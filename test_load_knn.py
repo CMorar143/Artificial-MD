@@ -10,19 +10,127 @@ def load_dataframe():
 
 	return heart
 
-def bin_values(heart):
+def bin_values(need_updated_tree, heart):
 	columns_to_bin = ['age', 'trestbps', 'trestbpd', 'chol', 'cigs', 'years', 'thalrest']
 
 	for col in columns_to_bin:
 		# Chol requires more buckets
 		if col == 'chol':
-			heart[col] = pd.cut(heart[col], 10, include_lowest=True)
+			heart[col] = pd.cut(heart[col], 10)
 		else:
 			heart[col] = pd.cut(heart[col], 7)
 	
+	# if need_updated_tree:
 	# heart = pd.get_dummies(heart, columns = columns_to_bin)
 
-	return heart
+	return heart, columns_to_bin
+
+
+
+def get_target_entropy(heart):
+	entropy = 0
+
+	# Possible values are they have heart disease or they don't (1 or 0 respectively)
+	values = heart['target'].unique()
+
+	# Calculate entropy
+	for value in values:
+		val_split = heart['target'].value_counts()[value]/len(heart['target'])
+		entropy = entropy + -val_split*np.log2(val_split)
+
+	return entropy
+
+def get_feature_entropy(heart, feature):
+	feature_entropy = 0
+
+	# To prevent the feature entropies from being null
+	smallest_num = np.finfo(float).tiny
+
+	# Get the unique values for the target and the feature
+	values = heart['target'].unique()
+	feature_vals = heart[feature].unique()
+
+	for value in feature_vals:
+		val_entropy = 0
+		for val in values:
+			# Get the number of possible values within the feature
+			num_of_each_val = heart[feature][heart[feature]==value]
+			
+			# For getting the ratio
+			numerator = len(num_of_each_val[heart['target']==val])
+			denominator = len(num_of_each_val)
+			
+			# Add the smallest number so its not dividing by 0
+			val_split = numerator/(denominator+smallest_num)
+			
+			""" Get the entropy for both target feature 
+				values with respect to this feature value
+			"""
+			# Add the smallest number so its not log2(0)
+			val_entropy = val_entropy + -val_split*np.log2(val_split+smallest_num)
+
+		# Get the entropy for all values in this feature
+		val_ratio = denominator/len(heart)
+		feature_entropy = feature_entropy + val_ratio*val_entropy
+	
+	return feature_entropy
+
+def calc_info_gains(heart, info_gains):
+	# Calculate the info_gain for non-target features only
+	features = heart.drop(['target'], axis=1)
+
+	# Get entropy of target feature
+	target_entropy = get_target_entropy(heart)
+
+	for f in features:
+		feature_entropy = get_feature_entropy(heart, f)
+		information_gain = target_entropy - feature_entropy
+		info_gains[f] = information_gain
+
+	return info_gains
+
+def find_feature(heart, info_gains):
+	info_gains = calc_info_gains(heart, info_gains)
+
+	vals = list(info_gains.values())
+	feat = list(info_gains.keys())
+
+	return feat[vals.index(max(vals))]
+
+def create_tree(heart, dec_tree = 0):
+	# Find the feature to split on i.e. the node feature
+	info_gains = {}
+	node_feature = find_feature(heart, info_gains)
+	node_feat_vals = heart[node_feature]
+
+	# Initialise decision tree
+	if dec_tree == 0:
+		dec_tree = {}
+		dec_tree[node_feature] = {}
+
+	# Get all values for the node
+	all_node_vals = np.unique(node_feat_vals)
+	print(node_feature)
+	# Build the tree with recursion
+	for val in all_node_vals:
+		sub_tree = heart[node_feat_vals == val].reset_index(drop=True)
+
+		values, size = np.unique(sub_tree['target'], return_counts=True)
+		print(val)
+		print(values)
+		print(size)
+		# More of the tree needs to be built
+		if len(size) > 1:
+			print(dec_tree[node_feature])
+			print("Making recursive call\n\n\n")
+			dec_tree[node_feature][val] = create_tree(sub_tree) 
+		
+		# This is the leaf node
+		else:
+			dec_tree[node_feature][val] = values[0]
+			
+	return dec_tree
+
 
 def make_prediction(new_data, decision_tree):
 	# Start at the root node
@@ -52,55 +160,58 @@ def make_prediction(new_data, decision_tree):
 def main():
 	# Load dataset
 	heart = load_dataframe()
-	# data = np.array([29,1,1,131,87,205,5,4,0,0,75,0])
-	# instance = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
-	# 								'chol','cigs','years','fbs','famhist','thalrest',
-	# 								'exang'])
+	data = np.array([30,1,1,131,87,205,5,4,0,0,75,0])
+	instance = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
+									'chol','cigs','years','fbs','famhist','thalrest',
+									'exang'])
 
-	# print(instance)
+	print(instance)
 
-	# heart = heart.append(instance, ignore_index=True)
+	need_updated_tree = False
 
 	# Bin features
-	heart = bin_values(heart)
+	heart, columns_to_bin = bin_values(need_updated_tree, heart)
 
-	print(heart.tail())
+	columns_to_check = ['age', 'trestbps', 'trestbpd', 'chol', 'thalrest']
+	
+	# for col in columns_to_check:
+	# 	m = [instance[col] in x for x in heart[col].unique()]
+	# 	print(m)
+	# 	if True in m:
+	# 		print(col)
+	# 		print("3.14159265")
+	# 	else:
+	# 		need_updated_tree = True
+
+
+	# print(heart.tail())
+	# print(instance)
+	# print(need_updated_tree)
+	# # Build tree
+	# if need_updated_tree:
+	# 	heart = load_dataframe()
+
+	# 	heart = heart.append(instance, ignore_index=True)
+
+	# 	# Bin features
+	# 	heart, _ = bin_values(need_updated_tree, heart)
 
 	instance = heart.drop(['target'], axis=1).iloc[-1]
 	heart = heart.drop(heart.index[-1])
-
-	
-
-
-
-
-
-
-
-	# for col in columns_to_bin:
-	# 	print(heart[col].value_counts())
-	# 	# print(instance[col])
-	# 	print("\n\n\n")
-	# 	values = np.unique(heart[col])
-	# 	print(values)
-	# 	print(instance[col])
-	# 	print("\n\n\n")
-	# 	if instance[col] in values:
-	# 		print(col)
-
-	# 	print("\n\n\n")
-	# 	print("\n\n\n")
-
-	print(heart.tail())
 	print(instance)
-	# Build tree
-	
-	decision_tree = joblib.load('decision_tree.pkl')
-	print(decision_tree)
-	
-		# print(heart.iloc[4])
+	print(heart.columns)
+	# 	decision_tree = create_tree(heart)
 
-	# new_data = heart.drop(['target'], axis=1).iloc[4]
+	# else:
+	# heart = pd.get_dummies(heart, columns = columns_to_bin)
+	# print(heart['thalrest_(62.571, 73.857]'])
+	decision_tree = joblib.load('heart_dt_hascp.pkl')
+		
+	# print(decision_tree)
+	
+	# 	# print(heart.iloc[4])
+
+	# # new_data = heart.drop(['target'], axis=1).iloc[4]
 
 	# Make predictions
 	pred = make_prediction(instance, decision_tree)
