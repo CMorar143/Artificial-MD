@@ -580,7 +580,7 @@ class results(TemplateView):
 
 		# Load dataframes
 		heart = self.load_heart()
-		data = np.array([21,1,1,131,87,205,5,4,0,0,75,0])
+		data = np.array([29,1,1,131,87,205,5,4,0,0,75,0])
 		heart_vals = pd.Series(data, index=['age','sex','cp','trestbps','trestbpd',
 										'chol','cigs','years','fbs','famhist','thalrest',
 										'exang'])
@@ -629,7 +629,7 @@ class results(TemplateView):
 		# Diabetes
 		# Load dataframes
 		diabetes = self.load_diabetes()
-		data = np.array([1,1,0,0,2.9,0,140,90,60,56,126,193,51,5.7])
+		data = np.array([1,1,0,0,28.9,0,140,90,60,56,126,193,51,5.7])
 		diabetes_vals = pd.Series(data, index=['Short_Breath', 'Chest_Pains', 'High_Chol_Hist',
 									'High_BP_Hist',	'BMI', 'Reg_Pulse',	'Sys_BP', 'Dias_BP',
 									'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride',
@@ -658,14 +658,13 @@ class results(TemplateView):
 		diabetes = diabetes.append(diabetes_vals, ignore_index=True)
 		diabetes = self.bin_diabetes(diabetes)
 
-		# In order to use the methods to create the tree
-		diabetes.rename(columns={'Diabetes': 'target'}, inplace=True)
-
-		diabetes_vals = diabetes.drop(['target'], axis=1).iloc[-1]
+		diabetes_vals = diabetes.drop(['Diabetes'], axis=1).iloc[-1]
 		diabetes = diabetes.drop(diabetes.index[-1])
 
 		# Build tree
 		if need_updated_tree:
+			# In order to use the methods to create the tree
+			diabetes.rename(columns={'Diabetes': 'target'}, inplace=True)
 			diabetes_dt = self.create_tree(diabetes)
 
 		else:
