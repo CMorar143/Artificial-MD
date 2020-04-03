@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from urllib.parse import urlencode
-# from django.conf import settings
 from django.views.generic import TemplateView
 from boards.forms import ExamForm, CreatePatientForm, SelectPatientForm, FurtherActionsForm, CreateVisitForm
 from boards.models import Examination, Patient, Patient_Ailment, Patient_Allergy, Patient_Medication, Visit, Medical_history, Investigation, Reminder, User, Ailment, Allergy, Medication
@@ -16,15 +15,10 @@ from django.dispatch import receiver
 import pandas as pd
 import numpy as np
 import os
-from imblearn.over_sampling import SMOTE
+# from imblearn.over_sampling import SMOTE
 from sklearn.model_selection import train_test_split
 from sklearn import metrics, preprocessing
 from sklearn.externals import joblib
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.svm import LinearSVC
-from sklearn.neural_network import MLPClassifier
 
 first_login = False
 

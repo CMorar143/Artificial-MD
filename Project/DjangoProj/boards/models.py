@@ -4,7 +4,6 @@ from django.conf import settings
 
 # Create your models here.
 class Patient(models.Model):
-	family = models.ForeignKey('Family', on_delete=models.CASCADE, null=True)
 	patient_name = models.CharField(max_length=50)
 	DOB = models.DateField()
 	sex = models.PositiveSmallIntegerField()

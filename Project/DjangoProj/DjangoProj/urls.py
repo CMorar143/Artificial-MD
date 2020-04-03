@@ -24,9 +24,6 @@ from boards import views
 from boards.views import exam, patient, patient_info, home, reminders, diary
 
 urlpatterns = [
-	# url(r'^$', views.login, name='login'),
-    # url(r'^search/', include('haystack.urls')),
-    # url(r'^notifications/', include('notify.urls', 'notifications')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', home.as_view(), name='home'),
@@ -35,6 +32,5 @@ urlpatterns = [
     path('reminders/', reminders.as_view(), name='reminders'),
     path('diary/', diary.as_view(), name='diary'),
     path('patient_info/<int:id>/', patient_info.as_view(), name='patient_info'),
-    # path('test/', test.as_view(), name='test'),
     path('results/', views.results.as_view(), name='results')
 ]
