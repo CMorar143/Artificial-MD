@@ -214,8 +214,8 @@ class patient(TemplateView):
 				
 			if Visitform.is_valid():
 				# Save data to model
+				print("IT ENTERED HERE \n\n\n\n\n")
 				visit = Visitform.save(commit=False)
-				visit.doctor = request.user
 				visit.patient = patient
 				visit.save()
 			

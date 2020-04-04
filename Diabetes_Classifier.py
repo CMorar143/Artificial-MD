@@ -52,7 +52,7 @@ def plot_diagrams(diabetes):
 
 
 def scale_values(diabetes):
-	columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'Protein', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
+	columns_to_scale = ['BMI', 'Sys_BP', 'Dias_BP', 'HDL_Chol', 'LDL_Chol', 'Total_Chol', 'Fast_Glucose', 'Triglyceride', 'Uric_Acid']
 	min_max_scaler = preprocessing.MinMaxScaler()
 	diabetes[columns_to_scale] = min_max_scaler.fit_transform(diabetes[columns_to_scale])
 
@@ -92,6 +92,14 @@ def KNN(X_train, D_train, X_test, D_test):
 	plt.title('K Neighbors Classifier scores for different K values')
 	plt.show()
 
+	knn_classifier = KNeighborsClassifier(n_neighbors = 4)
+	knn_classifier.fit(X_train, D_train)
+
+	visualizer = ClassificationReport(knn_classifier, classes=['Negative','Positive'])
+	visualizer.fit(X_train, D_train)
+	visualizer.score(X_test, D_test)
+	visualizer.poof()
+
 
 def decision_tree(X_train, D_train, X_test, D_test, X):
 	dt_scores = []
@@ -108,6 +116,14 @@ def decision_tree(X_train, D_train, X_test, D_test, X):
 	plt.ylabel('Scores')
 	plt.title('Decision Tree Classifier scores for different number of maximum features')
 	plt.show()
+
+	dt_classifier = DecisionTreeClassifier(max_features = 6, random_state = 0)
+	dt_classifier.fit(X_train, D_train)
+
+	visualizer = ClassificationReport(dt_classifier, classes=['Negative','Positive'])
+	visualizer.fit(X_train, D_train)
+	visualizer.score(X_test, D_test)
+	visualizer.poof()
 
 
 def naive_bayes(X_train, D_train, X_test, D_test):

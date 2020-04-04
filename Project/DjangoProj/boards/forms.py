@@ -1,5 +1,6 @@
 from django import forms
 from boards.models import Examination, Patient, Investigation, Visit
+from django.contrib.auth.models import User, Group
 import datetime
 from dal import autocomplete
 
@@ -54,12 +55,13 @@ class SelectPatientForm(forms.Form):
 
 
 class CreateVisitForm(forms.ModelForm):
+	doctor = forms.ModelChoiceField(queryset=User.objects.filter(groups__name__contains='Doctor'), widget=forms.Select(attrs={'class': 'input_field'}))
 	reason = forms.ChoiceField(choices=VISIT_REASONS, widget=forms.Select(attrs={'class': 'input_field'}))
 	date = forms.CharField(widget=forms.widgets.DateTimeInput(attrs={'value': datetime.datetime.now().strftime("%Y-%m-%dT%H:%M"), 'type': 'datetime-local', 'class': 'input_field', 'min': datetime.datetime.today().strftime("%Y-%m-%dT%H:%M")}))
 
 	class Meta:
 		model = Visit
-		fields = ('reason', 'date',)
+		fields = ('doctor', 'reason', 'date',)
 
 
 class FurtherActionsForm(forms.ModelForm):

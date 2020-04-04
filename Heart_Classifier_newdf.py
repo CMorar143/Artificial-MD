@@ -94,6 +94,8 @@ def bin_values(heart):
 	# Chol requires more buckets
 	heart['chol'] = pd.cut(heart['chol'], 10)
 	print(heart.head())
+
+	heart = pd.get_dummies(heart, columns = columns_to_bin)
 	
 	return heart
 
@@ -123,6 +125,14 @@ def KNN(X_train, H_train, X_test, H_test):
 	plt.title('K Neighbors Classifier scores for different K values')
 	plt.show()
 
+	knn_classifier = KNeighborsClassifier(n_neighbors = k)
+	knn_classifier.fit(X_train, H_train)
+
+	visualizer = ClassificationReport(knn_classifier, classes=['Negative','Positive'])
+	visualizer.fit(X_train, H_train)
+	visualizer.score(X_test, H_test)
+	visualizer.poof()
+
 	return max_score, knn_val
 
 
@@ -141,6 +151,14 @@ def decision_tree(X_train, H_train, X_test, H_test, X):
 	plt.ylabel('Scores')
 	plt.title('Decision Tree Classifier scores for different number of maximum features')
 	plt.show()
+
+	dt_classifier = DecisionTreeClassifier(max_features = 10, random_state = 0)
+	dt_classifier.fit(X_train, H_train)
+
+	visualizer = ClassificationReport(dt_classifier, classes=['Negative','Positive'])
+	visualizer.fit(X_train, H_train)
+	visualizer.score(X_test, H_test)
+	visualizer.poof()
 
 	return max(dt_scores)
 
@@ -235,7 +253,7 @@ def train_heart_models():
 	imputer = KNNImputer(n_neighbors=3)
 	
 	# Bin continuous variables
-	heart = bin_values(heart)
+	# heart = bin_values(heart)
 
 	heart = impute_dataset(heart, imputer)
 	print("\n\n\n Got here anyway\n\n\n")
